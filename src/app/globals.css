@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&family=Oswald:wght@700&display=swap');
 
 :root {
   --foreground-rgb: 0, 0, 0;
@@ -18,4 +19,12 @@
 
 body {
   padding: 40px;
+  width: 100vw;
+  height: 100lvh;
+  background-color: #eee;
+  font-family: 'Noto Sans JP', sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  line-height: 1.5;
+  letter-spacing: 0.05em;
 }

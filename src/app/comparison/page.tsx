@@ -1,20 +1,13 @@
 "use client"
 
-import React, { useEffect } from 'react';
-import { useRouter } from "next/navigation"
+import React from 'react';
 import { useAuthContext } from '../../auth/AuthContext';
+import useLoginGuard from '@/auth/useLoginGuard';
 
 const Comparison = () => {
 
-  const router = useRouter();
-  const { user, loading } = useAuthContext();
-
-  // ユーザーがログインしていない場合、ログインページにリダイレクト
-  useEffect(() => {
-    if (!user && !loading) {
-      router.push('/');
-    }
-  }, [user, router, loading]);
+  useLoginGuard();
+  const { loading } = useAuthContext();
 
   if (loading) {
     return <div>ローディング中...</div>;

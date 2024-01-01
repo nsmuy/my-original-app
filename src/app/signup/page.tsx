@@ -17,11 +17,11 @@ const Signup = () => {
     await createUserWithEmailAndPassword(auth, inputEmail, inputPassword)
     router.push("/mypage");
   }
-  
+
   return (
     <div className="flex flex-col items-center justify-center">
       <h2 className='text-2xl'>新規会員登録</h2>
-      
+
       <form onSubmit={handleSubmit} className='flex flex-col'>
         <label htmlFor="email">メールアドレス</label>
         <input
@@ -46,8 +46,7 @@ const Signup = () => {
         <button onClick={() => router.push("/login")} >登録している方はこちら</button>
         <button onClick={() => router.push("/")} >トップページに戻る</button>
       </form>
-      
-      
+
     </div>
   )
 }
