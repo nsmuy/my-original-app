@@ -53,7 +53,7 @@ const EditProfile = () => {
 
     if (userProfile) {
       const userProfileRef = doc(db, "userProfiles", userProfile.id);
-      try {
+     try {
         await updateDoc(userProfileRef, {
           ...editedProfile,
         });

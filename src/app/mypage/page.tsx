@@ -3,12 +3,12 @@
 import React, { useState, useEffect } from 'react'
 import { app, db } from '../firebase';
 import { UserProfile } from '@/types/UserProfile';
-import { getAuth, signOut } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import RegisterUserProfile from '@/components/RegisterUserProfile';
 import useLoginGuard from '@/auth/useLoginGuard';
 import { collection, onSnapshot, query, where } from 'firebase/firestore';
-import CurrentUserProfileView from '@/components/currentUserProfileView';
+import CurrentUserProfileView from '@/components/CurrentUserProfileView';
 import LogoutButton from '@/auth/LogoutButton';
 
 const MyPage = () => {
