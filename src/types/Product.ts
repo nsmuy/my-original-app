@@ -1,4 +1,6 @@
+import { db } from '@/app/firebase';
 export type Product = {
+  id: string;
   brand: string;
   name: string;
   price: number;
