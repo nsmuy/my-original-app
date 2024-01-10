@@ -69,6 +69,7 @@ const Comparison = () => {
         checkedFilters={checkedFilters}
         selectedProducts={selectedProducts}
         setSelectedProducts={setSelectedProducts}
+        singleSelectMode={false}
       />
 
       {/* フィルタリングした商品の中から、更に比較する商品を選んで表示 */}

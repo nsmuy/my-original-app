@@ -6,13 +6,15 @@ import { collection, getDocs, query } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
 
 const FilteredProductsList = ({
-  checkedFilters, selectedProducts, setSelectedProducts} : {
-  checkedFilters: {
-    brands: { [key: string]: boolean },
-    types: { [key: string]: boolean }
-  },
-  selectedProducts: Product[],
-  setSelectedProducts: React.Dispatch<React.SetStateAction<Product[]>>}
+  checkedFilters, selectedProducts, setSelectedProducts, singleSelectMode} : {
+    checkedFilters: {
+      brands: { [key: string]: boolean },
+      types: { [key: string]: boolean }
+    },
+    selectedProducts: Product[],
+    setSelectedProducts: React.Dispatch<React.SetStateAction<Product[]>>,
+    singleSelectMode: boolean,
+  }
 ) => {
 
   const router = useRouter();
@@ -62,10 +64,20 @@ const FilteredProductsList = ({
   }, [checkedFilters]);
 
   const handleSelectedProductsChange = (product: Product, isChecked: boolean) => {
-    if(isChecked) {
-      setSelectedProducts(prevState => [...prevState, product]);
+
+    // 単一選択モードと複数選択モードの出し分け
+    if(singleSelectMode) {
+      if(isChecked) {
+        setSelectedProducts([product]);
+      } else {
+        setSelectedProducts([]);
+      }
     } else {
-      setSelectedProducts(prevState => prevState.filter(p => p.name !== product.name));
+      if(isChecked) {
+        setSelectedProducts(prevState => [...prevState, product]);
+      } else {
+        setSelectedProducts(prevState => prevState.filter(p => p.name !== product.name));
+      }
     }
   }
 
