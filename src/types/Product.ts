@@ -7,7 +7,7 @@ export type Product = {
   type: 'liquid' | 'powder' | 'cream' | 'cushion' | 'other' ;
   spf: string;
   capacity: string;
-  features: string;
+  feature: string;
   color: number;
   image: string;
 }

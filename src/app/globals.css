@@ -26,5 +26,25 @@ body {
   font-weight: 400;
   font-style: normal;
   line-height: 1.5;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.1em;
+}
+
+.comparisonTable {
+  writing-mode: vertical-lr;
+  border: 1px solid;
+  background-color: #fff;
+}
+.comparisonTable th,
+.comparisonTable td {
+  writing-mode: horizontal-tb;
+  padding: 12px;
+  border: 1px solid;
+}
+
+.comparisonTable thead {
+  width: 100px;
+}
+
+.comparisonTable tbody > tr > td {
+  width: 200px;
 }

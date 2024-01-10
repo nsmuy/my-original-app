@@ -6,19 +6,19 @@ import { collection, getDocs, query } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
 
 const FilteredProductsList = ({
-  checkedFilters, filteredProducts, selectedProducts, setFilteredProducts, setSelectedProducts} : {
+  checkedFilters, selectedProducts, setSelectedProducts} : {
   checkedFilters: {
     brands: { [key: string]: boolean },
     types: { [key: string]: boolean }
   },
-  filteredProducts: Product[],
   selectedProducts: Product[],
-  setFilteredProducts: React.Dispatch<React.SetStateAction<Product[]>>,
   setSelectedProducts: React.Dispatch<React.SetStateAction<Product[]>>}
 ) => {
 
   const router = useRouter();
   const [allProducts, setAllProducts] = useState<Product[]>([]);
+  //フィルタリングされた商品を保存する状態変数
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
 
   // ページ読み込み時にfirebaseからすべての商品を取得
   useEffect(() => {

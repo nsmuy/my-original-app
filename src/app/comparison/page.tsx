@@ -8,7 +8,6 @@ import { Product } from '@/types/Product';
 import ProductFiltersSelector from '@/components/ProductFilterSelector';
 import FilteredProductsList from '@/components/FilteredProductsList';
 import SelectedProductsList from '@/components/SelectedProductsList';
-import { createContext } from 'vm';
 
 const Comparison = () => {
 
@@ -39,9 +38,6 @@ const Comparison = () => {
     },
   });
 
-  //フィルタリングされた商品を保存する状態変数
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
-
   //比較するために選んだ商品を保存する状態変数
   const [selectedProducts, setSelectedProducts] = useState<
   Product[]>([]);
@@ -53,6 +49,8 @@ const Comparison = () => {
       return;
     }
 
+    // localStorageに比較した商品を保存
+    localStorage.setItem('comparisonProducts', JSON.stringify(selectedProducts));
     router.push('/comparison/result');
   }
 
@@ -69,9 +67,7 @@ const Comparison = () => {
       {/* フィルタリングした商品を表示 */}
       <FilteredProductsList
         checkedFilters={checkedFilters}
-        filteredProducts={filteredProducts}
         selectedProducts={selectedProducts}
-        setFilteredProducts={setFilteredProducts}
         setSelectedProducts={setSelectedProducts}
       />
 
