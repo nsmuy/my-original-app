@@ -58,6 +58,7 @@ const CreateReviews = () => {
     longevity: "",
     moisturizing: "",
     comments: "",
+    sendAt: "",
   });
 
   const ratingOptions = {
@@ -104,11 +105,12 @@ const CreateReviews = () => {
       return;
     }
 
-    const docRef = await addDoc(collection(db, "reviews"), {
+    await addDoc(collection(db, "reviews"), {
       ...reviews,
       reviewId: uuidv4(),
       productId: selectedProducts[0].id,
       userId: user?.uid,
+      sendAt: new Date().toISOString(),
     });
   }
 

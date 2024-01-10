@@ -7,4 +7,5 @@ export type Reviews = {
   longevity: string, //崩れにくさ
   moisturizing: string, //保湿力
   comments: string,
+  sendAt: string,
 }
