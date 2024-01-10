@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation';
-import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
+import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { db } from '../firebase';
 import { Review, CompleteReview } from '@/types/Reviews';
 import { Product } from '@/types/Product';
@@ -58,7 +58,7 @@ const Reviews = () => {
       const users = usersSnapshot.docs.map(doc => doc.data()) as UserProfile[];
 
       // レビュー情報の取得
-      const reviewsSnapshot = await getDocs(query(collection(db, "reviews")));
+      const reviewsSnapshot = await getDocs(query(collection(db, "reviews"), orderBy("sendAt", "desc")));
       const reviews = reviewsSnapshot.docs.map(doc => doc.data()) as Review[];
 
       // CompleteReviewの作成
@@ -94,7 +94,7 @@ const Reviews = () => {
 
   return (
     <div>
-      <h2>口コミ一覧</h2>
+      <h2>口コミ一覧（新着順）</h2>
       <ul>
         {completeReviews.map(review => (
           <li key={review.reviewId} className='border border-gray-700 mt-4'>
