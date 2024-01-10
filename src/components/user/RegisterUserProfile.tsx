@@ -58,9 +58,9 @@ const RegisterUserProfile = ({ setIsFirstVisit }: RegisterUserProfileProps) => {
                 type="radio"
                 id="gender1"
                 name="gender"
-                value="male"
-                checked={inputUserProfile?.gender === "male"}
-                onChange={() => setInputUserProfile({ ...inputUserProfile, gender: "male" })}
+                value="男性"
+                checked={inputUserProfile?.gender === "男性"}
+                onChange={() => setInputUserProfile({ ...inputUserProfile, gender: "男性" })}
               />
               <label htmlFor="gender1" className='ml-2'>男性</label>
             </div>
@@ -70,9 +70,9 @@ const RegisterUserProfile = ({ setIsFirstVisit }: RegisterUserProfileProps) => {
                 type="radio"
                 id="gender2"
                 name="gender"
-                value="female"
-                checked={inputUserProfile?.gender === "female"}
-                onChange={() => setInputUserProfile({ ...inputUserProfile, gender: "female" })}
+                value="女性"
+                checked={inputUserProfile?.gender === "女性"}
+                onChange={() => setInputUserProfile({ ...inputUserProfile, gender: "女性" })}
               />
               <label htmlFor="gender2" className='ml-2'>女性</label>
             </div>
@@ -82,9 +82,9 @@ const RegisterUserProfile = ({ setIsFirstVisit }: RegisterUserProfileProps) => {
                 type="radio"
                 id="gender3"
                 name="gender"
-                value="other"
-                checked={inputUserProfile?.gender === "other"}
-                onChange={() => setInputUserProfile({ ...inputUserProfile, gender: "other" })}
+                value="その他"
+                checked={inputUserProfile?.gender === "その他"}
+                onChange={() => setInputUserProfile({ ...inputUserProfile, gender: "その他" })}
               />
               <label htmlFor="gender3" className='ml-2'>その他</label>
             </div>
@@ -98,9 +98,9 @@ const RegisterUserProfile = ({ setIsFirstVisit }: RegisterUserProfileProps) => {
                 type="radio"
                 id="age1"
                 name="age_group"
-                value="0-19"
-                checked={inputUserProfile?.age === "0-19"}
-                onChange={() => setInputUserProfile({ ...inputUserProfile, age: "0-19" })}
+                value="～10代"
+                checked={inputUserProfile?.age === "～10代"}
+                onChange={() => setInputUserProfile({ ...inputUserProfile, age: "～10代" })}
               />
               <label htmlFor="age1" className='ml-2'>～10代</label>
             </div>
@@ -110,9 +110,9 @@ const RegisterUserProfile = ({ setIsFirstVisit }: RegisterUserProfileProps) => {
                 type="radio"
                 id="age2"
                 name="age_group"
-                value="20-29"
-                checked={inputUserProfile?.age === "20-29"}
-                onChange={() => setInputUserProfile({ ...inputUserProfile, age: "20-29" })}
+                value="20代"
+                checked={inputUserProfile?.age === "20代"}
+                onChange={() => setInputUserProfile({ ...inputUserProfile, age: "20代" })}
               />
               <label htmlFor="age2" className='ml-2'>20代</label>
             </div>
@@ -122,9 +122,9 @@ const RegisterUserProfile = ({ setIsFirstVisit }: RegisterUserProfileProps) => {
                 type="radio"
                 id="age3"
                 name="age_group"
-                value="30-39"
-                checked={inputUserProfile?.age === "30-39"}
-                onChange={() => setInputUserProfile({ ...inputUserProfile, age: "30-39" })}
+                value="30代"
+                checked={inputUserProfile?.age === "30代"}
+                onChange={() => setInputUserProfile({ ...inputUserProfile, age: "30代" })}
               />
               <label htmlFor="age3" className='ml-2'>30代</label>
             </div>
@@ -134,9 +134,9 @@ const RegisterUserProfile = ({ setIsFirstVisit }: RegisterUserProfileProps) => {
                 type="radio"
                 id="age4"
                 name="age_group"
-                value="40-49"
-                checked={inputUserProfile?.age === "40-49"}
-                onChange={() => setInputUserProfile({ ...inputUserProfile, age: "40-49" })}
+                value="40代"
+                checked={inputUserProfile?.age === "40代"}
+                onChange={() => setInputUserProfile({ ...inputUserProfile, age: "40代" })}
               />
               <label htmlFor="age4" className='ml-2'>40代</label>
             </div>
@@ -146,9 +146,9 @@ const RegisterUserProfile = ({ setIsFirstVisit }: RegisterUserProfileProps) => {
                 type="radio"
                 id="age5"
                 name="age_group"
-                value="50-59"
-                checked={inputUserProfile?.age === "50-59"}
-                onChange={() => setInputUserProfile({ ...inputUserProfile, age: "50-59" })}
+                value="50代"
+                checked={inputUserProfile?.age === "50代"}
+                onChange={() => setInputUserProfile({ ...inputUserProfile, age: "50代" })}
               />
               <label htmlFor="age5" className='ml-2'>50代</label>
             </div>
@@ -158,9 +158,9 @@ const RegisterUserProfile = ({ setIsFirstVisit }: RegisterUserProfileProps) => {
                 type="radio"
                 id="age6"
                 name="age_group"
-                value="60+"
-                checked={inputUserProfile?.age === "60+"}
-                onChange={() => setInputUserProfile({ ...inputUserProfile, age: "60+" })}
+                value="60代～"
+                checked={inputUserProfile?.age === "60代～"}
+                onChange={() => setInputUserProfile({ ...inputUserProfile, age: "60代～" })}
               />
               <label htmlFor="age6" className='ml-2'>60代</label>
             </div>
@@ -174,9 +174,9 @@ const RegisterUserProfile = ({ setIsFirstVisit }: RegisterUserProfileProps) => {
                 type="radio"
                 id="skinType1"
                 name="skin_type"
-                value="normal"
-                checked={inputUserProfile.skinType === "normal"}
-                onChange={() => setInputUserProfile({ ...inputUserProfile, skinType: "normal" })}
+                value="普通肌"
+                checked={inputUserProfile.skinType === "普通肌"}
+                onChange={() => setInputUserProfile({ ...inputUserProfile, skinType: "普通肌" })}
               />
               <label htmlFor="skinType1" className='ml-2'>普通肌</label>
             </div>
@@ -186,9 +186,9 @@ const RegisterUserProfile = ({ setIsFirstVisit }: RegisterUserProfileProps) => {
                 type="radio"
                 id="skinType2"
                 name="skin_type"
-                value="dry"
-                checked={inputUserProfile.skinType === "dry"}
-                onChange={() => setInputUserProfile({ ...inputUserProfile, skinType: "dry" })}
+                value="乾燥肌"
+                checked={inputUserProfile.skinType === "乾燥肌"}
+                onChange={() => setInputUserProfile({ ...inputUserProfile, skinType: "乾燥肌" })}
               />
               <label htmlFor="skinType2" className='ml-2'>乾燥肌</label>
             </div>
@@ -198,9 +198,9 @@ const RegisterUserProfile = ({ setIsFirstVisit }: RegisterUserProfileProps) => {
                 type="radio"
                 id="skinType3"
                 name="skin_type"
-                value="combination"
-                checked={inputUserProfile.skinType === "combination"}
-                onChange={() => setInputUserProfile({ ...inputUserProfile, skinType: "combination" })}
+                value="混合肌"
+                checked={inputUserProfile.skinType === "混合肌"}
+                onChange={() => setInputUserProfile({ ...inputUserProfile, skinType: "混合肌" })}
                 />
               <label htmlFor="skinType3" className='ml-2'>混合肌</label>
             </div>
@@ -210,9 +210,9 @@ const RegisterUserProfile = ({ setIsFirstVisit }: RegisterUserProfileProps) => {
                 type="radio"
                 id="skinType4"
                 name="skin_type"
-                value="oily"
-                checked={inputUserProfile.skinType === "oily"}
-                onChange={() => setInputUserProfile({ ...inputUserProfile, skinType: "oily" })}
+                value="脂性肌"
+                checked={inputUserProfile.skinType === "脂性肌"}
+                onChange={() => setInputUserProfile({ ...inputUserProfile, skinType: "脂性肌" })}
               />
               <label htmlFor="skinType4" className='ml-2'>脂性肌</label>
             </div>
@@ -222,9 +222,9 @@ const RegisterUserProfile = ({ setIsFirstVisit }: RegisterUserProfileProps) => {
                 type="radio"
                 id="skinType5"
                 name="skin_type"
-                value="sensitive"
-                checked={inputUserProfile.skinType === "sensitive"}
-                onChange={() => setInputUserProfile({ ...inputUserProfile, skinType: "sensitive" })}
+                value="敏感肌"
+                checked={inputUserProfile.skinType === "敏感肌"}
+                onChange={() => setInputUserProfile({ ...inputUserProfile, skinType: "敏感肌" })}
               />
               <label htmlFor="skinType5" className='ml-2'>敏感肌</label>
             </div>
@@ -234,9 +234,9 @@ const RegisterUserProfile = ({ setIsFirstVisit }: RegisterUserProfileProps) => {
                 type="radio"
                 id="skinType6"
                 name="skin_type"
-                value="atopic"
-                checked={inputUserProfile.skinType === "atopic"}
-                onChange={() => setInputUserProfile({ ...inputUserProfile, skinType: "atopic" })}
+                value="アトピー肌"
+                checked={inputUserProfile.skinType === "アトピー肌"}
+                onChange={() => setInputUserProfile({ ...inputUserProfile, skinType: "アトピー肌" })}
               />
               <label htmlFor="skinType6" className='ml-2'>アトピー</label>
             </div>

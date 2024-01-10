@@ -89,9 +89,9 @@ const EditProfile = () => {
                 type="radio"
                 id="age1"
                 name="age_group"
-                value="0-19"
-                checked={editedProfile?.age === "0-19"}
-                onChange={() => setUserProfile({ ...editedProfile, age: "0-19" })}
+                value="～10代"
+                checked={editedProfile?.age === "～10代"}
+                onChange={() => setUserProfile({ ...editedProfile, age: "～10代" })}
               />
               <label htmlFor="age1" className='ml-2'>～10代</label>
             </div>
@@ -101,9 +101,9 @@ const EditProfile = () => {
                 type="radio"
                 id="age2"
                 name="age_group"
-                value="20-29"
-                checked={editedProfile?.age === "20-29"}
-                onChange={() => setUserProfile({ ...editedProfile, age: "20-29" })}
+                value="20代"
+                checked={editedProfile?.age === "20代"}
+                onChange={() => setUserProfile({ ...editedProfile, age: "20代" })}
               />
               <label htmlFor="age2" className='ml-2'>20代</label>
             </div>
@@ -113,9 +113,9 @@ const EditProfile = () => {
                 type="radio"
                 id="age3"
                 name="age_group"
-                value="30-39"
-                checked={editedProfile?.age === "30-39"}
-                onChange={() => setUserProfile({ ...editedProfile, age: "30-39" })}
+                value="30代"
+                checked={editedProfile?.age === "30代"}
+                onChange={() => setUserProfile({ ...editedProfile, age: "30代" })}
               />
               <label htmlFor="age3" className='ml-2'>30代</label>
             </div>
@@ -125,9 +125,9 @@ const EditProfile = () => {
                 type="radio"
                 id="age4"
                 name="age_group"
-                value="40-49"
-                checked={editedProfile?.age === "40-49"}
-                onChange={() => setUserProfile({ ...editedProfile, age: "40-49" })}
+                value="40代"
+                checked={editedProfile?.age === "40代"}
+                onChange={() => setUserProfile({ ...editedProfile, age: "40代" })}
               />
               <label htmlFor="age4" className='ml-2'>40代</label>
             </div>
@@ -137,9 +137,9 @@ const EditProfile = () => {
                 type="radio"
                 id="age5"
                 name="age_group"
-                value="50-59"
-                checked={editedProfile?.age === "50-59"}
-                onChange={() => setUserProfile({ ...editedProfile, age: "50-59" })}
+                value="50代"
+                checked={editedProfile?.age === "50代"}
+                onChange={() => setUserProfile({ ...editedProfile, age: "50代" })}
               />
               <label htmlFor="age5" className='ml-2'>50代</label>
             </div>
@@ -149,11 +149,11 @@ const EditProfile = () => {
                 type="radio"
                 id="age6"
                 name="age_group"
-                value="60+"
-                checked={editedProfile?.age === "60+"}
-                onChange={() => setUserProfile({ ...editedProfile, age: "60+" })}
+                value="60代～"
+                checked={editedProfile?.age === "60代～"}
+                onChange={() => setUserProfile({ ...editedProfile, age: "60代～" })}
               />
-              <label htmlFor="age6" className='ml-2'>60代</label>
+              <label htmlFor="age6" className='ml-2'>60代～</label>
             </div>
         </div>
 
@@ -165,9 +165,9 @@ const EditProfile = () => {
               type="radio"
               id="skinType1"
               name="skin_type"
-              value="normal"
-              checked={editedProfile.skinType === "normal"}
-              onChange={() => setUserProfile({ ...editedProfile, skinType: "normal" })}
+              value="普通肌"
+              checked={editedProfile.skinType === "普通肌"}
+              onChange={() => setUserProfile({ ...editedProfile, skinType: "普通肌" })}
             />
             <label htmlFor="skinType1" className='ml-2'>普通肌</label>
           </div>
@@ -177,9 +177,9 @@ const EditProfile = () => {
               type="radio"
               id="skinType2"
               name="skin_type"
-              value="dry"
-              checked={editedProfile.skinType === "dry"}
-              onChange={() => setUserProfile({ ...editedProfile, skinType: "dry" })}
+              value="乾燥肌"
+              checked={editedProfile.skinType === "乾燥肌"}
+              onChange={() => setUserProfile({ ...editedProfile, skinType: "乾燥肌" })}
             />
             <label htmlFor="skinType2" className='ml-2'>乾燥肌</label>
           </div>
@@ -189,9 +189,9 @@ const EditProfile = () => {
               type="radio"
               id="skinType3"
               name="skin_type"
-              value="combination"
-              checked={editedProfile.skinType === "combination"}
-              onChange={() => setUserProfile({ ...editedProfile, skinType: "combination" })}
+              value="混合肌"
+              checked={editedProfile.skinType === "混合肌"}
+              onChange={() => setUserProfile({ ...editedProfile, skinType: "混合肌" })}
               />
             <label htmlFor="skinType3" className='ml-2'>混合肌</label>
           </div>
@@ -201,9 +201,9 @@ const EditProfile = () => {
               type="radio"
               id="skinType4"
               name="skin_type"
-              value="oily"
-              checked={editedProfile.skinType === "oily"}
-              onChange={() => setUserProfile({ ...editedProfile, skinType: "oily" })}
+              value="脂性肌"
+              checked={editedProfile.skinType === "脂性肌"}
+              onChange={() => setUserProfile({ ...editedProfile, skinType: "脂性肌" })}
             />
             <label htmlFor="skinType4" className='ml-2'>脂性肌</label>
           </div>
@@ -213,9 +213,9 @@ const EditProfile = () => {
               type="radio"
               id="skinType5"
               name="skin_type"
-              value="sensitive"
-              checked={editedProfile.skinType === "sensitive"}
-              onChange={() => setUserProfile({ ...editedProfile, skinType: "sensitive" })}
+              value="敏感肌"
+              checked={editedProfile.skinType === "敏感肌"}
+              onChange={() => setUserProfile({ ...editedProfile, skinType: "敏感肌" })}
             />
             <label htmlFor="skinType5" className='ml-2'>敏感肌</label>
           </div>
@@ -225,9 +225,9 @@ const EditProfile = () => {
               type="radio"
               id="skinType6"
               name="skin_type"
-              value="atopic"
-              checked={editedProfile.skinType === "atopic"}
-              onChange={() => setUserProfile({ ...editedProfile, skinType: "atopic" })}
+              value="アトピー肌"
+              checked={editedProfile.skinType === "アトピー肌"}
+              onChange={() => setUserProfile({ ...editedProfile, skinType: "アトピー肌" })}
             />
             <label htmlFor="skinType6" className='ml-2'>アトピー</label>
           </div>

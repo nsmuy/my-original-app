@@ -5,9 +5,10 @@ import { useAuthContext } from '../../../auth/AuthContext'
 import { useRouter } from 'next/navigation';
 import useLoginGuard from '@/auth/useLoginGuard';
 import { Product } from '@/types/Product';
+import { UserProfile } from '@/types/UserProfile';
 import ProductFiltersSelector from '@/components/ProductFilterSelector';
 import FilteredProductsList from '@/components/FilteredProductsList';
-import { Reviews } from '@/types/Reviews';
+import { Review } from '@/types/Reviews';
 import { getAuth } from "firebase/auth";
 import { addDoc, collection, getDocs, query, where } from "firebase/firestore"; 
 import { db } from '@/app/firebase';
@@ -45,22 +46,6 @@ const CreateReviews = () => {
     },
   });
 
-  //比較するために選んだ商品を保存する状態変数
-  const [selectedProducts, setSelectedProducts] = useState<
-  Product[]>([]);
-
-  const [reviews, setReviews] = useState<Reviews>({
-    reviewId: "",
-    productId: "",
-    userId: "",
-    luminosity: "",
-    coverage: "",
-    longevity: "",
-    moisturizing: "",
-    comments: "",
-    sendAt: "",
-  });
-
   const ratingOptions = {
     luminosity: [
       { label: "マット", value: "1" },
@@ -91,6 +76,25 @@ const CreateReviews = () => {
       { label:"高い", value: "5" }
     ]
   }
+
+  const initialReviewState: Review = {
+    reviewId: "",
+    productId: "",
+    userId: "",
+    luminosity: "",
+    coverage: "",
+    longevity: "",
+    moisturizing: "",
+    comments: "",
+    sendAt: "",
+  };
+
+  //比較するために選んだ商品を保存する状態変数
+  const [selectedProducts, setSelectedProducts] = useState<
+  Product[]>([]);
+
+  // レビューに関する情報を保存する状態変数
+  const [reviews, setReviews] = useState<Review>(initialReviewState);
 
   const handlePostReviews = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
