@@ -5,10 +5,10 @@ import { app, db } from '../firebase';
 import { UserProfile } from '@/types/UserProfile';
 import { getAuth } from "firebase/auth";
 import { useRouter } from "next/navigation";
-import RegisterUserProfile from '@/components/RegisterUserProfile';
+import RegisterUserProfile from '@/components/user/RegisterUserProfile';
 import useLoginGuard from '@/auth/useLoginGuard';
 import { collection, onSnapshot, query, where } from 'firebase/firestore';
-import CurrentUserProfileView from '@/components/CurrentUserProfileView';
+import CurrentUserProfileView from '@/components/user/CurrentUserProfileView';
 import LogoutButton from '@/auth/LogoutButton';
 
 const MyPage = () => {
