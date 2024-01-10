@@ -20,6 +20,7 @@ const EditProfile = () => {
     age: '',
     gender: '',
     skinType: '',
+    icon: '',
   });
 
   // Firebaseからログインしているユーザープロフィールを取得

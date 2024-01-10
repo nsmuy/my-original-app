@@ -37,6 +37,7 @@ const Reviews = () => {
       age: "",
       gender: "",
       skinType: "",
+      icon: "",
     }
   }];
 

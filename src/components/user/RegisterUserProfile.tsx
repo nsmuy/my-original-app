@@ -5,6 +5,7 @@ import { UserProfile } from '@/types/UserProfile';
 import { db } from '@/app/firebase';
 import { setDoc, doc } from 'firebase/firestore';
 import { useAuthContext } from '@/auth/AuthContext';
+import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 
 type RegisterUserProfileProps = {
   setIsFirstVisit: React.Dispatch<React.SetStateAction<boolean>>;
@@ -13,21 +14,42 @@ type RegisterUserProfileProps = {
 const RegisterUserProfile = ({ setIsFirstVisit }: RegisterUserProfileProps) => {
 
   const { user } = useAuthContext();
+  const [uploadIcon, setUploadIcon] = useState<File>();
   const [inputUserProfile, setInputUserProfile] = useState<Omit<UserProfile, 'id'>>({
     nickname: '',
     age: '',
     gender: '',
     skinType: '',
+    icon: '',
   });
 
   // firebaseにユーザープロフィールを保存
   const handleUserProfile = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (user) {
+
+      console.log(uploadIcon)
+      let iconUrl: string = '';
+
+      if(uploadIcon !== undefined && uploadIcon !== null) {
+        // 公開URLを取得するために、一度Firebase Strageにアップロードする
+        const storage = getStorage();
+        const iconRef = ref(storage, `userIcons/userIcon_${user?.uid}`);
+        await uploadBytes(iconRef, uploadIcon);
+        iconUrl = await getDownloadURL(iconRef);
+        setInputUserProfile({ ...inputUserProfile, icon: iconUrl });
+      } else {
+        const storage = getStorage();
+        const defaultIconRef = ref(storage, `userIcons/userIcon_default.png`);
+        console.log(defaultIconRef);
+        iconUrl = await getDownloadURL(defaultIconRef);
+        setInputUserProfile({ ...inputUserProfile, icon: iconUrl });
+      }
+
       // idをセットしてuserProfileを更新
-      const registrationUserProfile = { ...inputUserProfile, id: user.uid };
+      const registrationUserProfile = { ...inputUserProfile, id: user.uid, icon: iconUrl };
       await setDoc(doc(db, "userProfiles", user.uid), registrationUserProfile);
-      setInputUserProfile({ nickname: '', age: '', gender: '', skinType: '' });
+      setInputUserProfile({ nickname: '', age: '', gender: '', skinType: '', icon: '' }); 
       setIsFirstVisit(false);
     }
   };
@@ -47,6 +69,17 @@ const RegisterUserProfile = ({ setIsFirstVisit }: RegisterUserProfileProps) => {
               value={inputUserProfile.nickname}
               onChange={(e) => setInputUserProfile({ ...inputUserProfile, nickname: e.target.value })}
               className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500'
+            />
+          </div>
+
+          <div>
+            <label htmlFor="icon">アイコン</label>
+            <input
+              type="file"
+              id='icon'
+              accept='image/*' //画像ファイルだけ受け付ける
+              // value={inputUserProfile.icon}
+              onChange={(e) => {setUploadIcon(e.target.files?.[0]);}}
             />
           </div>
 

@@ -15,6 +15,9 @@ const CurrentUserProfileView = ( {currentUserProfile} : CurrentUserProfileProps 
         <h3>基本情報</h3>
         <ul>
           <li>ニックネーム: {currentUserProfile.nickname}</li>
+          <li>アイコン:
+            <img src={currentUserProfile.icon} alt={`${currentUserProfile.nickname}のアイコン`} />
+          </li>
           <li>年齢: {currentUserProfile.age}</li>
           <li>性別: {currentUserProfile.gender}</li>
           <li>肌質: {currentUserProfile.skinType}</li>
