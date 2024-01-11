@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAuthContext } from '../../../auth/AuthContext'
 import { useRouter } from 'next/navigation';
 import useLoginGuard from '@/auth/useLoginGuard';
@@ -13,8 +13,10 @@ import { getAuth } from "firebase/auth";
 import { addDoc, collection, getDocs, query, where } from "firebase/firestore"; 
 import { db } from '@/app/firebase';
 import { v4 as uuidv4 } from 'uuid';
+import { allBrands, allTypes } from '@/constants/productData';
+import { ratingCriterias } from '@/constants/ratingData';
 
-const CreateReviews = () => {
+const CreateReview = () => {
 
   useLoginGuard();
   // const router = useRouter();
@@ -27,57 +29,14 @@ const CreateReviews = () => {
   const auth = getAuth();
   const user = auth.currentUser;
 
-  // チェックボックスの状態を管理する状態変数
-  const [checkedFilters, setCheckedFilters] = useState<{
-    brands: { [key: string]: boolean };
-    types: { [key: string]: boolean };
-  }>({
-    brands: {
-      dior: false,
-      shiseido: false,
-      nars: false,
-      albion: false,
-    },
-    types: {
-      liquid: false,
-      powder: false,
-      cream: false,
-      cushion: false,
-    },
-  });
+  //商品を選ぶ際のフィルターの状態を保存する状態変数
+  const [checkedFilters, setCheckedFilters] = useState({
+    brands: {},
+    types: {},
+  })
 
-  const ratingOptions = {
-    luminosity: [
-      { label: "マット", value: "1" },
-      { label: "セミマット", value: "2" },
-      { label: "どちらでもない", value: "3" },
-      { label: "セミツヤ", value: "4" },
-      { label: "ツヤ", value: "5" }
-    ],
-    coverage: [
-      { label: "ナチュラル", value: "1" },
-      { label: "ややナチュラル", value: "2" },
-      { label: "普通", value: "3" },
-      { label: "カバー", value: "4" },
-      { label: "ハイカバー", value: "5" }
-    ],
-    longevity: [
-      { label: "崩れやすい", value: "1" },
-      { label: "やや崩れやすい", value: "2" },
-      { label: "普通", value: "3" },
-      { label: "崩れにくい", value: "4" },
-      { label: "非常に崩れにくい", value: "5" }
-    ],
-    moisturizing: [
-      { label:"低い", value: "1" },
-      { label:"やや低い", value: "2" },
-      { label:"普通", value: "3" },
-      { label:"やや高い", value: "4" },
-      { label:"高い", value: "5" }
-    ]
-  }
-
-  const initialReviewState: Review = {
+  // 入力するレビューに関する情報を保存する状態変数
+  const [userReview, setUserReview] = useState<Review>({
     reviewId: "",
     productId: "",
     userId: "",
@@ -87,14 +46,29 @@ const CreateReviews = () => {
     moisturizing: "",
     comments: "",
     sendAt: "",
-  };
+  });
 
   //比較するために選んだ商品を保存する状態変数
   const [selectedProducts, setSelectedProducts] = useState<
   Product[]>([]);
 
-  // レビューに関する情報を保存する状態変数
-  const [reviews, setReviews] = useState<Review>(initialReviewState);
+  useEffect(() => {
+      //ブランドの初期化
+      const initialBrandCheckedFilter = Object.keys(allBrands).reduce((acc: { [key: string]: boolean }, brand: string) => {
+        acc[brand] = false;
+        return acc;
+      }, {} as { [key: string]: boolean });
+      //タイプの初期化
+      const initialTypeCheckedFilter = Object.keys(allTypes).reduce((acc: { [key: string]: boolean }, type: string) => {
+        acc[type] = false;
+        return acc;
+      }, {} as { [key: string]: boolean });
+
+      setCheckedFilters({
+        brands: initialBrandCheckedFilter,
+        types: initialTypeCheckedFilter
+      })
+  }, [])
 
   const handlePostReviews = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -110,7 +84,7 @@ const CreateReviews = () => {
     }
 
     await addDoc(collection(db, "reviews"), {
-      ...reviews,
+      ...userReview,
       reviewId: uuidv4(),
       productId: selectedProducts[0].id,
       userId: user?.uid,
@@ -142,81 +116,34 @@ const CreateReviews = () => {
 
           <form onSubmit={(e) => handlePostReviews(e)}>
 
-            <div>
-              <label>ツヤ感：</label>
-                {ratingOptions.luminosity.map(option => (
+            {/* 選択肢式の回答欄 */}
+            {Object.entries(ratingCriterias).map(([key, value]) => (
+              <div key={key}>
+                <label>{value.label}：</label>
+                {value.options.map(option => (
                   <div key={option.value}>
                     <input
                       type="radio"
-                      id={`luminosity_${option.value}`}
-                      name="luminosity"
+                      id={`${key}_${option.value}`}
+                      name={key}
                       value={option.value}
-                      onChange={(e) => setReviews({ ...reviews, luminosity: e.target.value })}
+                      onChange={(e) => setUserReview({ ...userReview, [key]: e.target.value })}
                       required
                     />
-                    <label htmlFor={`luminosity_${option.value}`}>{option.label}</label>
-                </div>
-              ))}
-            </div>
+                    <label htmlFor={`${key}_${option.value}`}>{option.label}</label>
+                  </div>
+                ))}
+              </div>
+            ))}
 
-            <div>
-              <label>カバー感：</label>
-                {ratingOptions.coverage.map(option => (
-                  <div key={option.value}>
-                    <input
-                      type="radio"
-                      id={`coverage_${option.value}`}
-                      name="coverage"
-                      value={option.value}
-                      onChange={(e) => setReviews({ ...reviews, coverage: e.target.value })}
-                      required
-                    />
-                    <label htmlFor={`coverage_${option.value}`}>{option.label}</label>
-                </div>
-              ))}
-            </div>
-
-            <div>
-              <label>崩れにくさ：</label>
-                {ratingOptions.longevity.map(option => (
-                  <div key={option.value}>
-                    <input
-                      type="radio"
-                      id={`longevity_${option.value}`}
-                      name="longevity"
-                      value={option.value}
-                      onChange={(e) => setReviews({ ...reviews, longevity: e.target.value })}
-                      required
-                    />
-                    <label htmlFor={`longevity_${option.value}`}>{option.label}</label>
-                </div>
-              ))}
-            </div>
-
-            <div>
-              <label>保湿力：</label>
-                {ratingOptions.moisturizing.map(option => (
-                  <div key={option.value}>
-                    <input
-                      type="radio"
-                      id={`moisturizing_${option.value}`}
-                      name="moisturizing"
-                      value={option.value}
-                      onChange={(e) => setReviews({ ...reviews, moisturizing: e.target.value })}
-                      required
-                    />
-                    <label htmlFor={`moisturizing_${option.value}`}>{option.label}</label>
-                </div>
-              ))}
-            </div>
-
+            {/* コメント解答欄 */}
             <div>
               <label htmlFor="comments">コメント</label>
               <textarea
                 id="comments"
                 name="comments"
-                value={reviews.comments}
-                onChange={(e) => setReviews({ ...reviews, comments: e.target.value })}
+                value={userReview.comments}
+                onChange={(e) => setUserReview({ ...userReview, comments: e.target.value })}
                 required
               />
             </div>
@@ -230,4 +157,4 @@ const CreateReviews = () => {
   )
 }
 
-export default CreateReviews
+export default CreateReview
