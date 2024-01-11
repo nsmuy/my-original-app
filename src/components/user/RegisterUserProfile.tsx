@@ -28,7 +28,6 @@ const RegisterUserProfile = ({ setIsFirstVisit }: RegisterUserProfileProps) => {
     e.preventDefault();
     if (user) {
 
-      console.log(uploadIcon)
       let iconUrl: string = '';
 
       if(uploadIcon !== undefined && uploadIcon !== null) {
@@ -79,7 +78,7 @@ const RegisterUserProfile = ({ setIsFirstVisit }: RegisterUserProfileProps) => {
               id='icon'
               accept='image/*' //画像ファイルだけ受け付ける
               // value={inputUserProfile.icon}
-              onChange={(e) => {setUploadIcon(e.target.files?.[0]);}}
+              onChange={(e) => setUploadIcon(e.target.files?.[0])}
             />
           </div>
 

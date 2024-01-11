@@ -7,6 +7,7 @@ import { app, db } from '../../firebase';
 import { getAuth } from "firebase/auth";
 import { doc, collection, onSnapshot, query, where, updateDoc } from 'firebase/firestore';
 import { useRouter } from "next/navigation";
+import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 
 const EditProfile = () => {
   useLoginGuard();
@@ -22,6 +23,7 @@ const EditProfile = () => {
     skinType: '',
     icon: '',
   });
+  const [uploadIcon, setUploadIcon] = useState<File>();
 
   // Firebaseからログインしているユーザープロフィールを取得
   useEffect(() => {
@@ -53,10 +55,24 @@ const EditProfile = () => {
     e.preventDefault();
 
     if (userProfile) {
+
+      // アイコンが変更されている場合、一度Firebase Strageにアップロードし公開URLを取得
+      let newIconUrl: string = '';
+      if(uploadIcon !== undefined && uploadIcon !== null) {
+        // 公開URLを取得するために、一度Firebase Strageにアップロードする
+        const storage = getStorage();
+        const iconRef = ref(storage, `userIcons/userIcon_${userProfile.id}`);
+        await uploadBytes(iconRef, uploadIcon);
+        newIconUrl = await getDownloadURL(iconRef);
+      } else {
+        newIconUrl = userProfile.icon;
+      }
+
       const userProfileRef = doc(db, "userProfiles", userProfile.id);
-     try {
+      try {
         await updateDoc(userProfileRef, {
           ...editedProfile,
+          icon: newIconUrl,
         });
         console.log("プロフィールが更新されました");
       } catch (error) {
@@ -80,6 +96,17 @@ const EditProfile = () => {
             value={editedProfile?.nickname || ''}
             onChange={(e) => setEditedProfile({ ...editedProfile, nickname: e.target.value })}
           />
+        </div>
+
+        <div>
+          <label htmlFor="icon">
+            <input
+              type="file"
+              id="icon"
+              accept='image/*' // 画像ファイルのみ
+              onChange={(e) => setUploadIcon(e.target.files?.[0])}
+            />
+          </label>
         </div>
 
         <div>
