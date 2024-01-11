@@ -99,10 +99,14 @@ const Reviews = () => {
       <ul>
         {completeReviews.map(review => (
           <li key={review.reviewId} className='border border-gray-700 mt-4'>
-            <div>
-              <p>{review.reviewerInfo.nickname}</p>
-              <span>{review.reviewerInfo.age}</span>
-              <span>{review.reviewerInfo.skinType}</span>
+            <div className='flex items-center gap-4'>
+              <div className='w-[60px] h-[60px rounded-full overflow-hidden'>
+                <img src={review.reviewerInfo.icon} alt={review.reviewerInfo.nickname} />
+              </div>
+              <div>
+                <p>{review.reviewerInfo.nickname}</p>
+                <span>{review.reviewerInfo.age}・{review.reviewerInfo.skinType}</span>
+              </div>
             </div>
             <div>
               {/* 商品情報 */}

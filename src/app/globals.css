@@ -48,3 +48,8 @@ body {
 .comparisonTable tbody > tr > td {
   width: 200px;
 }
+
+img {
+  width: 100%;
+  height: auto;
+}
