@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAuthContext } from '../../auth/AuthContext'
 import { useRouter } from 'next/navigation';
 import useLoginGuard from '@/auth/useLoginGuard';
@@ -8,6 +8,7 @@ import { Product } from '@/types/Product';
 import ProductFiltersSelector from '@/components/ProductFilterSelector';
 import FilteredProductsList from '@/components/FilteredProductsList';
 import SelectedProductsList from '@/components/SelectedProductsList';
+import { allBrands, allTypes } from '@/constants/productData';
 
 const Comparison = () => {
 
@@ -19,24 +20,28 @@ const Comparison = () => {
     return <div>ローディング中...</div>;
   }
 
-  // チェックボックスの状態を管理する状態変数
-  const [checkedFilters, setCheckedFilters] = useState<{
-    brands: { [key: string]: boolean };
-    types: { [key: string]: boolean };
-  }>({
-    brands: {
-      dior: false,
-      shiseido: false,
-      nars: false,
-      albion: false,
-    },
-    types: {
-      liquid: false,
-      powder: false,
-      cream: false,
-      cushion: false,
-    },
-  });
+  const [checkedFilters, setCheckedFilters] = useState({
+    brands: {},
+    types: {},
+  })
+
+  useEffect(() => {
+      //ブランドの初期化
+      const initialBrandCheckedFilter = Object.keys(allBrands).reduce((acc: { [key: string]: boolean }, brand: string) => {
+        acc[brand] = false;
+        return acc;
+      }, {} as { [key: string]: boolean });
+      //タイプの初期化
+      const initialTypeCheckedFilter = Object.keys(allTypes).reduce((acc: { [key: string]: boolean }, type: string) => {
+        acc[type] = false;
+        return acc;
+      }, {} as { [key: string]: boolean });
+
+      setCheckedFilters({
+        brands: initialBrandCheckedFilter,
+        types: initialTypeCheckedFilter
+      })
+  }, [])
 
   //比較するために選んだ商品を保存する状態変数
   const [selectedProducts, setSelectedProducts] = useState<
