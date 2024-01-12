@@ -13,7 +13,7 @@ export type Review = {
   sendAt: string,
 }
 
-export type CompleteReview = {
+export type ReviewWithProductAndUser = {
   reviewId: string,
   luminosity: number, //ツヤ感
   coverage: number, //カバー力

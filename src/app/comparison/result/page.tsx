@@ -2,35 +2,17 @@
 
 import React, { useEffect, useState } from 'react'
 import { ProductWithReviewsAndAverageRatings, Product } from '@/types/Product';
-import { average, collection, getDocs, query, where } from 'firebase/firestore';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '@/app/firebase';
 import { Review } from '@/types/Reviews';
+import { useRouter } from 'next/navigation';
 
 const ComparisonResult = () => {
 
+  const router = useRouter();
   const comparisonProducts = JSON.parse(localStorage.getItem('comparisonProducts')!) as Product[];
 
-  const [comparisonProductWithReviewsAndAverageRatings, setComparisonProductWithReviewsAndAverageRatings] = useState<ProductWithReviewsAndAverageRatings[]>([
-    {
-      id: '',
-      brand: '',
-      name: '',
-      price: 0,
-      type: 'other',
-      spf: '',
-      capacity: '',
-      feature: '',
-      color: 0,
-      image: '',
-      reviews: [],
-      averageRatings: {
-        luminosity: 0,
-        coverage: 0,
-        longevity: 0,
-        moisturizing: 0,
-      },
-    },
-  ]);
+  const [comparisonProductWithReviewsAndAverageRatings, setComparisonProductWithReviewsAndAverageRatings] = useState<ProductWithReviewsAndAverageRatings[] | null>(null);
 
   //評価の平均値を求めて、comparisonProductWithReviewsを更新する
   const calcAverageRatings = (productReviews: Review[]) => {
@@ -118,10 +100,12 @@ const ComparisonResult = () => {
               <th>カバー力</th>
               <th>崩れにくさ</th>
               <th>保湿力</th>
+              <th>口コミを見る</th>
             </tr>
           </thead>
           <tbody>
-            {comparisonProductWithReviewsAndAverageRatings.map(product => {
+            {comparisonProductWithReviewsAndAverageRatings &&
+            comparisonProductWithReviewsAndAverageRatings.map(product => {
               return (
                 <tr key={product.id}>
                   <td><img src={product.image} alt={product.name} /></td>
@@ -136,6 +120,9 @@ const ComparisonResult = () => {
                   <td>{product.averageRatings.coverage}</td>
                   <td>{product.averageRatings.longevity}</td>
                   <td>{product.averageRatings.moisturizing}</td>
+                  <td>
+                    <button onClick={() => router.push(`/reviews/${product.id}`)}>口コミページに行く</button>
+                  </td>
                 </tr>
               )
             })}

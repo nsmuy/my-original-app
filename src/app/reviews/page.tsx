@@ -1,157 +1,41 @@
 'use client';
 
 import React, { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation';
-import { collection, getDocs, orderBy, query } from "firebase/firestore";
+import { collection, getDocs, query } from "firebase/firestore";
 import { db } from '../firebase';
-import { Review, CompleteReview } from '@/types/Reviews';
 import { Product } from '@/types/Product';
-import { UserProfile } from 'firebase/auth';
+import ReviewsList from '@/components/review/ReviewsList';
 
-const Reviews = () => {
+const AllReviews = () => {
 
-  const router = useRouter();
-  const [completeReviews, setCompleteReviews] = useState<CompleteReview[]>(
-    [
-      {
-        reviewId: "",
-        luminosity: 0,
-        coverage: 0,
-        longevity: 0,
-        moisturizing: 0,
-        comments: "",
-        sendAt: "",
-        reviewedProductInfo: {
-          id: "",
-          brand: "",
-          name: "",
-          price: 0,
-          type: "other",
-          spf: "",
-          capacity: "",
-          feature: "",
-          color: 0,
-          image: "",
-        },
-        reviewerInfo: {
-          id: "",
-          nickname: "",
-          age: "",
-          gender: "",
-          skinType: "",
-          icon: "",
-        }
-      },
-    ]
-  )
+  const [productsForReviews, setProductsForReviews] = useState<Product[] | null>(null);
 
   useEffect(() => {
-    const fetchData = async () => {
-      // 商品情報の取得
+
+    // 全商品の情報を取得する
+    const fetchAllProducts = async () => {
       const productsSnapshot = await getDocs(query(collection(db, "products")));
+
       const products = productsSnapshot.docs.map(doc => {
         return {
+          ...doc.data() as Product,
           id: doc.id,
-          ...doc.data()
         }
-      }) as Product[];
+      })
 
-      // ユーザー情報の取得
-      const usersSnapshot = await getDocs(query(collection(db, "userProfiles")));
-      const users = usersSnapshot.docs.map(doc => doc.data()) as UserProfile[];
+      setProductsForReviews(products);
+    }
 
-      // レビュー情報の取得
-      const reviewsSnapshot = await getDocs(query(collection(db, "reviews"), orderBy("sendAt", "desc")));
-      const reviews = reviewsSnapshot.docs.map(doc => doc.data()) as Review[];
-
-      // CompleteReviewの作成
-      const newCompleteReviews = reviews.map(review => {
-        const productInfo = products.find(product => product.id === review.productId);
-        const userInfo = users.find(user => user.id === review.userId);
-
-        console.log(productInfo)
-        console.log(userInfo)
-
-        if(productInfo && userInfo) {
-          return {
-            reviewId: review.reviewId,
-            luminosity: review.luminosity,
-            coverage: review.coverage,
-            longevity: review.longevity,
-            moisturizing: review.moisturizing,
-            comments: review.comments,
-            sendAt: review.sendAt,
-            reviewedProductInfo: productInfo,
-            reviewerInfo: userInfo,
-          };
-        }
-        return undefined;
-      }).filter(review => review !== undefined) as CompleteReview[];
-
-      console.log(newCompleteReviews);
-      setCompleteReviews(newCompleteReviews);
-    };
-
-    fetchData();
-  }, [router]);
+    fetchAllProducts();
+  }, []);
 
   return (
     <div>
       <h2>口コミ一覧（新着順）</h2>
-      <ul>
-        {completeReviews.map(review => (
-          <li key={review.reviewId} className='border border-gray-700 mt-4'>
-            <div className='flex items-center gap-4'>
-              <div className='w-[60px] h-[60px rounded-full overflow-hidden'>
-                <img src={review.reviewerInfo.icon} alt={review.reviewerInfo.nickname} />
-              </div>
-              <div>
-                <p>{review.reviewerInfo.nickname}</p>
-                <span>{review.reviewerInfo.age}・{review.reviewerInfo.skinType}</span>
-              </div>
-            </div>
-            <div>
-              {/* 商品情報 */}
-              <div className='flex'>
-                <img
-                  src={review.reviewedProductInfo.image}
-                  alt={review.reviewedProductInfo.name}
-                  className='w-[100px]'
-                />
-                <div>
-                  <p>{review.reviewedProductInfo.brand}</p>
-                  <p>{review.reviewedProductInfo.name}</p>
-                </div>
-              </div>
-              
-              {/* レビュー情報 */}
-              <div>
-                <div>
-                  <span>ツヤ感：</span>
-                  <span>{review.luminosity}</span>
-                </div>
-                <div>
-                  <span>カバー力：</span>
-                  <span>{review.coverage}</span>
-                </div>
-                <div>
-                  <span>崩れにくさ：</span>
-                  <span>{review.longevity}</span>
-                </div>
-                <div>
-                  <span>保湿力：</span>
-                  <span>{review.moisturizing}</span>
-                </div>
-                <div>
-                  <p>{review.comments}</p>
-                </div>
-              </div>
-            </div>
-          </li>
-        ))}
-      </ul>
+      {productsForReviews && <ReviewsList productsToShow={productsForReviews}/>}
+      
     </div>
   )
 }
 
-export default Reviews
+export default AllReviews
