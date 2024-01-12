@@ -10,7 +10,6 @@ import { useAuthContext } from '@/auth/AuthContext';
 
 const ProductReviews = () => {
 
-  const router = useRouter();
   const params = useParams();
 
   const { loading } = useAuthContext();
