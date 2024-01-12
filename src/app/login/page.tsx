@@ -43,10 +43,10 @@ const Login = () => {
         />
 
         <button type="submit">ログインする</button>
-        <button onClick={() => router.push("/signup")} >登録がまだの方はこちら</button>
-        <button onClick={() => router.push("/")} >トップページに戻る</button>
       </form>
-      
+    
+      <button onClick={() => router.push("/signup")} >新規会員登録</button>
+      <button onClick={() => router.push("/")} >トップページに戻る</button>
       
     </div>
   )
