@@ -1,7 +1,7 @@
 export const allBrands = {
   addiction: 'ADDICTION',
   albion: 'ALBION',
-  bobbibrown: 'BOBBY BROWN',
+  bobbibrown: 'BOBBI BROWN',
   clarins: 'CLARINS',
   cledepeaubeaute: 'Cle de Peau Beaute',
   chanel: 'CHANEL',

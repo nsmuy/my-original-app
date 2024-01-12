@@ -11,37 +11,39 @@ import { UserProfile } from 'firebase/auth';
 const Reviews = () => {
 
   const router = useRouter();
-  const initialCompleteReviews: CompleteReview[] = [{
-    reviewId: "",
-    luminosity: "",
-    coverage: "",
-    longevity: "",
-    moisturizing: "",
-    comments: "",
-    sendAt: "",
-    reviewedProductInfo: {
-      id: "",
-      brand: "",
-      name: "",
-      price: 0,
-      type: "other",
-      spf: "",
-      capacity: "",
-      feature: "",
-      color: 0,
-      image: "",
-    },
-    reviewerInfo: {
-      id: "",
-      nickname: "",
-      age: "",
-      gender: "",
-      skinType: "",
-      icon: "",
-    }
-  }];
-
-  const [completeReviews, setCompleteReviews] = useState<CompleteReview[]>(initialCompleteReviews);
+  const [completeReviews, setCompleteReviews] = useState<CompleteReview[]>(
+    [
+      {
+        reviewId: "",
+        luminosity: 0,
+        coverage: 0,
+        longevity: 0,
+        moisturizing: 0,
+        comments: "",
+        sendAt: "",
+        reviewedProductInfo: {
+          id: "",
+          brand: "",
+          name: "",
+          price: 0,
+          type: "other",
+          spf: "",
+          capacity: "",
+          feature: "",
+          color: 0,
+          image: "",
+        },
+        reviewerInfo: {
+          id: "",
+          nickname: "",
+          age: "",
+          gender: "",
+          skinType: "",
+          icon: "",
+        }
+      },
+    ]
+  )
 
   useEffect(() => {
     const fetchData = async () => {

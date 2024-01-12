@@ -50,8 +50,8 @@ const ProductFilterSelector = ({ checkedFilters, setCheckedFilters} : {
               onChange={(e) => {
                 setCheckedFilters({
                   ...checkedFilters,
-                  brands: {
-                    ...checkedFilters.brands,
+                  types: {
+                    ...checkedFilters.types,
                     [key]: e.target.checked,
                   },
                 });

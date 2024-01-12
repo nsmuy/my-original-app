@@ -54,7 +54,7 @@ const FilteredProductsList = ({
 
     // 商品をフィルタリング
     const newFilteredProducts = allProducts.filter(product => {
-      const brandMatch = selectedBrandKeys.length === 0 || selectedBrandKeys.includes(product.brand.toLowerCase());
+      const brandMatch = selectedBrandKeys.length === 0 || selectedBrandKeys.includes(product.brand.toLowerCase().replace(/[^a-z0-9]/g, ''));
       const typeMatch = selectedTypeKeys.length === 0 || selectedTypeKeys.includes(product.type.toLowerCase());
 
       return brandMatch && typeMatch;

@@ -59,6 +59,10 @@ const Comparison = () => {
     router.push('/comparison/result');
   }
 
+  useEffect(() => {
+    console.log(checkedFilters)
+  }, [checkedFilters]);
+
   return (
     <div>
       <h2>比較したいファンデーションを選んでね</h2>

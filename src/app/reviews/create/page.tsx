@@ -19,7 +19,7 @@ import { ratingCriterias } from '@/constants/ratingData';
 const CreateReview = () => {
 
   useLoginGuard();
-  // const router = useRouter();
+  const router = useRouter();
   const { loading } = useAuthContext();
 
   if (loading) {
@@ -40,10 +40,10 @@ const CreateReview = () => {
     reviewId: "",
     productId: "",
     userId: "",
-    luminosity: "",
-    coverage: "",
-    longevity: "",
-    moisturizing: "",
+    luminosity: 0,
+    coverage: 0,
+    longevity: 0,
+    moisturizing: 0,
     comments: "",
     sendAt: "",
   });
@@ -77,7 +77,6 @@ const CreateReview = () => {
     const reviewsRef = collection(db, "reviews");
     const q = query(reviewsRef, where("userId", "==", user?.uid), where("productId", "==", selectedProducts[0].id));
     const querySnapshot = await getDocs(q);
-
     if(!querySnapshot.empty) {
       alert("口コミは一度しか書けません。");
       return;
@@ -90,6 +89,8 @@ const CreateReview = () => {
       userId: user?.uid,
       sendAt: new Date().toISOString(),
     });
+
+    router.push("/reviews/");
   }
 
   return (
@@ -127,7 +128,7 @@ const CreateReview = () => {
                       id={`${key}_${option.value}`}
                       name={key}
                       value={option.value}
-                      onChange={(e) => setUserReview({ ...userReview, [key]: e.target.value })}
+                      onChange={(e) => setUserReview({ ...userReview, [key]: Number(e.target.value) })}
                       required
                     />
                     <label htmlFor={`${key}_${option.value}`}>{option.label}</label>
