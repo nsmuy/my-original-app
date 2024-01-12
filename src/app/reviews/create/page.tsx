@@ -5,7 +5,6 @@ import { useAuthContext } from '../../../auth/AuthContext'
 import { useRouter } from 'next/navigation';
 import useLoginGuard from '@/auth/useLoginGuard';
 import { Product } from '@/types/Product';
-import { UserProfile } from '@/types/UserProfile';
 import ProductFiltersSelector from '@/components/ProductFilterSelector';
 import FilteredProductsList from '@/components/FilteredProductsList';
 import { Review } from '@/types/Reviews';
@@ -36,17 +35,7 @@ const CreateReview = () => {
   })
 
   // 入力するレビューに関する情報を保存する状態変数
-  const [userReview, setUserReview] = useState<Review>({
-    reviewId: "",
-    productId: "",
-    userId: "",
-    luminosity: 0,
-    coverage: 0,
-    longevity: 0,
-    moisturizing: 0,
-    comments: "",
-    sendAt: "",
-  });
+  const [userReview, setUserReview] = useState<Review | null>(null);
 
   //比較するために選んだ商品を保存する状態変数
   const [selectedProducts, setSelectedProducts] = useState<
