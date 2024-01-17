@@ -11,7 +11,6 @@ import { useAuthContext } from '@/auth/AuthContext';
 const ProductReviews = () => {
 
   const params = useParams();
-
   const { loading } = useAuthContext();
 
   if (loading) {
@@ -30,17 +29,20 @@ const ProductReviews = () => {
       }  as Product;
 
       setProductForReviews([products]);
+      console.log(products)
     }
     fetchData();
 
   }, [params.id]);
 
   return (
-    <div>
-      <h2>特定の商品のレビューだけを表示</h2>
+    <div className='mt-8'>
+      <div className='inner'>
+        {productForReviews && <h2 className='font-bold border-b border-amber-200'>{productForReviews[0].name}の口コミ一覧</h2>}
 
-      {productForReviews && <ReviewsList productsToShow={productForReviews}/>}
-      
+        {productForReviews && <ReviewsList productsToShow={productForReviews}/>}
+
+      </div>
     </div>
   )
 }

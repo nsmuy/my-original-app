@@ -30,10 +30,11 @@ const AllReviews = () => {
   }, []);
 
   return (
-    <div>
-      <h2>口コミ一覧（新着順）</h2>
-      {productsForReviews && <ReviewsList productsToShow={productsForReviews}/>}
-      
+    <div className='mt-8'>
+      <div className='inner'>
+        <h2 className='font-bold border-b border-amber-200'>口コミ一覧（新着順）</h2>
+        {productsForReviews && <ReviewsList productsToShow={productsForReviews}/>}
+      </div>
     </div>
   )
 }

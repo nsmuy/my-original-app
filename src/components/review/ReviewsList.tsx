@@ -6,6 +6,7 @@ import { Product } from '@/types/Product';
 import { UserProfile } from '@/types/UserProfile';
 import { db } from '@/app/firebase';
 import { getDocs, collection, query, orderBy, where } from 'firebase/firestore';
+import { useRouter, usePathname } from 'next/navigation';
 
 type ReviewsListProps = {
   productsToShow: Product[]
@@ -13,52 +14,17 @@ type ReviewsListProps = {
 
 const ReviewsList = ({ productsToShow }: ReviewsListProps ) => {
 
+  const pathname = usePathname();
   const [detailedReviews, setDetailedReviews] = useState<ReviewWithProductAndUser[] | null>(null);
-    // [
-    //   {
-    //     reviewId: "",
-    //     luminosity: 0,
-    //     coverage: 0,
-    //     longevity: 0,
-    //     moisturizing: 0,
-    //     comments: "",
-    //     sendAt: "",
-    //     reviewedProductInfo: {
-    //       id: "",
-    //       brand: "",
-    //       name: "",
-    //       price: 0,
-    //       type: "other",
-    //       spf: "",
-    //       capacity: "",
-    //       feature: "",
-    //       color: 0,
-    //       image: "",
-    //     },
-    //     reviewerInfo: {
-    //       id: "",
-    //       nickname: "",
-    //       age: "",
-    //       gender: "",
-    //       skinType: "",
-    //       icon: "",
-    //     }
-    //   },
-    // ]
-  // )
 
   useEffect(() => {
-    console.log("productsToShow")
-    console.log(productsToShow)
-
-    //レビュー情報取得
+    //全てのレビュー情報取得
     const fetchReviews = async () => {
       const reviewsSnapshot = await getDocs(query(collection(db, "reviews"), orderBy("sendAt", "desc")));
       return reviewsSnapshot.docs.map(doc => doc.data()) as Review[];
     }
 
     //レビューしたユーザー情報だけを取得
-    
     const fetchUsers = async (reviews: Review[]) => {
       const userIds = reviews.map(review => review.userId);
       const usersSnapshot = await getDocs(query(collection(db, "userProfiles"), where("id", "in", userIds)));
@@ -93,6 +59,7 @@ const ReviewsList = ({ productsToShow }: ReviewsListProps ) => {
         return undefined;
       }).filter(review => review !== undefined) as ReviewWithProductAndUser[];
 
+      console.log('newDetailedReviews')
       console.log(newDetailedReviews)
       setDetailedReviews(newDetailedReviews);
     }
@@ -100,62 +67,71 @@ const ReviewsList = ({ productsToShow }: ReviewsListProps ) => {
     getDetailedReviews();
   }, [productsToShow])
 
-
-
-
   return (
-    <div>
-      <ul>
-        {detailedReviews && detailedReviews.map(review => (
-          <li key={review.reviewId} className='border border-gray-700 mt-4'>
-            <div className='flex items-center gap-4'>
-              <div className='w-[60px] h-[60px rounded-full overflow-hidden'>
-                <img src={review.reviewerInfo.icon} alt={review.reviewerInfo.nickname} />
-              </div>
-              <div>
-                <p>{review.reviewerInfo.nickname}</p>
-                <span>{review.reviewerInfo.age}・{review.reviewerInfo.skinType}</span>
-              </div>
-            </div>
-            <div>
-              {/* 商品情報 */}
-              <div className='flex'>
-                <img
-                  src={review.reviewedProductInfo.image}
-                  alt={review.reviewedProductInfo.name}
-                  className='w-[100px]'
-                />
-                <div>
-                  <p>{review.reviewedProductInfo.brand}</p>
-                  <p>{review.reviewedProductInfo.name}</p>
+    <div className='mt-6'>
+      <ul className='flex flex-col gap-4'>
+        {detailedReviews !== null && 
+          detailedReviews.length !== 0 ? detailedReviews.map(review => (
+            <li
+              key={review.reviewId}
+              className='bg-white rounded-md p-4 shadow-sm'
+            >
+              <div className='flex items-center gap-4 pb-4 border-b'>
+                <div className='w-[60px] h-[60px rounded-full overflow-hidden'>
+                  <img src={review.reviewerInfo.icon} alt={review.reviewerInfo.nickname} />
+                </div>
+                <div className='text-sm'>
+                  <p>{review.reviewerInfo.nickname}</p>
+                  <span>{review.reviewerInfo.age}・{review.reviewerInfo.skinType}</span>
                 </div>
               </div>
-              
-              {/* レビュー情報 */}
-              <div>
-                <div>
-                  <span>ツヤ感：</span>
-                  <span>{review.luminosity}</span>
-                </div>
-                <div>
-                  <span>カバー力：</span>
-                  <span>{review.coverage}</span>
-                </div>
-                <div>
-                  <span>崩れにくさ：</span>
-                  <span>{review.longevity}</span>
-                </div>
-                <div>
-                  <span>保湿力：</span>
-                  <span>{review.moisturizing}</span>
-                </div>
-                <div>
-                  <p>{review.comments}</p>
+  
+              <div className='mt-4'>
+                {pathname === '/reviews' && (
+                  // 商品情報
+                  <div className='flex items-center gap-4'>
+                    <img
+                      src={review.reviewedProductInfo.image}
+                      alt={review.reviewedProductInfo.name}
+                      className='w-[100px]'
+                    />
+                    <div className='text-sm'>
+                      <p>{review.reviewedProductInfo.brand}</p>
+                      <p>{review.reviewedProductInfo.name}</p>
+                    </div>
+                  </div>
+                )}
+  
+                {/* レビュー情報 */}
+                <div className='mt-4 text-sm'>
+                  <div>
+                    <span>ツヤ感：</span>
+                    <span>{review.luminosity}</span>
+                  </div>
+                  <div>
+                    <span>カバー力：</span>
+                    <span>{review.coverage}</span>
+                  </div>
+                  <div>
+                    <span>崩れにくさ：</span>
+                    <span>{review.longevity}</span>
+                  </div>
+                  <div>
+                    <span>保湿力：</span>
+                    <span>{review.moisturizing}</span>
+                  </div>
+                  <div className='mt-2'>
+                    <p>{review.comments}</p>
+                  </div>
                 </div>
               </div>
-            </div>
-          </li>
-        ))}
+            </li>
+          )) : (
+            <p>
+              口コミはまだありません。
+            </p>
+          )
+        }
       </ul>
     </div>
   )
