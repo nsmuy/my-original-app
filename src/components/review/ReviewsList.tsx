@@ -18,6 +18,7 @@ const ReviewsList = ({ productsToShow }: ReviewsListProps ) => {
   const [detailedReviews, setDetailedReviews] = useState<ReviewWithProductAndUser[] | null>(null);
 
   useEffect(() => {
+    
     //全てのレビュー情報取得
     const fetchReviews = async () => {
       const reviewsSnapshot = await getDocs(query(collection(db, "reviews"), orderBy("sendAt", "desc")));

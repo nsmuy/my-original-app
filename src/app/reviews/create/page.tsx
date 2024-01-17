@@ -35,7 +35,17 @@ const CreateReview = () => {
   })
 
   // 入力するレビューに関する情報を保存する状態変数
-  const [userReview, setUserReview] = useState<Review | null>(null);
+  const [userReview, setUserReview] = useState<Review>({
+    reviewId: '',
+    productId: '',
+    userId: '',
+    luminosity: 0,
+    coverage: 0,
+    longevity: 0,
+    moisturizing: 0,
+    comments: '',
+    sendAt: '',
+  });
 
   //比較するために選んだ商品を保存する状態変数
   const [selectedProducts, setSelectedProducts] = useState<
@@ -83,66 +93,76 @@ const CreateReview = () => {
   }
 
   return (
-    <div>
-      <h2>口コミしたい商品を選んでね！</h2>
-      
-      {/* 商品を絞り込み */}
-      <ProductFiltersSelector
-        checkedFilters={checkedFilters}
-        setCheckedFilters={setCheckedFilters}
-      />
+    <div className='mt-8'>
+      <div className='inner'>
+        <h2 className='font-bold border-b border-amber-200'>口コミしたい商品を選んでね！</h2>
+        
+        {/* 商品を絞り込み */}
+        <ProductFiltersSelector
+          checkedFilters={checkedFilters}
+          setCheckedFilters={setCheckedFilters}
+        />
 
-      {/* フィルタリングした商品を表示 */}
-      <FilteredProductsList
-        checkedFilters={checkedFilters}
-        selectedProducts={selectedProducts}
-        setSelectedProducts={setSelectedProducts}
-        singleSelectMode={true}
-      />
+        {/* フィルタリングした商品を表示 */}
+        <FilteredProductsList
+          checkedFilters={checkedFilters}
+          selectedProducts={selectedProducts}
+          setSelectedProducts={setSelectedProducts}
+          singleSelectMode={true}
+        />
 
-      {selectedProducts.length > 0 && (
-        <div>
-          <h3>口コミ入力欄</h3>
+        {selectedProducts.length > 0 && (
+          <div className='mt-8'>
+            <h3 className='font-bold border-b border-amber-200'>口コミを入力してください！</h3>
 
-          <form onSubmit={(e) => handlePostReviews(e)}>
+            <form onSubmit={(e) => handlePostReviews(e)}>
 
-            {/* 選択肢式の回答欄 */}
-            {Object.entries(ratingCriterias).map(([key, value]) => (
-              <div key={key}>
-                <label>{value.label}：</label>
-                {value.options.map(option => (
-                  <div key={option.value}>
-                    <input
-                      type="radio"
-                      id={`${key}_${option.value}`}
-                      name={key}
-                      value={option.value}
-                      onChange={(e) => setUserReview({ ...userReview, [key]: Number(e.target.value) })}
-                      required
-                    />
-                    <label htmlFor={`${key}_${option.value}`}>{option.label}</label>
+              {/* 選択肢式の回答欄 */}
+              {Object.entries(ratingCriterias).map(([key, value]) => (
+                <div key={key} className='mt-4'>
+                  <label className='font-bold'>■{value.label}</label>
+                  <div className='flex gap-3'>
+                    {value.options.map(option => (
+                      <div key={option.value}>
+                        <input
+                          type="radio"
+                          id={`${key}_${option.value}`}
+                          name={key}
+                          value={option.value}
+                          onChange={(e) => setUserReview({ ...userReview, [key]: Number(e.target.value) })}
+                          required
+                        />
+                        <label htmlFor={`${key}_${option.value}`}>{option.label}</label>
+                      </div>
+                    ))}
                   </div>
-                ))}
+                </div>
+              ))}
+
+              {/* コメント解答欄 */}
+              <div className='mt-4'>
+                <label htmlFor="comments" className='block font-bold'>■コメント</label>
+                <textarea
+                  id="comments"
+                  name="comments"
+                  className='mt-1 w-full aspect-[3/1] resize-none border border-amber-500 focus:outline-amber-500 rounded-md p-2'
+                  value={userReview.comments}
+                  onChange={(e) => setUserReview({ ...userReview, comments: e.target.value })}
+                  required
+                />
               </div>
-            ))}
 
-            {/* コメント解答欄 */}
-            <div>
-              <label htmlFor="comments">コメント</label>
-              <textarea
-                id="comments"
-                name="comments"
-                value={userReview.comments}
-                onChange={(e) => setUserReview({ ...userReview, comments: e.target.value })}
-                required
-              />
-            </div>
+              <button
+                type="submit"
+                className='bg-amber-500 text-white rounded-md w-[160px] h-[44px] font-bold letter-spacing-1 mt-8'
+              >
+                口コミを投稿する
+              </button>
+            </form>
+          </div>
+        )}
 
-            <button type="submit">口コミを投稿する</button>
-          </form>
-        </div>
-      )}
-
+      </div>
     </div>
   )
 }

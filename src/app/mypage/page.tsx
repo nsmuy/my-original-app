@@ -9,6 +9,7 @@ import RegisterUserProfile from '@/components/user/RegisterUserProfile';
 import useLoginGuard from '@/auth/useLoginGuard';
 import { collection, onSnapshot, query, where } from 'firebase/firestore';
 import CurrentUserProfileView from '@/components/user/CurrentUserProfileView';
+import UserReviewsList from '@/components/review/UserReviewsList';
 
 const MyPage = () => {
 
@@ -58,13 +59,17 @@ const MyPage = () => {
   }, [auth.currentUser])
 
   return (
-    <div className='flex flex-col items-center justify-center'>
+    <div className='flex flex-col justify-start mt-8'>
+      <div className='w-full inner'>
 
-      {/* 初回登録の場合はユーザープロフィールを登録 */}
-      {isFirstVisit && <RegisterUserProfile setIsFirstVisit={setIsFirstVisit} />} 
+        {/* 初回登録の場合はユーザープロフィールを登録 */}
+        {isFirstVisit && <RegisterUserProfile setIsFirstVisit={setIsFirstVisit} />} 
 
-      {/* ユーザープロフィールを表示 */}
-      {currentUserProfile && <CurrentUserProfileView currentUserProfile={currentUserProfile} /> }
+        {/* ユーザープロフィールを表示 */}
+        {currentUserProfile && <CurrentUserProfileView currentUserProfile={currentUserProfile} /> }
+
+        <UserReviewsList />
+      </div>
 
     </div>
   )
