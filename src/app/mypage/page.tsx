@@ -5,11 +5,11 @@ import { app, db } from '../firebase';
 import { UserProfile } from '@/types/UserProfile';
 import { getAuth } from "firebase/auth";
 import { useRouter } from "next/navigation";
-import RegisterUserProfile from '@/components/user/RegisterUserProfile';
+import RegisterUserProfile from '@/components/mypage/RegisterUserProfile';
 import useLoginGuard from '@/auth/useLoginGuard';
 import { collection, onSnapshot, query, where } from 'firebase/firestore';
-import CurrentUserProfileView from '@/components/user/CurrentUserProfileView';
-import UserReviewsList from '@/components/review/UserReviewsList';
+import CurrentUserProfileView from '@/components/mypage/CurrentUserProfileView';
+import UserReviewsList from '@/components/mypage/UserReviewsList';
 
 const MyPage = () => {
 

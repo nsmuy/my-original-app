@@ -7,10 +7,40 @@ import { db } from '@/app/firebase';
 import { Review } from '@/types/Reviews';
 import ComparisonResultTable from '@/components/comparison/ComparisonResultTable';
 import { calcAverageRatings } from '@/functions/calcAverageRatings';
+import { UserFilter } from '@/types/UserProfile';
 
 const ComparisonResult = () => {
 
   const comparisonProducts = JSON.parse(localStorage.getItem('comparisonProducts')!) as Product[];
+
+  const initialUserFilters = {
+    age: {
+      all: true,
+      teen: false,
+      twenties: false,
+      thirties: false,
+      forties: false,
+      fifties: false,
+      sixtiesAndAbove: false,
+    },
+    gender: {
+      all: true,
+      male: false,
+      female: false,
+      other: false,
+    },
+    skinType: {
+      all: true,
+      normal: false,
+      dry: false,
+      combination: false,
+      oily: false,
+      sensitive: false,
+      atopic: false,
+    },
+  }
+
+  const [filterUsers, setFilterUsers] = useState<UserFilter>(initialUserFilters);
 
   const [comparisonProductWithReviewsAndAverageRatings, setComparisonProductWithReviewsAndAverageRatings] = useState<ProductWithReviewsAndAverageRatings[] | null>(null);
 

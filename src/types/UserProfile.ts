@@ -6,3 +6,30 @@ export type UserProfile = {
   skinType: '' | '普通肌' | '乾燥肌' | '混合肌' | '脂性肌' | '敏感肌' | 'アトピー肌',
   icon: string,
 }
+
+export type UserFilter = {
+  age: {
+    all: boolean,
+    teen: boolean,
+    twenties: boolean,
+    thirties: boolean,
+    forties: boolean,
+    fifties: boolean,
+    sixtiesAndAbove: boolean,
+  },
+  gender: {
+    all: boolean,
+    male: boolean,
+    female: boolean,
+    other: boolean,
+  },
+  skinType: {
+    all: boolean,
+    normal: boolean,
+    dry: boolean,
+    combination: boolean,
+    oily: boolean,
+    sensitive: boolean,
+    atopic: boolean,
+  },
+}

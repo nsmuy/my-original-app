@@ -49,7 +49,7 @@ const UserReviewsList = () => {
     <div>
       <div className='flex justify-between border-b border-amber-500 mt-10 pb-2'>
         <h2 className='text-xl font-bold text-amber-500'>レビューした商品</h2>
-        <button onClick={() => router.push('/reviews/create')} className='text-amber-500 border border-amber-500 rounded-md px-4 py-1'>口コミを投稿する</button>
+        <button onClick={() => router.push('/reviews/create')} className='text-amber-500 border border-amber-500 rounded-md px-4 py-1 hover:bg-amber-500 hover:text-white'>口コミを投稿する</button>
       </div>
 
       <div className='mt-6 flex flex-col gap-4 text-sm'>
