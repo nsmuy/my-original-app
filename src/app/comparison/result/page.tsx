@@ -22,8 +22,6 @@ const ComparisonResult = () => {
       longevity: 0,
       moisturizing: 0,
     };
-    console.log(productReviews)
-    console.log(sumRatings)
 
     //商品ごとの評価の合計値を求める
     productReviews.forEach(review => {
@@ -31,14 +29,13 @@ const ComparisonResult = () => {
       sumRatings.coverage += review.coverage;
       sumRatings.longevity += review.longevity;
       sumRatings.moisturizing += review.moisturizing;
-      console.log(sumRatings)
     });
 
     const averageRatings = {
-      luminosity: sumRatings.luminosity / productReviews.length,
-      coverage: sumRatings.coverage / productReviews.length,
-      longevity: sumRatings.longevity / productReviews.length,
-      moisturizing: sumRatings.moisturizing / productReviews.length,
+      luminosity: Math.round((sumRatings.luminosity / productReviews.length) * 100) / 100,
+      coverage: Math.round((sumRatings.coverage / productReviews.length) * 100) / 100,
+      longevity: Math.round((sumRatings.longevity / productReviews.length) * 100) / 100,
+      moisturizing: Math.round((sumRatings.moisturizing / productReviews.length) * 100) / 100,
     }
 
     console.log(averageRatings);
