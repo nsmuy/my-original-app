@@ -6,7 +6,7 @@ import { Product } from '@/types/Product';
 import { UserProfile } from '@/types/UserProfile';
 import { db } from '@/app/firebase';
 import { getDocs, collection, query, orderBy, where } from 'firebase/firestore';
-import { useRouter, usePathname } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 
 type ReviewsListProps = {
   productsToShow: Product[]
