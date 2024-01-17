@@ -9,7 +9,6 @@ import RegisterUserProfile from '@/components/user/RegisterUserProfile';
 import useLoginGuard from '@/auth/useLoginGuard';
 import { collection, onSnapshot, query, where } from 'firebase/firestore';
 import CurrentUserProfileView from '@/components/user/CurrentUserProfileView';
-import LogoutButton from '@/auth/LogoutButton';
 
 const MyPage = () => {
 
@@ -67,9 +66,6 @@ const MyPage = () => {
 
       {/* ユーザープロフィールを表示 */}
       {currentUserProfile && <CurrentUserProfileView currentUserProfile={currentUserProfile} /> }
-
-      {/* ログアウトボタン */}
-      <LogoutButton />
 
     </div>
   )

@@ -6,6 +6,8 @@ import { db } from '@/app/firebase';
 import { setDoc, doc } from 'firebase/firestore';
 import { useAuthContext } from '@/auth/AuthContext';
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
+import defaultIcon from '@/assets/userIcon_default.png';
+import Image from 'next/image';
 
 type RegisterUserProfileProps = {
   setIsFirstVisit: React.Dispatch<React.SetStateAction<boolean>>;
@@ -53,37 +55,68 @@ const RegisterUserProfile = ({ setIsFirstVisit }: RegisterUserProfileProps) => {
     }
   };
 
+  // 画像を状態関数にセットし、プレビューを表示する関数
+  const updateAndPreviewFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUploadIcon(e.target.files![0]);
+
+    for (let i = 0; i < e.target.files!.length; i++) {
+      var fileReader = new FileReader();
+      fileReader.onload = (e => {
+        const previewElement = document.getElementById('preview');
+        if(previewElement) {
+          previewElement.innerHTML = '<img src="' + e.target!.result + '">';
+        }
+      });
+      fileReader.readAsDataURL(e.target.files![i]);
+    }
+  }
+
   return (
-    <div className='relative bg-zinc-100 rounded-lg shadow dark:bg-gray-700 p-6'>
-      <h3 className='font-bold text-center border-b-2 pb-4'>まずは、基本情報を入力してください！</h3>
+    <div className='relative bg-white rounded-lg shadow dark:bg-gray-700 p-6'>
+      <h3 className='text-amber-500 font-bold text-center border-b border-amber-200 pb-4'>こんにちは！<br />まずはプロフィールを入力してください</h3>
 
       <form onSubmit={handleUserProfile} className='mt-4'>
 
-        <div className='flex flex-col gap-4'>
+        <div className='flex flex-col gap-6'>
           <div className='flex flex-col'>
-            <label htmlFor="nickname" className='mb-2 font-bold'>ニックネーム</label>
+            <label
+              htmlFor="nickname"
+              className='mb-2 text-amber-500'
+            >
+              ニックネーム
+            </label>
             <input
               type="text"
               id='nickname'
               value={inputUserProfile.nickname}
               onChange={(e) => setInputUserProfile({ ...inputUserProfile, nickname: e.target.value })}
-              className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500'
+              className='bg-amber-50 rounded-md focus:outline-amber-500 px-2 py-1 w-80'
             />
           </div>
 
           <div>
-            <label htmlFor="icon">アイコン</label>
+            <label
+              htmlFor="icon"
+              className='text-amber-500'
+            >
+              アイコン
+            </label>
             <input
               type="file"
               id='icon'
               accept='image/*' //画像ファイルだけ受け付ける
-              // value={inputUserProfile.icon}
-              onChange={(e) => setUploadIcon(e.target.files?.[0])}
+              onChange={(e) => updateAndPreviewFile(e)}
             />
+            <div
+              id='preview'
+              className='w-40 h-40 border border-amber-500 rounded-full overflow-hidden'
+            >
+              <Image src={defaultIcon} alt='初期画像'></Image>
+            </div>
           </div>
 
           <div>
-            <p className='mb-2 font-bold'>性別</p>
+            <p className='mb-2 text-amber-500'>性別</p>
 
             <div className='inline-block mr-4'>
               <input
@@ -123,7 +156,7 @@ const RegisterUserProfile = ({ setIsFirstVisit }: RegisterUserProfileProps) => {
           </div>
 
           <div>
-            <p className='mb-2 font-bold'>年齢層</p>
+            <p className='mb-2 text-amber-500'>年齢層</p>
 
             <div className='inline-block mr-4'>
               <input
@@ -199,7 +232,7 @@ const RegisterUserProfile = ({ setIsFirstVisit }: RegisterUserProfileProps) => {
           </div>
 
           <div>
-            <p className='mb-2 font-bold'>肌タイプ</p>
+            <p className='mb-2 text-amber-500'>肌タイプ</p>
 
             <div className='inline-block mr-4'>
               <input
@@ -276,7 +309,7 @@ const RegisterUserProfile = ({ setIsFirstVisit }: RegisterUserProfileProps) => {
 
           <button
             type="submit"
-            className='text-white font-bold tracking-widest inline-flex self-start bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-sm px-8 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-2'
+            className='btn_bg-gradation text-white rounded-full w-[160px] h-[44px] text-xl font-bold letter-spacing-1 flex items-center justify-center self-center mt-6'
           >
             登録
           </button>

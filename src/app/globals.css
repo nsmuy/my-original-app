@@ -1,7 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700&display=swap");
 
 :root {
   --foreground-rgb: 0, 0, 0;
@@ -20,22 +20,17 @@
 body {
   width: 100vw;
   height: 100lvh;
-  background-image: linear-gradient(#FFFBF1 0%, #FFF6DE 70%, #FFEFC4 100%);
-  font-family: 'Montserrat', sans-serif;
-  color: #5B5B5B;
+  background-image: linear-gradient(#fffbf1 0%, #fff6de 70%, #ffefc4 100%);
+  font-family: "Montserrat", sans-serif;
+  color: #5b5b5b;
   font-weight: 400;
   font-style: normal;
   line-height: 1.5;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.16em;
 }
 
 .inner {
   padding-inline: 20px;
-}
-
-body:lang(ja) {
-  font-family: 'Noto Sans JP', sans-serif;
-  letter-spacing: 0.04em;
 }
 
 .comparisonTable {
@@ -61,4 +56,49 @@ body:lang(ja) {
 img {
   width: 100%;
   height: auto;
+  object-fit: cover;
+}
+
+.btn_bg-gradation {
+  background-image: linear-gradient(90deg, #ff9900 0%, #ff4aac 50%, #ff9900 100%);
+  background-position: 1% 50%;
+  background-size: 200% auto;
+  transition: all 0.3s;
+}
+
+.btn_bg-gradation:hover {
+  background-position: 99% 50%;
+}
+
+.headerBtn {
+  width: 140px;
+  height: 44px;
+  color: #f59e0b;
+  font-weight: bold;
+  letter-spacing: 0.1em;
+  border: 1px solid;
+  border-radius: 22px;
+  transition: all 0.3s;
+}
+
+.headerBtn:hover {
+  color: #fff;
+  background-color: #f59e0b;
+}
+
+.headerBtn--logout {
+  width: 140px;
+  height: 44px;
+  color: #fff;
+  font-weight: bold;
+  letter-spacing: 0.1em;
+  background-color: #f59e0b;
+  border: 1px solid;
+  border-radius: 22px;
+  transition: all 0.3s;
+}
+
+.headerBtn--logout:hover {
+  color: #f59e0b;
+  background-color: transparent;
 }
