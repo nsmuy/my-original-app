@@ -64,33 +64,39 @@ const Comparison = () => {
   }, [checkedFilters]);
 
   return (
-    <div>
-      <h2>比較したいファンデーションを選んでね</h2>
+    <div className='mt-8'>
+      <div className='inner'>
+        <h2 className='font-bold border-b border-amber-200'>比較したいファンデーションを選んでください</h2>
 
-      {/* 商品を絞り込み */}
-      <ProductFiltersSelector
-        checkedFilters={checkedFilters}
-        setCheckedFilters={setCheckedFilters}
-      />
+        {/* 商品を絞り込み */}
+        <ProductFiltersSelector
+          checkedFilters={checkedFilters}
+          setCheckedFilters={setCheckedFilters}
+        />
 
-      {/* フィルタリングした商品を表示 */}
-      <FilteredProductsList
-        checkedFilters={checkedFilters}
-        selectedProducts={selectedProducts}
-        setSelectedProducts={setSelectedProducts}
-        singleSelectMode={false}
-      />
+        {/* フィルタリングした商品を表示 */}
+        <FilteredProductsList
+          checkedFilters={checkedFilters}
+          selectedProducts={selectedProducts}
+          setSelectedProducts={setSelectedProducts}
+          singleSelectMode={false}
+        />
 
-      {/* フィルタリングした商品の中から、更に比較する商品を選んで表示 */}
-      <SelectedProductsList selectedProducts={selectedProducts} />
+        {/* フィルタリングした商品の中から、更に比較する商品を選んで表示 */}
+        {selectedProducts.length > 0 && (
+          <div>
+            <SelectedProductsList selectedProducts={selectedProducts} />
+            <button
+              type='submit'
+              onClick={() => handleCompareProducts(selectedProducts)}
+              className='bg-amber-500 px-6 py-2 text-white font-bold rounded-md mt-6'
+            >
+              比較する
+            </button>
+          </div>
+        )}
 
-      <button
-        type='submit'
-        onClick={() => handleCompareProducts(selectedProducts)}
-        className='bg-gray-700 px-4 py-2 text-white rounded-md mt-8'
-      >
-        比較する
-      </button>
+      </div>
     </div>
   )
 }

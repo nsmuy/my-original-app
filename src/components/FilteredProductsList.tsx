@@ -83,7 +83,7 @@ const FilteredProductsList = ({
 
   return (
     <div>
-      <div className='flex gap-4 overflow-scroll mt-8'>
+      <div className='hide-scrollbar flex gap-4 overflow-scroll mt-8'>
         {filteredProducts.length > 0 ? (
           filteredProducts.map(product => {
             // 商品が選択されているかどうかをチェック
@@ -92,7 +92,7 @@ const FilteredProductsList = ({
             return (
               <div
                 key={uuidv4()}
-                className={`w-[100px] flex-shrink-0 ${isSelected ? 'selectedProduct' : ''}`}
+                className={`w-[140px] flex-shrink-0 ${isSelected ? 'selectedProduct' : ''}`}
                 onClick={() => handleSelectedProductsChange(product, !isSelected)}
               >
                 <div className='relative'>
@@ -103,7 +103,7 @@ const FilteredProductsList = ({
                     </div>}
                 </div>
                 <div className='mt-2 px-1'>
-                  <p>{product.brand}</p>
+                  <p className='text-xs font-bold'>{product.brand}</p>
                   <p className='text-xs'>{product.name}</p>
                 </div>
               </div>

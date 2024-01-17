@@ -16,7 +16,7 @@ const ProductFilterSelector = ({ checkedFilters, setCheckedFilters} : {
     <div>
       <form>
         {/* ブランド選択 */}
-        <h3 className='mt-4'>ブランドを選択</h3>
+        <h3 className='mt-4 mb-2 font-bold'>ブランドを選択</h3>
 
         {Object.entries(allBrands).map(([key, label]) => (
           <div key={key}>
@@ -34,12 +34,12 @@ const ProductFilterSelector = ({ checkedFilters, setCheckedFilters} : {
                 });
               }}
             />
-            <label htmlFor={key}>{label}</label>
+            <label htmlFor={key} className='ml-2'>{label}</label>
           </div>
         ))}
 
         {/* ファンデーションタイプから選ぶ */}
-        <h3 className='mt-4'>種別を選択</h3>
+        <h3 className='mt-4 mb-2 font-bold'>種別を選択</h3>
 
         {Object.entries(allTypes).map(([key, label]) => (
           <div key={key}>
@@ -57,7 +57,7 @@ const ProductFilterSelector = ({ checkedFilters, setCheckedFilters} : {
                 });
               }}
             />
-            <label htmlFor={key}>{label}</label>
+            <label htmlFor={key} className='ml-2'>{label}</label>
           </div>
         ))}
 

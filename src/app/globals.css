@@ -53,6 +53,15 @@ body {
   width: 200px;
 }
 
+.hide-scrollbar {
+  overflow-y: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display:none;
+}
+
 img {
   width: 100%;
   height: auto;
