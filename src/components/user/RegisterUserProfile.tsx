@@ -60,7 +60,7 @@ const RegisterUserProfile = ({ setIsFirstVisit }: RegisterUserProfileProps) => {
     setUploadIcon(e.target.files![0]);
 
     for (let i = 0; i < e.target.files!.length; i++) {
-      var fileReader = new FileReader();
+      let fileReader = new FileReader();
       fileReader.onload = (e => {
         const previewElement = document.getElementById('preview');
         if(previewElement) {

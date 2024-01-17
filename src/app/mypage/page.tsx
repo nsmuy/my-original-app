@@ -59,7 +59,6 @@ const MyPage = () => {
 
   return (
     <div className='flex flex-col items-center justify-center'>
-      <h2 className='text-2xl'>マイページ</h2>
 
       {/* 初回登録の場合はユーザープロフィールを登録 */}
       {isFirstVisit && <RegisterUserProfile setIsFirstVisit={setIsFirstVisit} />} 

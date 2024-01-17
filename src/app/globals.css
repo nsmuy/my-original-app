@@ -30,7 +30,9 @@ body {
 }
 
 .inner {
+  margin: 0 auto;
   padding-inline: 20px;
+  max-width: 800px;
 }
 
 .comparisonTable {
@@ -44,11 +46,9 @@ body {
   padding: 12px;
   border: 1px solid;
 }
-
 .comparisonTable thead {
   width: 100px;
 }
-
 .comparisonTable tbody > tr > td {
   width: 200px;
 }
@@ -65,7 +65,6 @@ img {
   background-size: 200% auto;
   transition: all 0.3s;
 }
-
 .btn_bg-gradation:hover {
   background-position: 99% 50%;
 }
@@ -80,7 +79,6 @@ img {
   border-radius: 22px;
   transition: all 0.3s;
 }
-
 .headerBtn:hover {
   color: #fff;
   background-color: #f59e0b;
@@ -97,7 +95,6 @@ img {
   border-radius: 22px;
   transition: all 0.3s;
 }
-
 .headerBtn--logout:hover {
   color: #f59e0b;
   background-color: transparent;
