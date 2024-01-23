@@ -8,7 +8,7 @@ import { Product } from '@/types/Product';
 import ProductFiltersSelector from '@/components/ProductFilterSelector';
 import FilteredProductsList from '@/components/FilteredProductsList';
 import SelectedProductsList from '@/components/SelectedProductsList';
-import { allBrands, allTypes } from '@/constants/productData';
+import {initialBrandCheckedFilter, initialTypeCheckedFilter} from '@/functions/initializeFilters';
 
 const Comparison = () => {
 
@@ -20,28 +20,14 @@ const Comparison = () => {
     return <div>ローディング中...</div>;
   }
 
-  const [checkedFilters, setCheckedFilters] = useState({
-    brands: {},
-    types: {},
+  //選択されたフィルターを管理する状態変数
+  const [checkedFilters, setCheckedFilters] = useState<{
+    brands: { [key: string]: boolean };
+    types: { [key: string]: boolean };
+  }>({
+    brands: initialBrandCheckedFilter,
+    types: initialTypeCheckedFilter
   })
-
-  useEffect(() => {
-      //ブランドの初期化
-      const initialBrandCheckedFilter = Object.keys(allBrands).reduce((acc: { [key: string]: boolean }, brand: string) => {
-        acc[brand] = false;
-        return acc;
-      }, {} as { [key: string]: boolean });
-      //タイプの初期化
-      const initialTypeCheckedFilter = Object.keys(allTypes).reduce((acc: { [key: string]: boolean }, type: string) => {
-        acc[type] = false;
-        return acc;
-      }, {} as { [key: string]: boolean });
-
-      setCheckedFilters({
-        brands: initialBrandCheckedFilter,
-        types: initialTypeCheckedFilter
-      })
-  }, [])
 
   //比較するために選んだ商品を保存する状態変数
   const [selectedProducts, setSelectedProducts] = useState<
@@ -58,10 +44,6 @@ const Comparison = () => {
     localStorage.setItem('comparisonProducts', JSON.stringify(selectedProducts));
     router.push('/comparison/result');
   }
-
-  useEffect(() => {
-    console.log(checkedFilters)
-  }, [checkedFilters]);
 
   return (
     <div className='mt-8'>

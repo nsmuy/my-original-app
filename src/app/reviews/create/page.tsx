@@ -12,9 +12,9 @@ import { getAuth } from "firebase/auth";
 import { addDoc, collection, doc, getDoc, getDocs, query, where } from "firebase/firestore"; 
 import { db } from '@/app/firebase';
 import { v4 as uuidv4 } from 'uuid';
-import { allBrands, allTypes } from '@/constants/productData';
 import { ratingCriterias } from '@/constants/ratingData';
 import { UserProfile } from '@/types/UserProfile';
+import { initialBrandCheckedFilter, initialTypeCheckedFilter } from '@/functions/initializeFilters';
 
 const CreateReview = () => {
 
@@ -30,9 +30,12 @@ const CreateReview = () => {
   const user = auth.currentUser;
 
   //商品を選ぶ際のフィルターの状態を保存する状態変数
-  const [checkedFilters, setCheckedFilters] = useState({
-    brands: {},
-    types: {},
+  const [checkedFilters, setCheckedFilters] = useState<{
+    brands: { [key: string]: boolean };
+    types: { [key: string]: boolean };
+  }>({
+    brands: initialBrandCheckedFilter,
+    types: initialTypeCheckedFilter
   });
 
   //レビューするユーザーの情報を保存する状態変数
@@ -59,16 +62,6 @@ const CreateReview = () => {
   Product[]>([]);
 
   useEffect(() => {
-      //ブランドの初期化
-      const initialBrandCheckedFilter = Object.keys(allBrands).reduce((acc: { [key: string]: boolean }, brand: string) => {
-        acc[brand] = false;
-        return acc;
-      }, {} as { [key: string]: boolean });
-      //タイプの初期化
-      const initialTypeCheckedFilter = Object.keys(allTypes).reduce((acc: { [key: string]: boolean }, type: string) => {
-        acc[type] = false;
-        return acc;
-      }, {} as { [key: string]: boolean });
 
       //ログインしているユーザー情報の取得
       const fetchLoginUserInfo = async () => {
@@ -86,10 +79,6 @@ const CreateReview = () => {
       }
 
       fetchLoginUserInfo();
-      setCheckedFilters({
-        brands: initialBrandCheckedFilter,
-        types: initialTypeCheckedFilter
-      })
   }, [])
 
   const handlePostReviews = async (e: React.FormEvent<HTMLFormElement>) => {
