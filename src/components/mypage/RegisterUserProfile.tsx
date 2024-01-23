@@ -9,9 +9,7 @@ import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import defaultIcon from "@/assets/userIcon_default.png";
 import Image from "next/image";
 import { ageOptions, genderOptions, skinTypeOptions } from "@/constants/userData";
-import GenderRadioButton from "./GenderRadioButton";
-import AgeRadioButton from "./AgeRadioButton";
-import SkinTypeRadioButton from "./SkinTypeRadioButton";
+import UserProfileOptionButton from "./UserProfileOptionButton";
 
 type RegisterUserProfileProps = {
   setIsFirstVisit: React.Dispatch<React.SetStateAction<boolean>>;
@@ -108,22 +106,39 @@ const RegisterUserProfile = ({ setIsFirstVisit }: RegisterUserProfileProps) => {
           <div>
             <p className="mb-2 text-amber-500">性別</p>
             {genderOptions.map((gender) => (
-              <GenderRadioButton key={gender.label} gender={gender} inputUserProfile={inputUserProfile} setInputUserProfile={setInputUserProfile} />
+              <UserProfileOptionButton
+                key={gender.label}
+                option={gender}
+                name="gender"
+                inputUserProfile={inputUserProfile}
+                setInputUserProfile={setInputUserProfile}
+              />
             ))}
           </div>
 
           <div>
             <p className="mb-2 text-amber-500">年齢層</p>
             {ageOptions.map((age) => (
-              <AgeRadioButton key={age.label} age={age} inputUserProfile={inputUserProfile} setInputUserProfile={setInputUserProfile} />
+              <UserProfileOptionButton
+                key={age.label}
+                option={age}
+                name="age"
+                inputUserProfile={inputUserProfile}
+                setInputUserProfile={setInputUserProfile}
+              />
             ))}
           </div>
 
           <div>
             <p className="mb-2 text-amber-500">肌タイプ</p>
-
             {skinTypeOptions.map((skinType) => (
-              <SkinTypeRadioButton key={skinType.label} skinType={skinType} inputUserProfile={inputUserProfile} setInputUserProfile={setInputUserProfile} />
+              <UserProfileOptionButton
+                key={skinType.label}
+                option={skinType}
+                name="skinType"
+                inputUserProfile={inputUserProfile}
+                setInputUserProfile={setInputUserProfile}
+              />
             ))}
           </div>
 

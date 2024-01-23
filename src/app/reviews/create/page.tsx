@@ -68,13 +68,17 @@ const CreateReview = () => {
         if(user) {
           const userRef = doc(db, "userProfiles", user.uid);
           const userDocSnap = await getDoc(userRef);
-          setUserInfo({
-            ...userInfo,
-            id: user.uid,
-            age: userDocSnap.data()?.age,
-            gender: userDocSnap.data()?.gender,
-            skinType: userDocSnap.data()?.skinType,
-          })
+
+          if(userDocSnap.data()) {
+            setUserInfo({
+              ...userInfo,
+              id: user.uid,
+              age: userDocSnap.data()?.age,
+              gender: userDocSnap.data()?.gender,
+              skinType: userDocSnap.data()?.skinType,
+            });
+          }
+          return;
         }
       }
 
