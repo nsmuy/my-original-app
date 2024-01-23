@@ -1,11 +1,11 @@
 'use client';
 
 import React from 'react'
-import { ProductWithReviewsAndAverageRatings } from '@/types/Product'
+import { ProductWithReviewsAndRatings } from '@/types/Product'
 import { useRouter } from 'next/navigation'
 
 type ComparisonResultTableProps = {
-  comparisonData: ProductWithReviewsAndAverageRatings[]
+  comparisonData: ProductWithReviewsAndRatings[]
 }
 
 const ComparisonResultTable = ({comparisonData}: ComparisonResultTableProps ) => {

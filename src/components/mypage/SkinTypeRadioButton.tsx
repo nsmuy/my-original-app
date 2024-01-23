@@ -10,7 +10,7 @@ type SkinTypeRadioButtonProps = {
 const SkinTypeRadioButton = ({skinType, inputUserProfile, setInputUserProfile}: SkinTypeRadioButtonProps) => {
   return (
     <div>
-       <input
+      <input
         type="radio"
         id={skinType.label}
         name="skinType"

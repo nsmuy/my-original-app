@@ -9,11 +9,12 @@ import ProductFiltersSelector from '@/components/ProductFilterSelector';
 import FilteredProductsList from '@/components/FilteredProductsList';
 import { Review } from '@/types/Reviews';
 import { getAuth } from "firebase/auth";
-import { addDoc, collection, getDocs, query, where } from "firebase/firestore"; 
+import { addDoc, collection, doc, getDoc, getDocs, query, where } from "firebase/firestore"; 
 import { db } from '@/app/firebase';
 import { v4 as uuidv4 } from 'uuid';
 import { allBrands, allTypes } from '@/constants/productData';
 import { ratingCriterias } from '@/constants/ratingData';
+import { UserProfile } from '@/types/UserProfile';
 
 const CreateReview = () => {
 
@@ -32,19 +33,25 @@ const CreateReview = () => {
   const [checkedFilters, setCheckedFilters] = useState({
     brands: {},
     types: {},
-  })
+  });
+
+  //レビューするユーザーの情報を保存する状態変数
+  const [userInfo, setUserInfo] = useState<Omit<UserProfile, 'nickname' | 'icon'> | null>(null);
 
   // 入力するレビューに関する情報を保存する状態変数
   const [userReview, setUserReview] = useState<Review>({
     reviewId: '',
     productId: '',
-    userId: '',
     luminosity: 0,
     coverage: 0,
     longevity: 0,
     moisturizing: 0,
     comments: '',
     sendAt: '',
+    userId: '',
+    userAge: '',
+    userGender: '',
+    userSkinType: '',
   });
 
   //比較するために選んだ商品を保存する状態変数
@@ -63,6 +70,22 @@ const CreateReview = () => {
         return acc;
       }, {} as { [key: string]: boolean });
 
+      //ログインしているユーザー情報の取得
+      const fetchLoginUserInfo = async () => {
+        if(user) {
+          const userRef = doc(db, "userProfiles", user.uid);
+          const userDocSnap = await getDoc(userRef);
+          setUserInfo({
+            ...userInfo,
+            id: user.uid,
+            age: userDocSnap.data()?.age,
+            gender: userDocSnap.data()?.gender,
+            skinType: userDocSnap.data()?.skinType,
+          })
+        }
+      }
+
+      fetchLoginUserInfo();
       setCheckedFilters({
         brands: initialBrandCheckedFilter,
         types: initialTypeCheckedFilter
@@ -87,6 +110,9 @@ const CreateReview = () => {
       productId: selectedProducts[0].id,
       userId: user?.uid,
       sendAt: new Date().toISOString(),
+      userAge: userInfo?.age,
+      userGender: userInfo?.gender,
+      userSkinType: userInfo?.skinType,
     });
 
     router.push("/reviews/");

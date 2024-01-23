@@ -9,7 +9,6 @@ export type UserProfile = {
 
 export type UserFilter = {
   age: {
-    all: boolean,
     teen: boolean,
     twenties: boolean,
     thirties: boolean,
@@ -18,13 +17,11 @@ export type UserFilter = {
     sixtiesAndAbove: boolean,
   },
   gender: {
-    all: boolean,
     male: boolean,
     female: boolean,
     other: boolean,
   },
   skinType: {
-    all: boolean,
     normal: boolean,
     dry: boolean,
     combination: boolean,

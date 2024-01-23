@@ -1,21 +1,18 @@
 'use client';
 
 import React, { useEffect, useState } from 'react'
-import { ProductWithReviewsAndAverageRatings, Product } from '@/types/Product';
+import { ProductWithReviewsAndRatings, Product } from '@/types/Product';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '@/app/firebase';
 import { Review } from '@/types/Reviews';
 import ComparisonResultTable from '@/components/comparison/ComparisonResultTable';
 import { calcAverageRatings } from '@/functions/calcAverageRatings';
 import { UserFilter } from '@/types/UserProfile';
+import ComparisonUserFilters from '@/components/comparison/ComparisonUserFilters';
 
 const ComparisonResult = () => {
-
-  const comparisonProducts = JSON.parse(localStorage.getItem('comparisonProducts')!) as Product[];
-
   const initialUserFilters = {
     age: {
-      all: true,
       teen: false,
       twenties: false,
       thirties: false,
@@ -24,13 +21,11 @@ const ComparisonResult = () => {
       sixtiesAndAbove: false,
     },
     gender: {
-      all: true,
       male: false,
       female: false,
       other: false,
     },
     skinType: {
-      all: true,
       normal: false,
       dry: false,
       combination: false,
@@ -38,16 +33,17 @@ const ComparisonResult = () => {
       sensitive: false,
       atopic: false,
     },
-  }
+  };
 
-  const [filterUsers, setFilterUsers] = useState<UserFilter>(initialUserFilters);
+  const [userFilters, setUserFilters] = useState<UserFilter>(initialUserFilters);
+  const comparisonProducts = JSON.parse(localStorage.getItem('comparisonProducts')!) as Product[];
 
-  const [comparisonProductWithReviewsAndAverageRatings, setComparisonProductWithReviewsAndAverageRatings] = useState<ProductWithReviewsAndAverageRatings[] | null>(null);
+  const [comparisonProductWithReviewsAndRatings, setComparisonProductWithReviewsAndRatings] = useState<ProductWithReviewsAndRatings[] | null>(null);
 
   //初回読み込み時に、比較した商品に紐づくレビューをすべて取得し
-  //comparisonProductWithReviewsAndAverageRatingsを更新する
+  //comparisonProductWithReviewsAndRatingsを更新する
   useEffect(() => {
-      const getComparisonProductWithReviewsAndAverageRatings = async () => {
+      const getComparisonProductWithReviewsAndRatings = async () => {
 
         //比較した商品の全レビュー情報を取得する関数
         const fetchAllReviewsForComparisonProducts = async () => {
@@ -57,25 +53,25 @@ const ComparisonResult = () => {
         }
 
         //比較した商品ごとの全レビュー情報と評価の平均値を取得し、
-        //comparisonProductWithReviewsAndAverageRatingsに追加する関数
+        //comparisonProductWithReviewsAndRatingsに追加する関数
         const updateComparisonProductWithReviews = (allReviewsForComparisonProducts: Review[]) => {
           const newProductsWithReviewsAndAverageRatings = comparisonProducts.map(product => {
-            const productReviews = allReviewsForComparisonProducts.filter(reviews => reviews.productId === product.id);
+            const productAllReviews = allReviewsForComparisonProducts.filter(reviews => reviews.productId === product.id);
 
             return {
               ...product,
-              reviews: productReviews,
-              averageRatings: calcAverageRatings(productReviews),
+              reviews: productAllReviews,
+              averageRatings: calcAverageRatings(productAllReviews),
             };
           });
-          setComparisonProductWithReviewsAndAverageRatings(newProductsWithReviewsAndAverageRatings);
+          setComparisonProductWithReviewsAndRatings(newProductsWithReviewsAndAverageRatings);
         }
 
         const allReviewsForComparisonProducts = await fetchAllReviewsForComparisonProducts();
         updateComparisonProductWithReviews(allReviewsForComparisonProducts);
       }
 
-      getComparisonProductWithReviewsAndAverageRatings();
+      getComparisonProductWithReviewsAndRatings();
   }, []);
 
   return (
@@ -83,8 +79,13 @@ const ComparisonResult = () => {
       <div className='inner'>
         <h2 className='text-xl font-bold border-b border-amber-200'>比較結果</h2>
 
-        {comparisonProductWithReviewsAndAverageRatings && (
-          <ComparisonResultTable comparisonData={comparisonProductWithReviewsAndAverageRatings}/>
+        <ComparisonUserFilters
+          userFilters={userFilters}
+          setUserFilters={setUserFilters}
+        />
+
+        {comparisonProductWithReviewsAndRatings && (
+          <ComparisonResultTable comparisonData={comparisonProductWithReviewsAndRatings}/>
         )}
       </div>
     </div>

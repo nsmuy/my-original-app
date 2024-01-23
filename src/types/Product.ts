@@ -27,7 +27,7 @@ export type ProductWithReviews = {
   reviews: Review[];
 }
 
-export type ProductWithReviewsAndAverageRatings = {
+export type ProductWithReviewsAndRatings = {
   id: string;
   brand: string;
   name: string;
