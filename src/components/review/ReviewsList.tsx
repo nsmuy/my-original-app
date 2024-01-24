@@ -37,13 +37,10 @@ const ReviewsList = ({ productsToShow }: ReviewsListProps ) => {
     const getDetailedReviews = async () => {
       const reviews = await fetchReviews();
       const users = await fetchUsers(reviews);
-      console.log(reviews, users)
 
       const newDetailedReviews = reviews.map(review => {
         const productInfo = productsToShow.find(product => product.id === review.productId);
         const userInfo = users.find(user => user.id === review.userId);
-
-        console.log(productInfo, userInfo)
 
         if(productInfo && userInfo) {
           return {
@@ -61,8 +58,6 @@ const ReviewsList = ({ productsToShow }: ReviewsListProps ) => {
         return undefined;
       }).filter(review => review !== undefined) as ReviewWithProductAndUser[];
 
-      console.log('newDetailedReviews')
-      console.log(newDetailedReviews)
       setDetailedReviews(newDetailedReviews);
     }
 

@@ -5,6 +5,7 @@ import { UserFilter } from "@/types/UserProfile";
 import { ageOptions, genderOptions, skinTypeOptions } from "@/constants/userData";
 import { ProductWithReviewsAndRatings } from "@/types/Product";
 import { calcAverageRatings } from "@/functions/calcAverageRatings";
+import { useRouter } from "next/navigation";
 
 type ComparisonUserFiltersProps = {
   userFilters: UserFilter;
@@ -20,19 +21,27 @@ const ComparisonUserFilters = ({
   setTableDataList,
 }: ComparisonUserFiltersProps) => {
 
+  const router = useRouter();
+  const [originalTableDataList, setOriginalTableDataList] = useState<ProductWithReviewsAndRatings[]>([]);
+
+  useEffect(() => {
+    const newOriginalTableDataList = JSON.parse(JSON.stringify(tableDataList));
+    setOriginalTableDataList(newOriginalTableDataList);
+  }, [router])
+
+  // フィルターのチェック状況を保持する状態変数
   const [isKeySelected, setIsKeySelected] = useState({
     age: false,
     gender: false,
     skinType: false,
   });
 
-  // フィルターのチェック状況を確認する
+  // フィルターのチェック状況を確認する関数
   const checkUserFilters = (userFilters: UserFilter) => {
     const updateIsKeySelected = {...isKeySelected}
     Object.entries(userFilters).forEach(([key, value]) => {
       updateIsKeySelected[key as keyof UserFilter] = !Object.values(value).every((value) => value === false);
     })
-
     setIsKeySelected(updateIsKeySelected);
   }
 
@@ -43,31 +52,34 @@ const ComparisonUserFilters = ({
   const handleSubmitFilterTable = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const filteredTableDataList = tableDataList.map(data => {
+    let filteredTableDataList: ProductWithReviewsAndRatings[] = [];
 
-      const filteredReviews = data.reviews.filter(review => {
-
-        const userAgeMatch = isKeySelected.age ? (
-          userFilters.age[review.userAge as keyof UserFilter['age']]
-        ) : true;
-        const userGenderMatch = isKeySelected.gender ? (
-          userFilters.gender[review.userGender as keyof UserFilter['gender']]
-        ): true;
-        const userSkinTypeMatch = isKeySelected.skinType ? (
-          userFilters.skinType[review.userSkinType as keyof UserFilter['skinType']]
-        ) : true;
-
-        return userAgeMatch && userGenderMatch && userSkinTypeMatch;
+    originalTableDataList.length > 0 && (
+      filteredTableDataList =  originalTableDataList.map(data => {
+  
+        const filteredReviews = data.reviews.filter(review => {
+  
+          const userAgeMatch = isKeySelected.age ? (
+            userFilters.age[review.userAge as keyof UserFilter['age']]
+          ) : true;
+          const userGenderMatch = isKeySelected.gender ? (
+            userFilters.gender[review.userGender as keyof UserFilter['gender']]
+          ): true;
+          const userSkinTypeMatch = isKeySelected.skinType ? (
+            userFilters.skinType[review.userSkinType as keyof UserFilter['skinType']]
+          ) : true;
+  
+          return userAgeMatch && userGenderMatch && userSkinTypeMatch;
+        })
+  
+        return {
+          ...data,
+          reviews: filteredReviews,
+          averageRatings: calcAverageRatings(filteredReviews),
+        }
       })
+    )
 
-      return {
-        ...data,
-        reviews: filteredReviews,
-        averageRatings: calcAverageRatings(filteredReviews),
-      }
-    })
-
-    console.log('filteredTableDataList', filteredTableDataList)
     setTableDataList(filteredTableDataList);
   }
 

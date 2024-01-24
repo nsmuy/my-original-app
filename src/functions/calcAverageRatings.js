@@ -9,9 +9,6 @@ export const calcAverageRatings = (productReviews) => {
     moisturizing: 0,
   };
 
-  console.log('productReviews')
-  console.log(productReviews)
-
   //商品ごとの評価の合計値を求める
   productReviews.forEach(review => {
     sumRatings.luminosity += review.luminosity;
@@ -27,6 +24,5 @@ export const calcAverageRatings = (productReviews) => {
     moisturizing: Math.round((sumRatings.moisturizing / productReviews.length) * 100) / 100,
   }
 
-  console.log(averageRatings);
   return averageRatings;
 }

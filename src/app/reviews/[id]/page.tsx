@@ -29,10 +29,8 @@ const ProductReviews = () => {
       }  as Product;
 
       setProductForReviews([products]);
-      console.log(products)
     }
     fetchData();
-
   }, [params.id]);
 
   return (

@@ -43,14 +43,11 @@ const RegisterUserProfile = ({ setIsFirstVisit }: RegisterUserProfileProps) => {
       } else {
         const storage = getStorage();
         const defaultIconRef = ref(storage, `userIcons/userIcon_default.png`);
-        console.log(defaultIconRef);
         iconUrl = await getDownloadURL(defaultIconRef);
         setInputUserProfile({ ...inputUserProfile, icon: iconUrl });
       }
 
       // idをセットしてuserProfileを更新
-      console.log('プッシュ前')
-      console.log(inputUserProfile)
       const registrationUserProfile = { 
         ...inputUserProfile,
         id: user.uid,
@@ -77,10 +74,6 @@ const RegisterUserProfile = ({ setIsFirstVisit }: RegisterUserProfileProps) => {
       fileReader.readAsDataURL(e.target.files![i]);
     }
   };
-
-  useEffect(() => {
-    console.log(inputUserProfile);
-  }, [inputUserProfile])
 
   return (
     <div className="relative bg-white rounded-lg shadow dark:bg-gray-700 p-6">
