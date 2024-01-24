@@ -37,20 +37,21 @@ const ComparisonResultTable = ({comparisonData}: ComparisonResultTableProps ) =>
           <tbody>
             {comparisonData && comparisonData.map(product => {
               return (
-                <tr key={product.id}>
+                <tr key={product.id} className='text-center'>
                   <td><img src={product.image} alt={product.name} /></td>
-                  <td className='text-center'>{product.brand}</td>
+                  <td>{product.brand}</td>
                   <td>{product.name}</td>
-                  <td className='text-center'>￥{product.price}</td>
-                  <td className='text-center'>{product.spf}</td>
-                  <td className='text-center'>{product.color}色</td>
-                  <td className='text-center'>{product.capacity}</td>
-                  <td>{product.feature}</td>
-                  <td className='text-center'>{product.averageRatings.luminosity || '-'}</td>
-                  <td className='text-center'>{product.averageRatings.coverage || '-'}</td>
-                  <td className='text-center'>{product.averageRatings.longevity || '-'}</td>
-                  <td className='text-center'>{product.averageRatings.moisturizing || '-'}</td>
-                  <td className='text-center'>
+                  <td>￥{product.price}</td>
+                  <td>{product.spf}</td>
+                  <td>{product.color}色</td>
+                  <td>{product.capacity}</td>
+                  <td className='text-justify'>{product.feature}</td>
+                  <td>{product.averageRatings.luminosity || '-'}</td>
+                  <td>{product.averageRatings.coverage || '-'}</td>
+                  <td>{product.averageRatings.longevity || '-'}</td>
+                  <td>{product.averageRatings.moisturizing || '-'}</td>
+                  <td>{product.averageRatings.luminosity || '-'}</td>
+                  <td>
                     <button
                       onClick={() => router.push(`/reviews/${product.id}`)}
                       className='bg-amber-200 px-4 py-1 rounded-lg hover:bg-amber-500 hover:text-white'

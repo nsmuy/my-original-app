@@ -10,6 +10,7 @@ import useLoginGuard from '@/auth/useLoginGuard';
 import { collection, onSnapshot, query, where } from 'firebase/firestore';
 import CurrentUserProfileView from '@/components/mypage/CurrentUserProfileView';
 import UserReviewsList from '@/components/mypage/UserReviewsList';
+import Link from 'next/link';
 
 const MyPage = () => {
 
@@ -66,7 +67,20 @@ const MyPage = () => {
         {isFirstVisit && <RegisterUserProfile setIsFirstVisit={setIsFirstVisit} />} 
 
         {/* ユーザープロフィールを表示 */}
-        {currentUserProfile && <CurrentUserProfileView currentUserProfile={currentUserProfile} /> }
+        {currentUserProfile && (
+          <div>
+            <div className='flex gap-5 my-8'>
+              <Link href={"/comparison"} className='bg-white rounded-md shadow-sm p-8 flex-1 text-center'>
+                <p>気になるファンデーションを比較する</p>
+              </Link>
+
+              <Link href={"/mypage/reviews"} className='bg-white rounded-md shadow-sm p-8 flex-1 text-center'>
+                <p>口コミを見る・書く</p>
+              </Link>
+            </div>
+            <CurrentUserProfileView currentUserProfile={currentUserProfile} />
+          </div>
+        )}
 
         <UserReviewsList />
       </div>

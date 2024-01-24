@@ -65,8 +65,8 @@ const ComparisonResult = () => {
   //初回読み込み時に、商品ごとのレビューと評価点数を格納を格納したデータを取得
   useEffect(() => {
       const getTableDataList = async () => {
-        const allReviewsForComparisonProducts = await fetchAllReviewsOfComparisonProducts();
-        updateReviewsForTableDataList(allReviewsForComparisonProducts);
+        const allReviewsOfComparisonProducts = await fetchAllReviewsOfComparisonProducts();
+        updateReviewsForTableDataList(allReviewsOfComparisonProducts);
       }
 
       getTableDataList();

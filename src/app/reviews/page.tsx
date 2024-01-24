@@ -15,7 +15,6 @@ const AllReviews = () => {
     // 全商品の情報を取得する
     const fetchAllProducts = async () => {
       const productsSnapshot = await getDocs(query(collection(db, "products")));
-
       const products = productsSnapshot.docs.map(doc => {
         return {
           ...doc.data() as Product,
