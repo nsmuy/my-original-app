@@ -8,6 +8,8 @@ import { getAuth } from "firebase/auth";
 import { doc, collection, onSnapshot, query, where, updateDoc } from 'firebase/firestore';
 import { useRouter } from "next/navigation";
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
+import { ageOptions, skinTypeOptions } from '@/constants/userData';
+import UserProfileOptionButton from '@/components/mypage/UserProfileOptionButton';
 
 const EditProfile = () => {
   useLoginGuard();
@@ -113,154 +115,30 @@ const EditProfile = () => {
 
           <div>
               <p className='mb-2 font-bold'>年齢層</p>
-
-              <div className='inline-block mr-4'>
-                <input
-                  type="radio"
-                  id="age1"
-                  name="age_group"
-                  value="～10代"
-                  checked={editedProfile?.age === "～10代"}
-                  onChange={() => setUserProfile({ ...editedProfile, age: "～10代" })}
-                />
-                <label htmlFor="age1" className='ml-2'>～10代</label>
-              </div>
-
-              <div className='inline-block mr-4'>
-                <input
-                  type="radio"
-                  id="age2"
-                  name="age_group"
-                  value="20代"
-                  checked={editedProfile?.age === "20代"}
-                  onChange={() => setUserProfile({ ...editedProfile, age: "20代" })}
-                />
-                <label htmlFor="age2" className='ml-2'>20代</label>
-              </div>
-
-              <div className='inline-block mr-4'>
-                <input
-                  type="radio"
-                  id="age3"
-                  name="age_group"
-                  value="30代"
-                  checked={editedProfile?.age === "30代"}
-                  onChange={() => setUserProfile({ ...editedProfile, age: "30代" })}
-                />
-                <label htmlFor="age3" className='ml-2'>30代</label>
-              </div>
-
-              <div className='inline-block mr-4'>
-                <input
-                  type="radio"
-                  id="age4"
-                  name="age_group"
-                  value="40代"
-                  checked={editedProfile?.age === "40代"}
-                  onChange={() => setUserProfile({ ...editedProfile, age: "40代" })}
-                />
-                <label htmlFor="age4" className='ml-2'>40代</label>
-              </div>
-
-              <div className='inline-block mr-4'>
-                <input
-                  type="radio"
-                  id="age5"
-                  name="age_group"
-                  value="50代"
-                  checked={editedProfile?.age === "50代"}
-                  onChange={() => setUserProfile({ ...editedProfile, age: "50代" })}
-                />
-                <label htmlFor="age5" className='ml-2'>50代</label>
-              </div>
-
-              <div className='inline-block'>
-                <input
-                  type="radio"
-                  id="age6"
-                  name="age_group"
-                  value="60代～"
-                  checked={editedProfile?.age === "60代～"}
-                  onChange={() => setUserProfile({ ...editedProfile, age: "60代～" })}
-                />
-                <label htmlFor="age6" className='ml-2'>60代～</label>
-              </div>
+              {ageOptions.map((option) => (
+                <div className='inline-block mr-4'>
+                  <UserProfileOptionButton
+                    option={option}
+                    name="age"
+                    inputUserProfile={editedProfile}
+                    setInputUserProfile={setEditedProfile}
+                  />
+                </div>
+              ))}
           </div>
 
           <div>
             <p className='mb-2 font-bold'>肌タイプ</p>
-
-            <div className='inline-block mr-4'>
-              <input
-                type="radio"
-                id="skinType1"
-                name="skin_type"
-                value="普通肌"
-                checked={editedProfile.skinType === "普通肌"}
-                onChange={() => setUserProfile({ ...editedProfile, skinType: "普通肌" })}
-              />
-              <label htmlFor="skinType1" className='ml-2'>普通肌</label>
-            </div>
-
-            <div className='inline-block mr-4'>
-              <input
-                type="radio"
-                id="skinType2"
-                name="skin_type"
-                value="乾燥肌"
-                checked={editedProfile.skinType === "乾燥肌"}
-                onChange={() => setUserProfile({ ...editedProfile, skinType: "乾燥肌" })}
-              />
-              <label htmlFor="skinType2" className='ml-2'>乾燥肌</label>
-            </div>
-
-            <div className='inline-block mr-4'>
-              <input
-                type="radio"
-                id="skinType3"
-                name="skin_type"
-                value="混合肌"
-                checked={editedProfile.skinType === "混合肌"}
-                onChange={() => setUserProfile({ ...editedProfile, skinType: "混合肌" })}
+            {skinTypeOptions.map((option) => (
+              <div className='inline-block mr-4'>
+                <UserProfileOptionButton
+                  option={option}
+                  name="skinType"
+                  inputUserProfile={editedProfile}
+                  setInputUserProfile={setEditedProfile}
                 />
-              <label htmlFor="skinType3" className='ml-2'>混合肌</label>
-            </div>
-
-            <div className='inline-block mr-4'>
-              <input
-                type="radio"
-                id="skinType4"
-                name="skin_type"
-                value="脂性肌"
-                checked={editedProfile.skinType === "脂性肌"}
-                onChange={() => setUserProfile({ ...editedProfile, skinType: "脂性肌" })}
-              />
-              <label htmlFor="skinType4" className='ml-2'>脂性肌</label>
-            </div>
-
-            <div className='inline-block mr-4'>
-              <input
-                type="radio"
-                id="skinType5"
-                name="skin_type"
-                value="敏感肌"
-                checked={editedProfile.skinType === "敏感肌"}
-                onChange={() => setUserProfile({ ...editedProfile, skinType: "敏感肌" })}
-              />
-              <label htmlFor="skinType5" className='ml-2'>敏感肌</label>
-            </div>
-
-            <div className='inline-block mr-4'>
-              <input
-                type="radio"
-                id="skinType6"
-                name="skin_type"
-                value="アトピー肌"
-                checked={editedProfile.skinType === "アトピー肌"}
-                onChange={() => setUserProfile({ ...editedProfile, skinType: "アトピー肌" })}
-              />
-              <label htmlFor="skinType6" className='ml-2'>アトピー</label>
-            </div>
+              </div>
+            ))}
           </div>
 
           <button

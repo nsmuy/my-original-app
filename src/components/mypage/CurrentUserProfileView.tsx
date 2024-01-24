@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useRouter } from 'next/navigation';
 import { UserProfile } from '@/types/UserProfile';
+import { getProfileOptionsLabel } from '@/functions/getProfileOptionsLabel';
 
 type CurrentUserProfileProps = {
   currentUserProfile: UserProfile
@@ -28,15 +29,15 @@ const CurrentUserProfileView = ( {currentUserProfile} : CurrentUserProfileProps 
           </div>
           <div className='flex'>
             <dt className='mr-2'>年齢：</dt>
-            <dd>{currentUserProfile.age}</dd>
+            <dd>{getProfileOptionsLabel('age', currentUserProfile.age)}</dd>
           </div>
           <div className='flex'>
             <dt className='mr-2'>性別:</dt>
-            <dd>{currentUserProfile.gender}</dd>
+            <dd>{getProfileOptionsLabel('gender', currentUserProfile.gender)}</dd>
           </div>
           <div className='flex'>
             <dt className='mr-2'>肌タイプ：</dt>
-            <dd>{currentUserProfile.skinType}</dd>
+            <dd>{getProfileOptionsLabel('skinType', currentUserProfile.skinType)}</dd>
           </div>
         </dl>
       </div>

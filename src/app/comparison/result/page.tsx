@@ -38,40 +38,38 @@ const ComparisonResult = () => {
   const [userFilters, setUserFilters] = useState<UserFilter>(initialUserFilters);
   const comparisonProducts = JSON.parse(localStorage.getItem('comparisonProducts')!) as Product[];
 
-  const [comparisonProductWithReviewsAndRatings, setComparisonProductWithReviewsAndRatings] = useState<ProductWithReviewsAndRatings[] | null>(null);
+  const [tableDataList, setTableDataList] = useState<ProductWithReviewsAndRatings[] | null>(null);
 
-  //初回読み込み時に、比較した商品に紐づくレビューをすべて取得し
-  //comparisonProductWithReviewsAndRatingsを更新する
+  //比較した商品の全レビュー情報を取得する関数
+  const fetchAllReviewsOfComparisonProducts = async () => {
+    const q = query(collection(db, 'reviews'), where('productId', 'in', comparisonProducts.map(product => product.id)));
+    const reviewsSnapshot = await getDocs(q);
+    return reviewsSnapshot.docs.map(doc => doc.data() as Review);
+  }
+
+  //商品ごとにレビューと評価点数をを格納する関数
+  const updateReviewsForTableDataList = ( allReviewsOfComparisonProducts: Review[] ) => {
+    const reviewsAndRatingsForEachProducts = comparisonProducts.map(product => {
+      const reviewsForProduct = allReviewsOfComparisonProducts.filter(reviews => reviews.productId === product.id);
+
+      return {
+        ...product,
+        reviews: reviewsForProduct,
+        averageRatings: calcAverageRatings(reviewsForProduct),
+      }
+    });
+
+    setTableDataList(reviewsAndRatingsForEachProducts);
+  }
+
+  //初回読み込み時に、商品ごとのレビューと評価点数を格納を格納したデータを取得
   useEffect(() => {
-      const getComparisonProductWithReviewsAndRatings = async () => {
-
-        //比較した商品の全レビュー情報を取得する関数
-        const fetchAllReviewsForComparisonProducts = async () => {
-          const q = query(collection(db, 'reviews'), where('productId', 'in', comparisonProducts.map(product => product.id)));
-          const reviewsSnapshot = await getDocs(q);
-          return reviewsSnapshot.docs.map(doc => doc.data() as Review);
-        }
-
-        //比較した商品ごとの全レビュー情報と評価の平均値を取得し、
-        //comparisonProductWithReviewsAndRatingsに追加する関数
-        const updateComparisonProductWithReviews = (allReviewsForComparisonProducts: Review[]) => {
-          const newProductsWithReviewsAndAverageRatings = comparisonProducts.map(product => {
-            const productAllReviews = allReviewsForComparisonProducts.filter(reviews => reviews.productId === product.id);
-
-            return {
-              ...product,
-              reviews: productAllReviews,
-              averageRatings: calcAverageRatings(productAllReviews),
-            };
-          });
-          setComparisonProductWithReviewsAndRatings(newProductsWithReviewsAndAverageRatings);
-        }
-
-        const allReviewsForComparisonProducts = await fetchAllReviewsForComparisonProducts();
-        updateComparisonProductWithReviews(allReviewsForComparisonProducts);
+      const getTableDataList = async () => {
+        const allReviewsForComparisonProducts = await fetchAllReviewsOfComparisonProducts();
+        updateReviewsForTableDataList(allReviewsForComparisonProducts);
       }
 
-      getComparisonProductWithReviewsAndRatings();
+      getTableDataList();
   }, []);
 
   return (
@@ -79,13 +77,16 @@ const ComparisonResult = () => {
       <div className='inner'>
         <h2 className='text-xl font-bold border-b border-amber-200'>比較結果</h2>
 
-        <ComparisonUserFilters
-          userFilters={userFilters}
-          setUserFilters={setUserFilters}
-        />
-
-        {comparisonProductWithReviewsAndRatings && (
-          <ComparisonResultTable comparisonData={comparisonProductWithReviewsAndRatings}/>
+        {tableDataList && (
+          <div>
+            <ComparisonUserFilters
+              userFilters={userFilters}
+              setUserFilters={setUserFilters}
+              tableDataList={tableDataList}
+              setTableDataList={setTableDataList}
+            />
+              <ComparisonResultTable comparisonData={tableDataList}/>
+          </div>
         )}
       </div>
     </div>

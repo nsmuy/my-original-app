@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 import { UserProfile } from "@/types/UserProfile";
 import { db } from "@/app/firebase";
 import { setDoc, doc } from "firebase/firestore";
@@ -18,7 +18,8 @@ type RegisterUserProfileProps = {
 const RegisterUserProfile = ({ setIsFirstVisit }: RegisterUserProfileProps) => {
   const { user } = useAuthContext();
   const [uploadIcon, setUploadIcon] = useState<File>();
-  const [inputUserProfile, setInputUserProfile] = useState<Omit<UserProfile, "id">>({
+  const [inputUserProfile, setInputUserProfile] = useState<UserProfile>({
+    id: "",
     nickname: "",
     age: "",
     gender: "",
@@ -48,9 +49,15 @@ const RegisterUserProfile = ({ setIsFirstVisit }: RegisterUserProfileProps) => {
       }
 
       // idをセットしてuserProfileを更新
-      const registrationUserProfile = { ...inputUserProfile, id: user.uid, icon: iconUrl };
+      console.log('プッシュ前')
+      console.log(inputUserProfile)
+      const registrationUserProfile = { 
+        ...inputUserProfile,
+        id: user.uid,
+        icon: iconUrl 
+      };
       await setDoc(doc(db, "userProfiles", user.uid), registrationUserProfile);
-      setInputUserProfile({ nickname: "", age: "", gender: "", skinType: "", icon: "" });
+      setInputUserProfile({ id: "", nickname: "", age: "", gender: "", skinType: "", icon: "" });
       setIsFirstVisit(false);
     }
   };
@@ -70,6 +77,10 @@ const RegisterUserProfile = ({ setIsFirstVisit }: RegisterUserProfileProps) => {
       fileReader.readAsDataURL(e.target.files![i]);
     }
   };
+
+  useEffect(() => {
+    console.log(inputUserProfile);
+  }, [inputUserProfile])
 
   return (
     <div className="relative bg-white rounded-lg shadow dark:bg-gray-700 p-6">

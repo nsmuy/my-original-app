@@ -7,6 +7,7 @@ import { UserProfile } from '@/types/UserProfile';
 import { db } from '@/app/firebase';
 import { getDocs, collection, query, orderBy, where } from 'firebase/firestore';
 import { usePathname } from 'next/navigation';
+import { getProfileOptionsLabel } from '@/functions/getProfileOptionsLabel';
 
 type ReviewsListProps = {
   productsToShow: Product[]
@@ -83,7 +84,9 @@ const ReviewsList = ({ productsToShow }: ReviewsListProps ) => {
                 </div>
                 <div className='text-sm'>
                   <p>{review.reviewerInfo.nickname}</p>
-                  <span>{review.reviewerInfo.age}・{review.reviewerInfo.skinType}</span>
+                  <span>
+                    {getProfileOptionsLabel('age', review.reviewerInfo.age)}・{getProfileOptionsLabel('gender', review.reviewerInfo.gender)} / {getProfileOptionsLabel('skinType', review.reviewerInfo.skinType)}
+                  </span>
                 </div>
               </div>
   
