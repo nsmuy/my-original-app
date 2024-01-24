@@ -39,7 +39,6 @@ const Signup = () => {
         <button onClick={() => router.push("/login")} className="mt-6 text-sky-500 font-bold border-b border-sky-500 hover:opacity-70">
           アカウントをお持ちの方はこちら
         </button>
-        {/* <button onClick={() => router.push("/")} >トップページに戻る</button> */}
       </div>
     </div>
   );

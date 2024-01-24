@@ -14,7 +14,7 @@ const Login = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     await signInWithEmailAndPassword(auth, inputEmail, inputPassword);
-    router.push("/comparison");
+    router.push("/top");
   };
 
   return (

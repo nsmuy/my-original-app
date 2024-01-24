@@ -1,15 +1,14 @@
 "use client";
-
-import React, { useEffect, useReducer, useState } from "react";
+import React, { useState } from 'react'
+import defaultIcon from "@/assets/userIcon_default.png";
+import Image from "next/image";
 import { UserProfile } from "@/types/UserProfile";
 import { db } from "@/app/firebase";
 import { setDoc, doc } from "firebase/firestore";
 import { useAuthContext } from "@/auth/AuthContext";
-import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
-import defaultIcon from "@/assets/userIcon_default.png";
-import Image from "next/image";
 import { ageOptions, genderOptions, skinTypeOptions } from "@/constants/userData";
 import UserProfileOptionButton from "./UserProfileOptionButton";
+import { fetchDownloadURL, updateAndPreviewFile } from "@/functions/uploadAndPreviewIcon";
 
 type RegisterUserProfileProps = {
   setIsFirstVisit: React.Dispatch<React.SetStateAction<boolean>>;
@@ -17,7 +16,7 @@ type RegisterUserProfileProps = {
 
 const RegisterUserProfile = ({ setIsFirstVisit }: RegisterUserProfileProps) => {
   const { user } = useAuthContext();
-  const [uploadIcon, setUploadIcon] = useState<File>();
+  const [uploadIcon, setUploadIcon] = useState();
   const [inputUserProfile, setInputUserProfile] = useState<UserProfile>({
     id: "",
     nickname: "",
@@ -27,51 +26,22 @@ const RegisterUserProfile = ({ setIsFirstVisit }: RegisterUserProfileProps) => {
     icon: "",
   });
 
-  // firebaseにユーザープロフィールを保存
   const handleUserProfile = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     if (user) {
-      let iconUrl: string = "";
+      const iconUrl: string = await fetchDownloadURL(uploadIcon, user.uid, null);
 
-      if (uploadIcon !== undefined && uploadIcon !== null) {
-        // 公開URLを取得するために、一度Firebase Strageにアップロードする
-        const storage = getStorage();
-        const iconRef = ref(storage, `userIcons/userIcon_${user?.uid}`);
-        await uploadBytes(iconRef, uploadIcon);
-        iconUrl = await getDownloadURL(iconRef);
-        setInputUserProfile({ ...inputUserProfile, icon: iconUrl });
-      } else {
-        const storage = getStorage();
-        const defaultIconRef = ref(storage, `userIcons/userIcon_default.png`);
-        iconUrl = await getDownloadURL(defaultIconRef);
-        setInputUserProfile({ ...inputUserProfile, icon: iconUrl });
-      }
-
-      // idをセットしてuserProfileを更新
+      // idとアイコンをセットしてuserProfileを更新
       const registrationUserProfile = { 
         ...inputUserProfile,
         id: user.uid,
         icon: iconUrl 
       };
+
       await setDoc(doc(db, "userProfiles", user.uid), registrationUserProfile);
       setInputUserProfile({ id: "", nickname: "", age: "", gender: "", skinType: "", icon: "" });
       setIsFirstVisit(false);
-    }
-  };
-
-  // 画像を状態関数にセットし、プレビューを表示する関数
-  const updateAndPreviewFile = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUploadIcon(e.target.files![0]);
-
-    for (let i = 0; i < e.target.files!.length; i++) {
-      let fileReader = new FileReader();
-      fileReader.onload = (e) => {
-        const previewElement = document.getElementById("preview");
-        if (previewElement) {
-          previewElement.innerHTML = '<img src="' + e.target!.result + '">';
-        }
-      };
-      fileReader.readAsDataURL(e.target.files![i]);
     }
   };
 
@@ -100,7 +70,7 @@ const RegisterUserProfile = ({ setIsFirstVisit }: RegisterUserProfileProps) => {
               type="file"
               id="icon"
               accept="image/*" //画像ファイルだけ受け付ける
-              onChange={(e) => updateAndPreviewFile(e)}
+              onChange={(e) => updateAndPreviewFile(e, setUploadIcon)}
             />
             <div id="preview" className="w-40 h-40 border border-amber-500 rounded-full overflow-hidden">
               <Image src={defaultIcon} alt="初期画像"></Image>

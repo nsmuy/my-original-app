@@ -7,14 +7,18 @@ import { app, db } from '../../firebase';
 import { getAuth } from "firebase/auth";
 import { doc, collection, onSnapshot, query, where, updateDoc } from 'firebase/firestore';
 import { useRouter } from "next/navigation";
-import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 import { ageOptions, skinTypeOptions } from '@/constants/userData';
 import UserProfileOptionButton from '@/components/mypage/UserProfileOptionButton';
+import { fetchDownloadURL, updateAndPreviewFile } from "@/functions/uploadAndPreviewIcon";
+import defaultIcon from "@/assets/userIcon_default.png";
+import Image from "next/image";
+import { useAuthContext } from '@/auth/AuthContext';
 
 const EditProfile = () => {
   useLoginGuard();
   const router = useRouter();
   const auth = getAuth(app);
+  const { user } = useAuthContext();
 
   const [userProfile, setUserProfile] = useState<UserProfile>();
   const [editedProfile, setEditedProfile] = useState<UserProfile>({
@@ -36,7 +40,6 @@ const EditProfile = () => {
 
     const userProfilesRef = collection(db, 'userProfiles');
     const q = query(userProfilesRef, where('id', '==', auth.currentUser.uid));
-
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const userProfileData = snapshot.docs[0]?.data() as UserProfile;
       setUserProfile(userProfileData);
@@ -57,19 +60,7 @@ const EditProfile = () => {
     e.preventDefault();
 
     if (userProfile) {
-
-      // アイコンが変更されている場合、一度Firebase Strageにアップロードし公開URLを取得
-      let newIconUrl: string = '';
-      if(uploadIcon !== undefined && uploadIcon !== null) {
-        // 公開URLを取得するために、一度Firebase Strageにアップロードする
-        const storage = getStorage();
-        const iconRef = ref(storage, `userIcons/userIcon_${userProfile.id}`);
-        await uploadBytes(iconRef, uploadIcon);
-        newIconUrl = await getDownloadURL(iconRef);
-      } else {
-        newIconUrl = userProfile.icon;
-      }
-
+      const newIconUrl = await fetchDownloadURL(uploadIcon, user, editedProfile.icon);
       const userProfileRef = doc(db, "userProfiles", userProfile.id);
       try {
         await updateDoc(userProfileRef, {
@@ -88,65 +79,78 @@ const EditProfile = () => {
     <div className='mt-8'>
       <div className='inner'>
         <h2 className='font-bold border-b border-amber-200'>プロフィール編集</h2>
-        <form onSubmit={handleEditProfile}>
+          <form onSubmit={handleEditProfile}>
 
-          <div>
-            <label htmlFor="nickname">ニックネーム</label>
-            <input
-              id="nickname"
-              type="text"
-              placeholder="ニックネーム"
-              className='bg-amber-50 rounded-md focus:outline-amber-500 px-2 py-1 w-80'
-              value={editedProfile?.nickname || ''}
-              onChange={(e) => setEditedProfile({ ...editedProfile, nickname: e.target.value })}
-            />
-          </div>
+            <div className='mt-4'>
+              <label htmlFor="nickname" className='mb-2 font-bold block'>ニックネーム</label>
+              <input
+                id="nickname"
+                type="text"
+                placeholder="ニックネーム"
+                className='bg-white border rounded-md focus:outline-amber-500 px-2 py-1 w-80'
+                value={editedProfile?.nickname || ''}
+                onChange={(e) => setEditedProfile({ ...editedProfile, nickname: e.target.value })}
+              />
+            </div>
 
-          <div>
-            <label htmlFor="icon">
+            <div className='mt-4'>
+              <label htmlFor="icon" className='mb-2 font-bold block'>アイコン</label>
               <input
                 type="file"
                 id="icon"
-                accept='image/*' // 画像ファイルのみ
-                onChange={(e) => setUploadIcon(e.target.files?.[0])}
+                accept="image/*" //画像ファイルだけ受け付ける
+                onChange={(e) => updateAndPreviewFile(e, setUploadIcon)}
               />
-            </label>
-          </div>
+              <div id="preview" className="w-40 h-40 border border-amber-500 rounded-full overflow-hidden">
+                <Image src={editedProfile?.icon || defaultIcon} alt="初期画像" width={40} height={40} priority></Image>
+              </div>
+            </div>
 
-          <div>
-              <p className='mb-2 font-bold'>年齢層</p>
-              {ageOptions.map((option) => (
-                <div className='inline-block mr-4'>
+            <div className='mt-4'>
+                <p className='mb-2 font-bold'>年齢層</p>
+                {ageOptions.map((option) => (
+                  <div key={`age_${option.value}`} className='inline-block mr-4'>
+                    <UserProfileOptionButton
+                      option={option}
+                      name="age"
+                      inputUserProfile={editedProfile}
+                      setInputUserProfile={setEditedProfile}
+                    />
+                  </div>
+                ))}
+            </div>
+
+            <div className='mt-4'>
+              <p className='mb-2 font-bold'>肌タイプ</p>
+              {skinTypeOptions.map((option) => (
+                <div key={`skinType_${option.value}`} className='inline-block mr-4'>
                   <UserProfileOptionButton
                     option={option}
-                    name="age"
+                    name="skinType"
                     inputUserProfile={editedProfile}
                     setInputUserProfile={setEditedProfile}
                   />
                 </div>
               ))}
-          </div>
+            </div>
 
-          <div>
-            <p className='mb-2 font-bold'>肌タイプ</p>
-            {skinTypeOptions.map((option) => (
-              <div className='inline-block mr-4'>
-                <UserProfileOptionButton
-                  option={option}
-                  name="skinType"
-                  inputUserProfile={editedProfile}
-                  setInputUserProfile={setEditedProfile}
-                />
-              </div>
-            ))}
-          </div>
 
-          <button
-            type="submit"
-            className="bg-amber-500 text-white rounded-md font-bold">
-            更新
-          </button>
-        </form>
+            <div className='flex gap-4 mt-4'>
+              <button
+                type="button"
+                onClick={() => router.push('/mypage')}
+                className='bg-gray-500 text-white rounded-md font-bold px-4 py-2'
+              >
+                戻る
+              </button>
+
+              <button
+                type="submit"
+                className="bg-amber-500 text-white rounded-md font-bold px-4 py-2">
+                更新
+              </button>
+            </div>
+          </form>
       </div>
     </div>
   );
