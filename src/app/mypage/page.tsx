@@ -74,7 +74,7 @@ const MyPage = () => {
                 <p>気になるファンデーションを比較する</p>
               </Link>
 
-              <Link href={"/mypage/reviews"} className='bg-white rounded-md shadow-sm p-8 flex-1 text-center'>
+              <Link href={"/reviews"} className='bg-white rounded-md shadow-sm p-8 flex-1 text-center'>
                 <p>口コミを見る・書く</p>
               </Link>
             </div>
