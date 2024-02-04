@@ -29,10 +29,8 @@ const MyPage = () => {
       if (!hasVisited) {
         setIsFirstVisit(true);
         localStorage.setItem(`hasVisited_${userId}`, 'true');
-        console.log('初回訪問の確認に成功しました。')
       }
     } else {
-      console.log('初回訪問の確認に失敗しました。/signupにリダイレクトします')
       router.push('/signup');
     }
   }, [auth.currentUser]);
@@ -43,7 +41,6 @@ const MyPage = () => {
 
     // ログインしていない場合は処理を終了する
     if (!auth.currentUser) {
-      console.log('ログインしていません。/loginにリダイレクトします。');
       router.push('/login');
       return;
     };

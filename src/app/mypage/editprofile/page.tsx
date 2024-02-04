@@ -67,9 +67,8 @@ const EditProfile = () => {
           ...editedProfile,
           icon: newIconUrl,
         });
-        console.log("プロフィールが更新されました");
       } catch (error) {
-        console.error("プロフィールの更新に失敗しました", error);
+        alert("プロフィールの更新に失敗しました");
       }
       router.push("/mypage");
     }
