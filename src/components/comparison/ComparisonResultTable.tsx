@@ -1,11 +1,12 @@
 'use client';
 
 import React from 'react'
-import { ProductWithReviewsAndRatings } from '@/types/Product'
+import { ProductWithReviewsAndRatingsType } from '@/types/Product'
 import { useRouter } from 'next/navigation'
+import Image from "next/image";
 
 type ComparisonResultTableProps = {
-  comparisonData: ProductWithReviewsAndRatings[]
+  comparisonData: ProductWithReviewsAndRatingsType[]
 }
 
 const ComparisonResultTable = ({comparisonData}: ComparisonResultTableProps ) => {
@@ -38,7 +39,7 @@ const ComparisonResultTable = ({comparisonData}: ComparisonResultTableProps ) =>
             {comparisonData && comparisonData.map(product => {
               return (
                 <tr key={product.id} className='text-center'>
-                  <td><img src={product.image} alt={product.name} /></td>
+                  <td><Image src={product.image} alt={product.name} ></Image></td>
                   <td>{product.brand}</td>
                   <td>{product.name}</td>
                   <td>￥{product.price}</td>

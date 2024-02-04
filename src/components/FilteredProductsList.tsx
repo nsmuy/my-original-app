@@ -4,6 +4,7 @@ import { ProductType } from '@/types/Product';
 import { db } from '@/app/firebase';
 import { collection, getDocs, query } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
+import Image from "next/image";
 
 const FilteredProductsList = ({
   checkedFilters, selectedProducts, setSelectedProducts, singleSelectMode} : {
@@ -96,7 +97,12 @@ const FilteredProductsList = ({
                 onClick={() => handleSelectedProductsChange(product, !isSelected)}
               >
                 <div className='relative'>
-                  <img src={product.image} alt={product.name} className='w-full'/>
+                  <Image
+                    src={product.image}
+                    alt={product.name}
+                    className='w-full'
+                  >
+                  </Image>
                   {isSelected && 
                     <div className='absolute inset-0 bg-gray-300 opacity-50 flex justify-center items-center'>
                       <span className='font-bold'>選択中</span>

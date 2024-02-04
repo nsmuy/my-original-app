@@ -7,6 +7,7 @@ import { getAuth } from "firebase/auth";
 import { collection, query, where, getDocs, getDoc, doc } from "firebase/firestore";
 import { ReviewType, ReviewWithProductType } from '@/types/Reviews';
 import { ProductType } from '@/types/Product';
+import Image from "next/image";
 
 const UserReviewsList = () => {
   const router = useRouter();
@@ -59,7 +60,7 @@ const UserReviewsList = () => {
               <div key={review.reviewId} className='bg-white shadow-sm rounded-md p-8'>
                 <div className='flex items-center gap-4 border-b'>
                   <div className='w-20 aspect-square rounded-md overflow-hidden'>
-                    <img src={review.reviewedProductInfo.image} alt={review.reviewedProductInfo.name} />
+                    <Image src={review.reviewedProductInfo.image} alt={review.reviewedProductInfo.name} ></Image>
                   </div>
                   <div>
                     <p>{review.reviewedProductInfo.brand}</p>

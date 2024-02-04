@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import { useRouter } from 'next/navigation';
-import { UserProfile } from '@/types/UserProfile';
+import { UserProfileType } from '@/types/UserProfile';
 import { getProfileOptionsLabel } from '@/functions/getProfileOptionsLabel';
+import Image from "next/image";
 
 type CurrentUserProfileProps = {
-  currentUserProfile: UserProfile
+  currentUserProfile: UserProfileType;
 }
 
 const CurrentUserProfileView = ( {currentUserProfile} : CurrentUserProfileProps ) => {
@@ -20,7 +21,7 @@ const CurrentUserProfileView = ( {currentUserProfile} : CurrentUserProfileProps 
       </div>
       <div className='flex justify-start items-start gap-4 mt-4'>
         <div className='w-24 aspect-square shadow-md rounded-full overflow-hidden'>
-          <img src={currentUserProfile.icon} alt={`${currentUserProfile.nickname}のアイコン`} />
+          <Image src={currentUserProfile.icon} alt={`${currentUserProfile.nickname}のアイコン`} ></Image>
         </div>
         <dl>
           <div className='flex'>

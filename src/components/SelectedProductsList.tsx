@@ -1,6 +1,7 @@
 import React from 'react'
 import { v4 as uuidv4 } from 'uuid';
 import { ProductType } from '@/types/Product';
+import Image from "next/image";
 
 const SelectedProductsList = ( { selectedProducts } : { selectedProducts: ProductType[] }) => {
   return (
@@ -12,7 +13,7 @@ const SelectedProductsList = ( { selectedProducts } : { selectedProducts: Produc
             key={uuidv4()}
             className='w-[100px] flex-shrink-0'
           >
-            <img src={product.image} alt={product.name} className='w-full'/>
+            <Image src={product.image} alt={product.name} className='w-full'></Image>
             <div className='mt-2 px-1'>
               <p className='text-xs font-bold'>{product.brand}</p>
               <p className='text-xs'>{product.name}</p>

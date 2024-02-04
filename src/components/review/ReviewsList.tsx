@@ -8,6 +8,7 @@ import { db } from '@/app/firebase';
 import { getDocs, collection, query, orderBy, where } from 'firebase/firestore';
 import { usePathname } from 'next/navigation';
 import { getProfileOptionsLabel } from '@/functions/getProfileOptionsLabel';
+import Image from "next/image";
 
 type ReviewsListProps = {
   productsToShow: ProductType[]
@@ -75,7 +76,7 @@ const ReviewsList = ({ productsToShow }: ReviewsListProps ) => {
             >
               <div className='flex items-center gap-4 pb-4 border-b'>
                 <div className='w-[60px] h-[60px rounded-full overflow-hidden'>
-                  <img src={review.reviewerInfo.icon} alt={review.reviewerInfo.nickname} />
+                  <Image src={review.reviewerInfo.icon} alt={review.reviewerInfo.nickname} ></Image>
                 </div>
                 <div className='text-sm'>
                   <p>{review.reviewerInfo.nickname}</p>
@@ -89,11 +90,11 @@ const ReviewsList = ({ productsToShow }: ReviewsListProps ) => {
                 {pathname === '/reviews' && (
                   // 商品情報
                   <div className='flex items-center gap-4'>
-                    <img
+                    <Image
                       src={review.reviewedProductInfo.image}
                       alt={review.reviewedProductInfo.name}
                       className='w-[100px]'
-                    />
+                    ></Image>
                     <div className='text-sm'>
                       <p>{review.reviewedProductInfo.brand}</p>
                       <p>{review.reviewedProductInfo.name}</p>
