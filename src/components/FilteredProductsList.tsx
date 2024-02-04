@@ -61,7 +61,7 @@ const FilteredProductsList = ({
     });
   
     setFilteredProducts(newFilteredProducts);
-  }, [checkedFilters]);
+  }, [checkedFilters, allProducts]);
 
   const handleSelectedProductsChange = (product: ProductType, isChecked: boolean) => {
 

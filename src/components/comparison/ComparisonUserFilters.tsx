@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { UserFilterType } from "@/types/UserProfile";
 import { ageOptions, genderOptions, skinTypeOptions } from "@/constants/userData";
 import { ProductWithReviewsAndRatingsType } from "@/types/Product";
@@ -27,7 +27,7 @@ const ComparisonUserFilters = ({
   useEffect(() => {
     const newOriginalTableDataList = JSON.parse(JSON.stringify(tableDataList));
     setOriginalTableDataList(newOriginalTableDataList);
-  }, [router])
+  }, [router, tableDataList]);
 
   // フィルターのチェック状況を保持する状態変数
   const [isKeySelected, setIsKeySelected] = useState({
@@ -37,17 +37,17 @@ const ComparisonUserFilters = ({
   });
 
   // フィルターのチェック状況を確認する関数
-  const checkUserFilters = (userFilters: UserFilterType) => {
+  const checkUserFilters = useCallback((userFilters: UserFilterType) => {
     const updateIsKeySelected = {...isKeySelected}
     Object.entries(userFilters).forEach(([key, value]) => {
       updateIsKeySelected[key as keyof UserFilterType] = !Object.values(value).every((value) => value === false);
     })
     setIsKeySelected(updateIsKeySelected);
-  }
+  },[isKeySelected]);
 
   useEffect(() => {
     checkUserFilters(userFilters);
-  }, [userFilters]);
+  }, [userFilters, checkUserFilters]);
 
   const handleSubmitFilterTable = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

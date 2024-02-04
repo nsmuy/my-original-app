@@ -82,7 +82,7 @@ const CreateReview = () => {
       }
 
       fetchLoginUserInfo();
-  }, [user]);
+  }, [user, userInfo]);
 
   const handlePostReviews = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

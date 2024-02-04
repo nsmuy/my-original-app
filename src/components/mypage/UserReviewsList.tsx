@@ -43,7 +43,7 @@ const UserReviewsList = () => {
       setUserReviewsWithProduct(newUserReviewsWithProduct)
     }
     getNewUserReviewsList();
-  }, []);
+  }, [userId]);
 
   return (
     <div>

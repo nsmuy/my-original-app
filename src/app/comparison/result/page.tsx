@@ -45,7 +45,7 @@ const ComparisonResult = () => {
     const q = query(collection(db, 'reviews'), where('productId', 'in', comparisonProducts.map(product => product.id)));
     const reviewsSnapshot = await getDocs(q);
     return reviewsSnapshot.docs.map(doc => doc.data() as ReviewType);
-  }, [db, comparisonProducts]);
+  }, [comparisonProducts]);
 
   //商品ごとにレビューと評価点数をを格納する関数
   const updateReviewsForTableDataList = useCallback(( allReviewsOfComparisonProducts: ReviewType[] ) => {
