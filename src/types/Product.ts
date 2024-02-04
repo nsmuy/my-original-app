@@ -1,6 +1,6 @@
-import { Review, AverageRatings } from "./Reviews";
+import { ReviewType, AverageRatingsType } from "./Reviews";
 
-export type Product = {
+export type ProductType = {
   id: string;
   brand: string;
   name: string;
@@ -13,21 +13,21 @@ export type Product = {
   image: string;
 }
 
-export type ProductWithReviews = {
-  id: string;
-  brand: string;
-  name: string;
-  price: number;
-  type: 'liquid' | 'powder' | 'cream' | 'cushion' | 'other' ;
-  spf: string;
-  capacity: string;
-  feature: string;
-  color: number;
-  image: string;
-  reviews: Review[];
-}
+// export type ProductWithReviewsType = {
+//   id: string;
+//   brand: string;
+//   name: string;
+//   price: number;
+//   type: 'liquid' | 'powder' | 'cream' | 'cushion' | 'other' ;
+//   spf: string;
+//   capacity: string;
+//   feature: string;
+//   color: number;
+//   image: string;
+//   reviews: ReviewType[];
+// }
 
-export type ProductWithReviewsAndRatings = {
+export type ProductWithReviewsAndRatingsType = {
   id: string;
   brand: string;
   name: string;
@@ -38,6 +38,6 @@ export type ProductWithReviewsAndRatings = {
   feature: string;
   color: number;
   image: string;
-  reviews: Review[];
-  averageRatings: AverageRatings;
+  reviews: ReviewType[];
+  averageRatings: AverageRatingsType;
 }

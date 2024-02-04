@@ -1,13 +1,13 @@
 'use client';
 
 import React, { useEffect, useState } from 'react'
-import { ProductWithReviewsAndRatings, Product } from '@/types/Product';
+import { ProductWithReviewsAndRatingsType, ProductType } from '@/types/Product';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '@/app/firebase';
-import { Review } from '@/types/Reviews';
+import { ReviewType } from '@/types/Reviews';
 import ComparisonResultTable from '@/components/comparison/ComparisonResultTable';
 import { calcAverageRatings } from '@/functions/calcAverageRatings';
-import { UserFilter } from '@/types/UserProfile';
+import { UserFilterType } from '@/types/UserProfile';
 import ComparisonUserFilters from '@/components/comparison/ComparisonUserFilters';
 
 const ComparisonResult = () => {
@@ -35,20 +35,20 @@ const ComparisonResult = () => {
     },
   };
 
-  const [userFilters, setUserFilters] = useState<UserFilter>(initialUserFilters);
-  const comparisonProducts = JSON.parse(localStorage.getItem('comparisonProducts')!) as Product[];
+  const [userFilters, setUserFilters] = useState<UserFilterType>(initialUserFilters);
+  const comparisonProducts = JSON.parse(localStorage.getItem('comparisonProducts')!) as ProductType[];
 
-  const [tableDataList, setTableDataList] = useState<ProductWithReviewsAndRatings[] | null>(null);
+  const [tableDataList, setTableDataList] = useState<ProductWithReviewsAndRatingsType[] | null>(null);
 
   //比較した商品の全レビュー情報を取得する関数
   const fetchAllReviewsOfComparisonProducts = async () => {
     const q = query(collection(db, 'reviews'), where('productId', 'in', comparisonProducts.map(product => product.id)));
     const reviewsSnapshot = await getDocs(q);
-    return reviewsSnapshot.docs.map(doc => doc.data() as Review);
+    return reviewsSnapshot.docs.map(doc => doc.data() as ReviewType);
   }
 
   //商品ごとにレビューと評価点数をを格納する関数
-  const updateReviewsForTableDataList = ( allReviewsOfComparisonProducts: Review[] ) => {
+  const updateReviewsForTableDataList = ( allReviewsOfComparisonProducts: ReviewType[] ) => {
     const reviewsAndRatingsForEachProducts = comparisonProducts.map(product => {
       const reviewsForProduct = allReviewsOfComparisonProducts.filter(reviews => reviews.productId === product.id);
 

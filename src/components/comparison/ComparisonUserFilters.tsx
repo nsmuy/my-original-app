@@ -1,17 +1,17 @@
 'use client';
 
 import React, { useState, useEffect } from "react";
-import { UserFilter } from "@/types/UserProfile";
+import { UserFilterType } from "@/types/UserProfile";
 import { ageOptions, genderOptions, skinTypeOptions } from "@/constants/userData";
-import { ProductWithReviewsAndRatings } from "@/types/Product";
+import { ProductWithReviewsAndRatingsType } from "@/types/Product";
 import { calcAverageRatings } from "@/functions/calcAverageRatings";
 import { useRouter } from "next/navigation";
 
 type ComparisonUserFiltersProps = {
-  userFilters: UserFilter;
-  setUserFilters: React.Dispatch<React.SetStateAction<UserFilter>>;
-  tableDataList: ProductWithReviewsAndRatings[];
-  setTableDataList: React.Dispatch<React.SetStateAction<ProductWithReviewsAndRatings[] | null>>;
+  userFilters: UserFilterType;
+  setUserFilters: React.Dispatch<React.SetStateAction<UserFilterType>>;
+  tableDataList: ProductWithReviewsAndRatingsType[];
+  setTableDataList: React.Dispatch<React.SetStateAction<ProductWithReviewsAndRatingsType[] | null>>;
 };
 
 const ComparisonUserFilters = ({
@@ -22,7 +22,7 @@ const ComparisonUserFilters = ({
 }: ComparisonUserFiltersProps) => {
 
   const router = useRouter();
-  const [originalTableDataList, setOriginalTableDataList] = useState<ProductWithReviewsAndRatings[]>([]);
+  const [originalTableDataList, setOriginalTableDataList] = useState<ProductWithReviewsAndRatingsType[]>([]);
 
   useEffect(() => {
     const newOriginalTableDataList = JSON.parse(JSON.stringify(tableDataList));
@@ -37,10 +37,10 @@ const ComparisonUserFilters = ({
   });
 
   // フィルターのチェック状況を確認する関数
-  const checkUserFilters = (userFilters: UserFilter) => {
+  const checkUserFilters = (userFilters: UserFilterType) => {
     const updateIsKeySelected = {...isKeySelected}
     Object.entries(userFilters).forEach(([key, value]) => {
-      updateIsKeySelected[key as keyof UserFilter] = !Object.values(value).every((value) => value === false);
+      updateIsKeySelected[key as keyof UserFilterType] = !Object.values(value).every((value) => value === false);
     })
     setIsKeySelected(updateIsKeySelected);
   }
@@ -52,7 +52,7 @@ const ComparisonUserFilters = ({
   const handleSubmitFilterTable = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    let filteredTableDataList: ProductWithReviewsAndRatings[] = [];
+    let filteredTableDataList: ProductWithReviewsAndRatingsType[] = [];
 
     originalTableDataList.length > 0 && (
       filteredTableDataList =  originalTableDataList.map(data => {
@@ -60,13 +60,13 @@ const ComparisonUserFilters = ({
         const filteredReviews = data.reviews.filter(review => {
   
           const userAgeMatch = isKeySelected.age ? (
-            userFilters.age[review.userAge as keyof UserFilter['age']]
+            userFilters.age[review.userAge as keyof UserFilterType['age']]
           ) : true;
           const userGenderMatch = isKeySelected.gender ? (
-            userFilters.gender[review.userGender as keyof UserFilter['gender']]
+            userFilters.gender[review.userGender as keyof UserFilterType['gender']]
           ): true;
           const userSkinTypeMatch = isKeySelected.skinType ? (
-            userFilters.skinType[review.userSkinType as keyof UserFilter['skinType']]
+            userFilters.skinType[review.userSkinType as keyof UserFilterType['skinType']]
           ) : true;
   
           return userAgeMatch && userGenderMatch && userSkinTypeMatch;
@@ -97,7 +97,7 @@ const ComparisonUserFilters = ({
                   id={`age_${value}`}
                   name="age"
                   value={value}
-                  checked={userFilters.age[value as keyof UserFilter['age']]}
+                  checked={userFilters.age[value as keyof UserFilterType['age']]}
                   onChange={(e) => setUserFilters({
                     ...userFilters,
                     age: {
@@ -121,7 +121,7 @@ const ComparisonUserFilters = ({
                 id={`gender_${value}`}
                 name="gender"
                 value={value}
-                checked={userFilters.gender[value as keyof UserFilter['gender']]}
+                checked={userFilters.gender[value as keyof UserFilterType['gender']]}
                 onChange={(e) => setUserFilters({
                   ...userFilters,
                   gender: {
@@ -145,7 +145,7 @@ const ComparisonUserFilters = ({
                 id={`skinType_${value}`}
                 name="skinType"
                 value={value}
-                checked={userFilters.skinType[value as keyof UserFilter['skinType']]}
+                checked={userFilters.skinType[value as keyof UserFilterType['skinType']]}
                 onChange={(e) => setUserFilters({
                   ...userFilters,
                   skinType: {

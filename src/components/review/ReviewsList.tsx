@@ -1,36 +1,36 @@
 'use client';
 
 import React, { useEffect, useState } from 'react'
-import { Review, ReviewWithProductAndUser } from '@/types/Reviews';
-import { Product } from '@/types/Product';
-import { UserProfile } from '@/types/UserProfile';
+import { ReviewType, ReviewWithProductAndUserType } from '@/types/Reviews';
+import { ProductType } from '@/types/Product';
+import { UserProfileType } from '@/types/UserProfile';
 import { db } from '@/app/firebase';
 import { getDocs, collection, query, orderBy, where } from 'firebase/firestore';
 import { usePathname } from 'next/navigation';
 import { getProfileOptionsLabel } from '@/functions/getProfileOptionsLabel';
 
 type ReviewsListProps = {
-  productsToShow: Product[]
+  productsToShow: ProductType[]
 }
 
 const ReviewsList = ({ productsToShow }: ReviewsListProps ) => {
 
   const pathname = usePathname();
-  const [detailedReviews, setDetailedReviews] = useState<ReviewWithProductAndUser[] | null>(null);
+  const [detailedReviews, setDetailedReviews] = useState<ReviewWithProductAndUserType[] | null>(null);
 
   useEffect(() => {
     
     //全てのレビュー情報取得
     const fetchReviews = async () => {
       const reviewsSnapshot = await getDocs(query(collection(db, "reviews"), orderBy("sendAt", "desc")));
-      return reviewsSnapshot.docs.map(doc => doc.data()) as Review[];
+      return reviewsSnapshot.docs.map(doc => doc.data()) as ReviewType[];
     }
 
     //レビューしたユーザー情報だけを取得
-    const fetchUsers = async (reviews: Review[]) => {
+    const fetchUsers = async (reviews: ReviewType[]) => {
       const userIds = reviews.map(review => review.userId);
       const usersSnapshot = await getDocs(query(collection(db, "userProfiles"), where("id", "in", userIds)));
-      return usersSnapshot.docs.map(doc => doc.data()) as UserProfile[];
+      return usersSnapshot.docs.map(doc => doc.data()) as UserProfileType[];
     }
 
     //表示させる用のオフジェクトを作成
@@ -56,7 +56,7 @@ const ReviewsList = ({ productsToShow }: ReviewsListProps ) => {
           };
         }
         return undefined;
-      }).filter(review => review !== undefined) as ReviewWithProductAndUser[];
+      }).filter(review => review !== undefined) as ReviewWithProductAndUserType[];
 
       setDetailedReviews(newDetailedReviews);
     }

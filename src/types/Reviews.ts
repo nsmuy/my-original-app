@@ -1,7 +1,7 @@
-import { UserProfile } from "./UserProfile"
-import { Product } from "./Product"
+import { UserProfileType } from "./UserProfile"
+import { ProductType } from "./Product"
 
-export type Review = {
+export type ReviewType = {
   reviewId: string,
   productId: string,
   luminosity: number, //ツヤ感
@@ -16,7 +16,18 @@ export type Review = {
   userSkinType: string,
 }
 
-export type ReviewWithProduct = {
+// export type ReviewWithProductType = {
+//   reviewId: string,
+//   luminosity: number, //ツヤ感
+//   coverage: number, //カバー力
+//   longevity: number, //崩れにくさ
+//   moisturizing: number, //保湿力
+//   comments: string,
+//   sendAt: string,
+//   reviewedProductInfo: ProductType,
+// }
+
+export type ReviewWithProductAndUserType = {
   reviewId: string,
   luminosity: number, //ツヤ感
   coverage: number, //カバー力
@@ -24,22 +35,11 @@ export type ReviewWithProduct = {
   moisturizing: number, //保湿力
   comments: string,
   sendAt: string,
-  reviewedProductInfo: Product,
+  reviewedProductInfo: ProductType,
+  reviewerInfo: UserProfileType,
 }
 
-export type ReviewWithProductAndUser = {
-  reviewId: string,
-  luminosity: number, //ツヤ感
-  coverage: number, //カバー力
-  longevity: number, //崩れにくさ
-  moisturizing: number, //保湿力
-  comments: string,
-  sendAt: string,
-  reviewedProductInfo: Product,
-  reviewerInfo: UserProfile,
-}
-
-export type AverageRatings = {
+export type AverageRatingsType = {
   luminosity: number,
   coverage: number,
   longevity: number,

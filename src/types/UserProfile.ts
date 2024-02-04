@@ -1,4 +1,4 @@
-export type UserProfile = {
+export type UserProfileType = {
   id: string,
   nickname: string,
   age: '' | 'teen' | 'twenties' | 'thirties' | 'forties' | 'fifties' | 'sixtiesAndAbove',
@@ -7,7 +7,7 @@ export type UserProfile = {
   icon: string,
 }
 
-export type UserFilter = {
+export type UserFilterType = {
   age: {
     teen: boolean,
     twenties: boolean,
