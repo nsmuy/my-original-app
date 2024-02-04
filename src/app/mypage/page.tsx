@@ -38,7 +38,7 @@ const MyPage = () => {
   }, [auth.currentUser]);
 
   //firebaseからログインしているユーザープロフィールを取得
-  const [currentUserProfile, setCurrentUserProfile] = useState<UserProfile>();
+  const [currentUserProfile, setCurrentUserProfile] = useState<UserProfile | null>(null);
   useEffect(() => {
 
     // ログインしていない場合は処理を終了する
