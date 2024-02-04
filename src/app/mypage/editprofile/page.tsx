@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
-import { UserProfile } from '@/types/UserProfile';
+import React, { useState, useEffect} from 'react';
+import { UserProfileType } from '@/types/UserProfile';
 import useLoginGuard from '@/auth/useLoginGuard';
 import { app, db } from '../../firebase';
 import { getAuth } from "firebase/auth";
@@ -20,8 +20,8 @@ const EditProfile = () => {
   const auth = getAuth(app);
   const { user } = useAuthContext();
 
-  const [userProfile, setUserProfile] = useState<UserProfile>();
-  const [editedProfile, setEditedProfile] = useState<UserProfile>({
+  const [userProfile, setUserProfile] = useState<UserProfileType>();
+  const [editedProfile, setEditedProfile] = useState<UserProfileType>({
     id: '',
     nickname: '',
     age: '',
@@ -41,7 +41,7 @@ const EditProfile = () => {
     const userProfilesRef = collection(db, 'userProfiles');
     const q = query(userProfilesRef, where('id', '==', auth.currentUser.uid));
     const unsubscribe = onSnapshot(q, (snapshot) => {
-      const userProfileData = snapshot.docs[0]?.data() as UserProfile;
+      const userProfileData = snapshot.docs[0]?.data() as UserProfileType;
       setUserProfile(userProfileData);
     });
 

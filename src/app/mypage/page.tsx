@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react'
 import { app, db } from '../firebase';
-import { UserProfile } from '@/types/UserProfile';
+import { UserProfileType } from '@/types/UserProfile';
 import { getAuth } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import RegisterUserProfile from '@/components/mypage/RegisterUserProfile';
@@ -36,7 +36,7 @@ const MyPage = () => {
   }, [auth.currentUser]);
 
   //firebaseからログインしているユーザープロフィールを取得
-  const [currentUserProfile, setCurrentUserProfile] = useState<UserProfile | null>(null);
+  const [currentUserProfile, setCurrentUserProfile] = useState<UserProfileType | null>(null);
   useEffect(() => {
 
     // ログインしていない場合は処理を終了する
@@ -49,7 +49,7 @@ const MyPage = () => {
     const userProfilesRef = collection(db, 'userProfiles');
     const q = query(userProfilesRef, where('id', '==', auth.currentUser?.uid));
     const unsubscribe = onSnapshot(q, (snapshot) => {
-      const userProfileData = snapshot.docs[0]?.data() as UserProfile;
+      const userProfileData = snapshot.docs[0]?.data() as UserProfileType;
       setCurrentUserProfile(userProfileData);
     });
 

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import { ProductWithReviewsAndRatingsType, ProductType } from '@/types/Product';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '@/app/firebase';
@@ -41,14 +41,14 @@ const ComparisonResult = () => {
   const [tableDataList, setTableDataList] = useState<ProductWithReviewsAndRatingsType[] | null>(null);
 
   //比較した商品の全レビュー情報を取得する関数
-  const fetchAllReviewsOfComparisonProducts = async () => {
+  const fetchAllReviewsOfComparisonProducts = useCallback(async () => {
     const q = query(collection(db, 'reviews'), where('productId', 'in', comparisonProducts.map(product => product.id)));
     const reviewsSnapshot = await getDocs(q);
     return reviewsSnapshot.docs.map(doc => doc.data() as ReviewType);
-  }
+  }, [db, comparisonProducts]);
 
   //商品ごとにレビューと評価点数をを格納する関数
-  const updateReviewsForTableDataList = ( allReviewsOfComparisonProducts: ReviewType[] ) => {
+  const updateReviewsForTableDataList = useCallback(( allReviewsOfComparisonProducts: ReviewType[] ) => {
     const reviewsAndRatingsForEachProducts = comparisonProducts.map(product => {
       const reviewsForProduct = allReviewsOfComparisonProducts.filter(reviews => reviews.productId === product.id);
 
@@ -60,7 +60,7 @@ const ComparisonResult = () => {
     });
 
     setTableDataList(reviewsAndRatingsForEachProducts);
-  }
+  },[comparisonProducts]);
 
   //初回読み込み時に、商品ごとのレビューと評価点数を格納を格納したデータを取得
   useEffect(() => {
@@ -70,7 +70,7 @@ const ComparisonResult = () => {
       }
 
       getTableDataList();
-  }, []);
+  }, [fetchAllReviewsOfComparisonProducts, updateReviewsForTableDataList]);
 
   return (
     <div className='mt-8'>
