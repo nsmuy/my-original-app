@@ -29,7 +29,7 @@ const EditProfile = () => {
     skinType: '',
     icon: '',
   });
-  const [uploadIcon, setUploadIcon] = useState<File>();
+  const [uploadIcon, setUploadIcon] = useState<File | null>(null);
 
   // Firebaseからログインしているユーザープロフィールを取得
   useEffect(() => {
