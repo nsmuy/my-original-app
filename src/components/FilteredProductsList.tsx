@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { v4 as uuidv4 } from 'uuid';
-import { Product } from '@/types/Product';
+import { ProductType } from '@/types/Product';
 import { db } from '@/app/firebase';
 import { collection, getDocs, query } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
@@ -11,16 +11,16 @@ const FilteredProductsList = ({
       brands: { [key: string]: boolean },
       types: { [key: string]: boolean }
     },
-    selectedProducts: Product[],
-    setSelectedProducts: React.Dispatch<React.SetStateAction<Product[]>>,
+    selectedProducts: ProductType[],
+    setSelectedProducts: React.Dispatch<React.SetStateAction<ProductType[]>>,
     singleSelectMode: boolean,
   }
 ) => {
 
   const router = useRouter();
-  const [allProducts, setAllProducts] = useState<Product[]>([]);
+  const [allProducts, setAllProducts] = useState<ProductType[]>([]);
   //フィルタリングされた商品を保存する状態変数
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+  const [filteredProducts, setFilteredProducts] = useState<ProductType[]>([]);
 
   // ページ読み込み時にfirebaseからすべての商品を取得
   useEffect(() => {
@@ -30,8 +30,8 @@ const FilteredProductsList = ({
 
       try {
         const querySnapshot = await getDocs(q);
-        const products: Product[] = querySnapshot.docs.map(doc => ({
-          ...doc.data() as Product,
+        const products: ProductType[] = querySnapshot.docs.map(doc => ({
+          ...doc.data() as ProductType,
           id: doc.id, //ドキュメントIDをProductのidフィールドにセット
         }));
 
@@ -42,7 +42,7 @@ const FilteredProductsList = ({
       }
     }
     fetchProducts();
-  }, [router])
+  }, [router]);
 
   // checkedFilterが更新されたとき、商品を再度絞り込み
   useEffect(() => {
@@ -63,7 +63,7 @@ const FilteredProductsList = ({
     setFilteredProducts(newFilteredProducts);
   }, [checkedFilters]);
 
-  const handleSelectedProductsChange = (product: Product, isChecked: boolean) => {
+  const handleSelectedProductsChange = (product: ProductType, isChecked: boolean) => {
 
     // 単一選択モードと複数選択モードの出し分け
     if(singleSelectMode) {

@@ -16,16 +16,16 @@ export type ReviewType = {
   userSkinType: string,
 }
 
-// export type ReviewWithProductType = {
-//   reviewId: string,
-//   luminosity: number, //ツヤ感
-//   coverage: number, //カバー力
-//   longevity: number, //崩れにくさ
-//   moisturizing: number, //保湿力
-//   comments: string,
-//   sendAt: string,
-//   reviewedProductInfo: ProductType,
-// }
+export type ReviewWithProductType = {
+  reviewId: string,
+  luminosity: number, //ツヤ感
+  coverage: number, //カバー力
+  longevity: number, //崩れにくさ
+  moisturizing: number, //保湿力
+  comments: string,
+  sendAt: string,
+  reviewedProductInfo: ProductType,
+}
 
 export type ReviewWithProductAndUserType = {
   reviewId: string,

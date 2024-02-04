@@ -1,19 +1,19 @@
 "use client"
 
-import React, { useEffect, useState } from 'react';
+import React, { use, useEffect, useState } from 'react';
 import { useAuthContext } from '../../../auth/AuthContext'
 import { useRouter } from 'next/navigation';
 import useLoginGuard from '@/auth/useLoginGuard';
-import { Product } from '@/types/Product';
+import { ProductType } from '@/types/Product';
 import ProductFiltersSelector from '@/components/ProductFilterSelector';
 import FilteredProductsList from '@/components/FilteredProductsList';
-import { Review } from '@/types/Reviews';
+import { ReviewType } from '@/types/Reviews';
 import { getAuth } from "firebase/auth";
 import { addDoc, collection, doc, getDoc, getDocs, query, where } from "firebase/firestore"; 
 import { db } from '@/app/firebase';
 import { v4 as uuidv4 } from 'uuid';
 import { ratingCriterias } from '@/constants/ratingData';
-import { UserProfile } from '@/types/UserProfile';
+import { UserProfileType } from '@/types/UserProfile';
 import { initialBrandCheckedFilter, initialTypeCheckedFilter } from '@/functions/initializeFilters';
 
 const CreateReview = () => {
@@ -39,10 +39,10 @@ const CreateReview = () => {
   });
 
   //レビューするユーザーの情報を保存する状態変数
-  const [userInfo, setUserInfo] = useState<Omit<UserProfile, 'nickname' | 'icon'> | null>(null);
+  const [userInfo, setUserInfo] = useState<Omit<UserProfileType, 'nickname' | 'icon'> | null>(null);
 
   // 入力するレビューに関する情報を保存する状態変数
-  const [userReview, setUserReview] = useState<Review>({
+  const [userReview, setUserReview] = useState<ReviewType>({
     reviewId: '',
     productId: '',
     luminosity: 0,
@@ -59,7 +59,7 @@ const CreateReview = () => {
 
   //比較するために選んだ商品を保存する状態変数
   const [selectedProducts, setSelectedProducts] = useState<
-  Product[]>([]);
+  ProductType[]>([]);
 
   useEffect(() => {
 
@@ -82,7 +82,7 @@ const CreateReview = () => {
       }
 
       fetchLoginUserInfo();
-  }, [])
+  }, [user]);
 
   const handlePostReviews = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

@@ -33,7 +33,7 @@ const MyPage = () => {
     } else {
       router.push('/signup');
     }
-  }, [auth.currentUser]);
+  }, [auth.currentUser, router]);
 
   //firebaseからログインしているユーザープロフィールを取得
   const [currentUserProfile, setCurrentUserProfile] = useState<UserProfileType | null>(null);
@@ -54,7 +54,7 @@ const MyPage = () => {
     });
 
     return () => unsubscribe();
-  }, [auth.currentUser])
+  }, [auth.currentUser, router]);
 
   return (
     <div className='flex flex-col justify-start mt-8'>

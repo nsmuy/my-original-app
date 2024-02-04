@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useEffect, useState } from 'react';
-import { Product } from '@/types/Product';
+import { ProductType } from '@/types/Product';
 import { useRouter, useParams } from 'next/navigation'
 import ReviewsList from '@/components/review/ReviewsList'
 import { db } from '../../firebase'
@@ -17,7 +17,7 @@ const ProductReviews = () => {
     return <div>ローディング中...</div>;
   }
 
-  const [productForReviews, setProductForReviews] = useState<Product[] | null>(null);
+  const [productForReviews, setProductForReviews] = useState<ProductType[] | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -26,7 +26,7 @@ const ProductReviews = () => {
       const products = {
         ...productSnapshot.data(),
         id: params.id,
-      }  as Product;
+      }  as ProductType;
 
       setProductForReviews([products]);
     }

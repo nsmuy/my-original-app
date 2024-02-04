@@ -5,14 +5,14 @@ import { useRouter } from "next/navigation";
 import { app, db } from '@/app/firebase';
 import { getAuth } from "firebase/auth";
 import { collection, query, where, getDocs, getDoc, doc } from "firebase/firestore";
-import { Review, ReviewWithProduct } from '@/types/Reviews';
-import { Product } from '@/types/Product';
+import { ReviewType, ReviewWithProductType } from '@/types/Reviews';
+import { ProductType } from '@/types/Product';
 
 const UserReviewsList = () => {
   const router = useRouter();
   const auth = getAuth(app);
   const userId = auth.currentUser?.uid;
-  const [userReviewsWithProduct, setUserReviewsWithProduct] = useState<ReviewWithProduct[] | null>(null);
+  const [userReviewsWithProduct, setUserReviewsWithProduct] = useState<ReviewWithProductType[] | null>(null);
 
   useEffect(() => {
     const getNewUserReviewsList = async () => {
@@ -22,17 +22,17 @@ const UserReviewsList = () => {
         if (userId) {
           const q = query(collection(db, 'reviews'), where('userId', '==', userId));
           const querySnapshot = await getDocs(q);
-          return querySnapshot.docs.map(doc => doc.data() as Review);
+          return querySnapshot.docs.map(doc => doc.data() as ReviewType);
         }
         return [];
       }
 
       //レビューに紐づく商品情報を取得
-      const fetchReviewedProducts = async (userReviews: Review[]) => {
+      const fetchReviewedProducts = async (userReviews: ReviewType[]) => {
         const reviewedProducts = [];
         for (const review of userReviews) {
           const productSnap = await getDoc(doc(db, 'products', review.productId));
-          const productData = productSnap.data() as Product;
+          const productData = productSnap.data() as ProductType;
           reviewedProducts.push({...review, reviewedProductInfo: productData});
         }
         return reviewedProducts;

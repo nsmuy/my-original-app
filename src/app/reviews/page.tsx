@@ -3,12 +3,12 @@
 import React, { useEffect, useState } from 'react'
 import { collection, getDocs, query } from "firebase/firestore";
 import { db } from '../firebase';
-import { Product } from '@/types/Product';
+import { ProductType } from '@/types/Product';
 import ReviewsList from '@/components/review/ReviewsList';
 
 const AllReviews = () => {
 
-  const [productsForReviews, setProductsForReviews] = useState<Product[] | null>(null);
+  const [productsForReviews, setProductsForReviews] = useState<ProductType[] | null>(null);
 
   useEffect(() => {
 
@@ -17,7 +17,7 @@ const AllReviews = () => {
       const productsSnapshot = await getDocs(query(collection(db, "products")));
       const products = productsSnapshot.docs.map(doc => {
         return {
-          ...doc.data() as Product,
+          ...doc.data() as ProductType,
           id: doc.id,
         }
       })

@@ -47,7 +47,7 @@ export const AuthProvider = ({ children }: AuthProps) => {
     return () => {
       authStateChanged()
     }
-  }, [])
+  }, [auth, router, isAvailableForViewing])
 
   return (
     <AuthContext.Provider value={value}>
