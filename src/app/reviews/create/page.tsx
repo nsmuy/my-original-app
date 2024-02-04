@@ -78,7 +78,6 @@ const CreateReview = () => {
               skinType: userDocSnap.data()?.skinType,
             });
           }
-          return;
         }
       }
 
