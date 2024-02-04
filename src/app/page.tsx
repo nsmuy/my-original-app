@@ -15,7 +15,7 @@ export default function Home() {
 
         <div className="mt-6">
           <Link href={"/login"} className="btn_bg-gradation text-white rounded-full w-[300px] h-[70px] text-3xl font-bold flex items-center justify-center">
-            Let's START
+            {`Let's Start`}
           </Link>
         </div>
       </div>

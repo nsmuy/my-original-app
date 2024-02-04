@@ -1,8 +1,8 @@
 import React from 'react'
 import { v4 as uuidv4 } from 'uuid';
-import { Product } from '@/types/Product';
+import { ProductType } from '@/types/Product';
 
-const SelectedProductsList = ( { selectedProducts } : { selectedProducts: Product[] }) => {
+const SelectedProductsList = ( { selectedProducts } : { selectedProducts: ProductType[] }) => {
   return (
     <div>
       <h3 className='mt-8 font-bold border-b border-amber-200'>選択したファンデーション</h3>
