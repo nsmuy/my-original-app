@@ -76,7 +76,13 @@ const ReviewsList = ({ productsToShow }: ReviewsListProps ) => {
             >
               <div className='flex items-center gap-4 pb-4 border-b'>
                 <div className='w-[60px] h-[60px rounded-full overflow-hidden'>
-                  <Image src={review.reviewerInfo.icon} alt={review.reviewerInfo.nickname} ></Image>
+                  <Image
+                    src={review.reviewerInfo.icon}
+                    alt={review.reviewerInfo.nickname}
+                    width={100}
+                    height={100}
+                    style={{ objectFit: 'cover' }}
+                  ></Image>
                 </div>
                 <div className='text-sm'>
                   <p>{review.reviewerInfo.nickname}</p>
@@ -93,7 +99,9 @@ const ReviewsList = ({ productsToShow }: ReviewsListProps ) => {
                     <Image
                       src={review.reviewedProductInfo.image}
                       alt={review.reviewedProductInfo.name}
-                      className='w-[100px]'
+                      width={100}
+                      height={100}
+                      style={{ objectFit: 'cover' }}
                     ></Image>
                     <div className='text-sm'>
                       <p>{review.reviewedProductInfo.brand}</p>

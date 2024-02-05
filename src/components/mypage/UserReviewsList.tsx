@@ -60,7 +60,14 @@ const UserReviewsList = () => {
               <div key={review.reviewId} className='bg-white shadow-sm rounded-md p-8'>
                 <div className='flex items-center gap-4 border-b'>
                   <div className='w-20 aspect-square rounded-md overflow-hidden'>
-                    <Image src={review.reviewedProductInfo.image} alt={review.reviewedProductInfo.name} ></Image>
+                    <Image
+                      src={review.reviewedProductInfo.image}
+                      alt={review.reviewedProductInfo.name}
+                      width={100}
+                      height={100}
+                      style={{ objectFit: 'cover' }}
+                    >
+                    </Image>
                   </div>
                   <div>
                     <p>{review.reviewedProductInfo.brand}</p>

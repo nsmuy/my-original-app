@@ -13,7 +13,13 @@ const SelectedProductsList = ( { selectedProducts } : { selectedProducts: Produc
             key={uuidv4()}
             className='w-[100px] flex-shrink-0'
           >
-            <Image src={product.image} alt={product.name} className='w-full'></Image>
+            <Image
+              src={product.image}
+              alt={product.name}
+              width={100}
+              height={100}
+              style={{ objectFit: 'cover' }}
+            ></Image>
             <div className='mt-2 px-1'>
               <p className='text-xs font-bold'>{product.brand}</p>
               <p className='text-xs'>{product.name}</p>

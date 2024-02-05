@@ -39,7 +39,14 @@ const ComparisonResultTable = ({comparisonData}: ComparisonResultTableProps ) =>
             {comparisonData && comparisonData.map(product => {
               return (
                 <tr key={product.id} className='text-center'>
-                  <td><Image src={product.image} alt={product.name} ></Image></td>
+                  <td>
+                    <Image
+                      src={product.image}
+                      alt={product.name}
+                      width={100}
+                      height={100}
+                      style={{ objectFit: 'cover' }}
+                      ></Image></td>
                   <td>{product.brand}</td>
                   <td>{product.name}</td>
                   <td>￥{product.price}</td>
