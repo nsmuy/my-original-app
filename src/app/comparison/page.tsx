@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useAuthContext } from '../../auth/AuthContext'
 import { useRouter } from 'next/navigation';
 import useLoginGuard from '@/auth/useLoginGuard';
-import { Product } from '@/types/Product';
+import { ProductType } from '@/types/Product';
 import ProductFiltersSelector from '@/components/ProductFilterSelector';
 import FilteredProductsList from '@/components/FilteredProductsList';
 import SelectedProductsList from '@/components/SelectedProductsList';
@@ -16,9 +16,9 @@ const Comparison = () => {
   const router = useRouter();
   const { loading } = useAuthContext();
 
-  if (loading) {
-    return <div>ローディング中...</div>;
-  }
+  // if (loading) {
+  //   return <div>ローディング中...</div>;
+  // }
 
   //選択されたフィルターを管理する状態変数
   const [checkedFilters, setCheckedFilters] = useState<{
@@ -31,9 +31,9 @@ const Comparison = () => {
 
   //比較するために選んだ商品を保存する状態変数
   const [selectedProducts, setSelectedProducts] = useState<
-  Product[]>([]);
+  ProductType[]>([]);
 
-  const handleCompareProducts = (selectedProducts: Product[]) => {
+  const handleCompareProducts = (selectedProducts: ProductType[]) => {
 
     if(selectedProducts.length < 2) {
       alert('2つ以上選んでください');

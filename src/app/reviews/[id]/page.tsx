@@ -13,9 +13,9 @@ const ProductReviews = () => {
   const params = useParams();
   const { loading } = useAuthContext();
 
-  if (loading) {
-    return <div>ローディング中...</div>;
-  }
+  // if (loading) {
+  //   return <div>ローディング中...</div>;
+  // }
 
   const [productForReviews, setProductForReviews] = useState<ProductType[] | null>(null);
 

@@ -22,9 +22,9 @@ const CreateReview = () => {
   const router = useRouter();
   const { loading } = useAuthContext();
 
-  if (loading) {
-    return <div>ローディング中...</div>;
-  }
+  // if (loading) {
+  //   return <div>ローディング中...</div>;
+  // }
 
   const auth = getAuth();
   const user = auth.currentUser;

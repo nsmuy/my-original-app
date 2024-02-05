@@ -43,7 +43,7 @@ const ComparisonUserFilters = ({
       updateIsKeySelected[key as keyof UserFilterType] = !Object.values(value).every((value) => value === false);
     })
     setIsKeySelected(updateIsKeySelected);
-  },[isKeySelected]);
+  },[]);
 
   useEffect(() => {
     checkUserFilters(userFilters);
