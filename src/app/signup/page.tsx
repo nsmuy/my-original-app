@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { app } from "../firebase";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "next/navigation";
+import InputField from "@/components/auth/InputField";
 
 const Signup = () => {
   const router = useRouter();
@@ -22,14 +23,20 @@ const Signup = () => {
       <div className="absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-70%] bg-white flex flex-col items-center justify-center px-16 py-10 w-fit rounded-xl shadow-md">
         <h2 className="text-2xl font-bold text-amber-500">新規会員登録</h2>
         <form onSubmit={handleSubmit} className="w-full flex flex-col">
-          <label htmlFor="email" className="mt-4">
-            email
-          </label>
-          <input id="email" type="email" placeholder="メールアドレス" className="bg-gray-100 rounded-md focus:outline-amber-500 p-2 mt-2" value={inputEmail} onChange={(e) => setInputEmail(e.target.value)} />
-          <label htmlFor="password" className="mt-4">
-            password
-          </label>
-          <input id="password" type="password" placeholder="パスワード" className="bg-gray-100 rounded-md focus:outline-amber-500 p-2 mt-2" value={inputPassword} onChange={(e) => setInputPassword(e.target.value)} />
+
+          <InputField
+            inputValue={inputEmail}
+            setInputValue={setInputEmail}
+            type={"email"}
+            placeholder={"メールアドレス"}
+          />
+
+          <InputField
+            inputValue={inputPassword}
+            setInputValue={setInputPassword}
+            type={"password"}
+            placeholder={"パスワード"}
+          />
 
           <button type="submit" className="btn_bg-gradation text-white rounded-full w-[160px] h-[44px] text-xl font-bold letter-spacing-1 flex items-center justify-center self-center mt-6">
             SIGNUP

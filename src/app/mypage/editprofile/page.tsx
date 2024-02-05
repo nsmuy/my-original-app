@@ -101,7 +101,15 @@ const EditProfile = () => {
                 onChange={(e) => updateAndPreviewFile(e, setUploadIcon)}
               />
               <div id="preview" className="w-40 h-40 border border-amber-500 rounded-full overflow-hidden">
-                <Image src={editedProfile?.icon || defaultIcon} alt="初期画像" width={40} height={40} priority></Image>
+                <Image
+                  src={editedProfile?.icon || defaultIcon}
+                  alt="初期画像"
+                  width={100}
+                  height={100}
+                  style={{ objectFit: 'cover' }}
+                  priority
+                >
+                </Image>
               </div>
             </div>
 

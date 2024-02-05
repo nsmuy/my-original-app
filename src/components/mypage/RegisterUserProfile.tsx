@@ -73,7 +73,13 @@ const RegisterUserProfile = ({ setIsFirstVisit }: RegisterUserProfileProps) => {
               onChange={(e) => updateAndPreviewFile(e, setUploadIcon)}
             />
             <div id="preview" className="w-40 h-40 border border-amber-500 rounded-full overflow-hidden">
-              <Image src={defaultIcon} alt="初期画像"></Image>
+              <Image
+                src={defaultIcon}
+                alt="初期画像"
+                width={100}
+                height={100}
+                style={{ objectFit: 'cover' }}
+              ></Image>
             </div>
           </div>
 

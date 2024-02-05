@@ -100,7 +100,9 @@ const FilteredProductsList = ({
                   <Image
                     src={product.image}
                     alt={product.name}
-                    className='w-full'
+                    width={100}
+                    height={100}
+                    style={{ objectFit: 'cover' }}
                   >
                   </Image>
                   {isSelected && 

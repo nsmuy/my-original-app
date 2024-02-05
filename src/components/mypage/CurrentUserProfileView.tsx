@@ -21,7 +21,13 @@ const CurrentUserProfileView = ( {currentUserProfile} : CurrentUserProfileProps 
       </div>
       <div className='flex justify-start items-start gap-4 mt-4'>
         <div className='w-24 aspect-square shadow-md rounded-full overflow-hidden'>
-          <Image src={currentUserProfile.icon} alt={`${currentUserProfile.nickname}のアイコン`} ></Image>
+          <Image
+            src={currentUserProfile.icon}
+            alt={`${currentUserProfile.nickname}のアイコン`}
+            width={100}
+            height={100}
+            style={{ objectFit: 'cover' }}
+          ></Image>
         </div>
         <dl>
           <div className='flex'>
