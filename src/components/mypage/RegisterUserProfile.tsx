@@ -2,7 +2,7 @@
 import React, { useState } from 'react'
 import defaultIcon from "@/assets/userIcon_default.png";
 import Image from "next/image";
-import { UserProfile } from "@/types/UserProfile";
+import { UserProfileType } from "@/types/UserProfile";
 import { db } from "@/app/firebase";
 import { setDoc, doc } from "firebase/firestore";
 import { useAuthContext } from "@/auth/AuthContext";
@@ -17,7 +17,7 @@ type RegisterUserProfileProps = {
 const RegisterUserProfile = ({ setIsFirstVisit }: RegisterUserProfileProps) => {
   const { user } = useAuthContext();
   const [uploadIcon, setUploadIcon] = useState();
-  const [inputUserProfile, setInputUserProfile] = useState<UserProfile>({
+  const [inputUserProfile, setInputUserProfile] = useState<UserProfileType>({
     id: "",
     nickname: "",
     age: "",

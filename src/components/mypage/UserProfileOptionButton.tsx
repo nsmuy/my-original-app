@@ -1,11 +1,11 @@
 import React from 'react'
-import { UserProfile } from '@/types/UserProfile'
+import { UserProfileType } from '@/types/UserProfile'
 
 type UserProfileOptionButtonProps = {
   option: {label: string, value: string},
   name: 'age' | 'gender' | 'skinType',
-  inputUserProfile: UserProfile,
-  setInputUserProfile: React.Dispatch<React.SetStateAction<UserProfile>>
+  inputUserProfile: UserProfileType,
+  setInputUserProfile: React.Dispatch<React.SetStateAction<UserProfileType>>
 }
 
 const UserProfileOptionButton = ({ option, name, inputUserProfile, setInputUserProfile }: UserProfileOptionButtonProps) => {
