@@ -68,6 +68,7 @@ const FilteredProductsList = ({
 
     // 単一選択モードと複数選択モードの出し分け
     if(singleSelectMode) {
+      console.log("singleSelectMode")
       if(isChecked) {
         setSelectedProducts([product]);
       } else {
@@ -103,6 +104,7 @@ const FilteredProductsList = ({
                     width={100}
                     height={100}
                     style={{ objectFit: 'cover' }}
+                    priority
                   >
                   </Image>
                   {isSelected && 

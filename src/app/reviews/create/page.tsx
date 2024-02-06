@@ -63,26 +63,28 @@ const CreateReview = () => {
 
   useEffect(() => {
 
-      //ログインしているユーザー情報の取得
-      const fetchLoginUserInfo = async () => {
-        if(user) {
-          const userRef = doc(db, "userProfiles", user.uid);
-          const userDocSnap = await getDoc(userRef);
+    console.log('----------')
 
-          if(userDocSnap.data()) {
-            setUserInfo({
-              ...userInfo,
-              id: user.uid,
-              age: userDocSnap.data()?.age,
-              gender: userDocSnap.data()?.gender,
-              skinType: userDocSnap.data()?.skinType,
-            });
-          }
+    //ログインしているユーザー情報の取得
+    const fetchLoginUserInfo = async () => {
+      if(user) {
+        const userRef = doc(db, "userProfiles", user.uid);
+        const userDocSnap = await getDoc(userRef);
+
+        if(userDocSnap.data()) {
+          setUserInfo({
+            ...userInfo,
+            id: user.uid,
+            age: userDocSnap.data()?.age,
+            gender: userDocSnap.data()?.gender,
+            skinType: userDocSnap.data()?.skinType,
+          });
         }
       }
+    }
 
-      fetchLoginUserInfo();
-  }, [user, userInfo]);
+    fetchLoginUserInfo();
+  }, [user]);
 
   const handlePostReviews = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
