@@ -1,11 +1,12 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useRouter } from 'next/navigation';
 import { UserProfileType } from '@/types/UserProfile';
 import { getProfileOptionsLabel } from '@/functions/getProfileOptionsLabel';
 import Image from "next/image";
+import defaultIcon from "../../assets/userIcon_default.png";
 
 type CurrentUserProfileProps = {
-  currentUserProfile: UserProfileType;
+  currentUserProfile: UserProfileType | null;
 }
 
 const CurrentUserProfileView = ( {currentUserProfile} : CurrentUserProfileProps ) => {
@@ -22,8 +23,8 @@ const CurrentUserProfileView = ( {currentUserProfile} : CurrentUserProfileProps 
       <div className='flex justify-start items-start gap-4 mt-4'>
         <div className='w-24 aspect-square shadow-md rounded-full overflow-hidden'>
           <Image
-            src={currentUserProfile.icon}
-            alt={`${currentUserProfile.nickname}のアイコン`}
+            src={currentUserProfile ? currentUserProfile.icon : defaultIcon}
+            alt={`${currentUserProfile ? currentUserProfile.nickname : '未設定'}のアイコン`}
             width={100}
             height={100}
             style={{ objectFit: 'cover' }}
@@ -32,19 +33,19 @@ const CurrentUserProfileView = ( {currentUserProfile} : CurrentUserProfileProps 
         <dl>
           <div className='flex'>
             <dt className='mr-2'>ニックネーム：</dt>
-            <dd>{currentUserProfile.nickname}</dd>
+            <dd>{currentUserProfile ? currentUserProfile.nickname : '未設定'}</dd>
           </div>
           <div className='flex'>
             <dt className='mr-2'>年齢：</dt>
-            <dd>{getProfileOptionsLabel('age', currentUserProfile.age)}</dd>
+            <dd>{getProfileOptionsLabel('age', currentUserProfile?.age)}</dd>
           </div>
           <div className='flex'>
             <dt className='mr-2'>性別:</dt>
-            <dd>{getProfileOptionsLabel('gender', currentUserProfile.gender)}</dd>
+            <dd>{getProfileOptionsLabel('gender', currentUserProfile?.gender)}</dd>
           </div>
           <div className='flex'>
             <dt className='mr-2'>肌タイプ：</dt>
-            <dd>{getProfileOptionsLabel('skinType', currentUserProfile.skinType)}</dd>
+            <dd>{getProfileOptionsLabel('skinType', currentUserProfile?.skinType)}</dd>
           </div>
         </dl>
       </div>

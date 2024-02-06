@@ -38,6 +38,7 @@ const EditProfile = () => {
       return;
     }
 
+    console.log(auth.currentUser.uid)
     const userProfilesRef = collection(db, 'userProfiles');
     const q = query(userProfilesRef, where('id', '==', auth.currentUser.uid));
     const unsubscribe = onSnapshot(q, (snapshot) => {
@@ -67,6 +68,7 @@ const EditProfile = () => {
           ...editedProfile,
           icon: newIconUrl,
         });
+        console.log("更新成功")
       } catch (error) {
         alert("プロフィールの更新に失敗しました");
       }

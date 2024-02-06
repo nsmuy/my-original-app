@@ -37,8 +37,8 @@ const MyPage = () => {
 
   //firebaseからログインしているユーザープロフィールを取得
   const [currentUserProfile, setCurrentUserProfile] = useState<UserProfileType | null>(null);
-  useEffect(() => {
 
+  useEffect(() => {
     // ログインしていない場合は処理を終了する
     if (!auth.currentUser) {
       router.push('/login');
@@ -61,10 +61,9 @@ const MyPage = () => {
       <div className='w-full inner'>
 
         {/* 初回登録の場合はユーザープロフィールを登録 */}
-        {isFirstVisit && <RegisterUserProfile setIsFirstVisit={setIsFirstVisit} />} 
-
-        {/* ユーザープロフィールを表示 */}
-        {currentUserProfile && (
+        {isFirstVisit ? 
+          <RegisterUserProfile setIsFirstVisit={setIsFirstVisit} />
+        : (
           <div>
             <div className='flex gap-5 my-8'>
               <Link href={"/comparison"} className='bg-white rounded-md shadow-sm p-8 flex-1 text-center'>
@@ -75,13 +74,14 @@ const MyPage = () => {
                 <p>口コミを見る・書く</p>
               </Link>
             </div>
+
             <CurrentUserProfileView currentUserProfile={currentUserProfile} />
             <UserReviewsList />
+
           </div>
         )}
 
       </div>
-
     </div>
   )
 }

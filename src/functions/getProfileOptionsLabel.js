@@ -1,6 +1,11 @@
 import { ageOptions, genderOptions, skinTypeOptions } from '@/constants/userData';
 
 export const getProfileOptionsLabel = ( option, value ) => {
+
+  if(value === undefined) {
+    return '未設定'
+  }
+
   switch (option) {
     case 'age':
       return ageOptions.find(ageOption => ageOption.value === value).label
