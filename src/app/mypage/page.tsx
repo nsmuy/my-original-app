@@ -76,10 +76,10 @@ const MyPage = () => {
               </Link>
             </div>
             <CurrentUserProfileView currentUserProfile={currentUserProfile} />
+            <UserReviewsList />
           </div>
         )}
 
-        <UserReviewsList />
       </div>
 
     </div>

@@ -37,6 +37,12 @@ const ReviewsList = ({ productsToShow }: ReviewsListProps ) => {
     //表示させる用のオフジェクトを作成
     const getDetailedReviews = async () => {
       const reviews = await fetchReviews();
+
+      if(reviews.length === 0) {
+        setDetailedReviews([]);
+        return;
+      }
+
       const users = await fetchUsers(reviews);
 
       const newDetailedReviews = reviews.map(review => {
