@@ -81,13 +81,11 @@ const ReviewsList = ({ productsToShow }: ReviewsListProps ) => {
               className='bg-white rounded-md p-4 shadow-sm'
             >
               <div className='flex items-center gap-4 pb-4 border-b'>
-                <div className='w-[60px] h-[60px rounded-full overflow-hidden'>
+                <div className='w-[60px] h-[60px] rounded-full overflow-hidden relative'>
                   <Image
                     src={review.reviewerInfo.icon}
                     alt={review.reviewerInfo.nickname}
-                    width={100}
-                    height={100}
-                    style={{ objectFit: 'cover' }}
+                    fill
                   ></Image>
                 </div>
                 <div className='text-sm'>
@@ -102,13 +100,13 @@ const ReviewsList = ({ productsToShow }: ReviewsListProps ) => {
                 {pathname === '/reviews' && (
                   // 商品情報
                   <div className='flex items-center gap-4'>
-                    <Image
-                      src={review.reviewedProductInfo.image}
-                      alt={review.reviewedProductInfo.name}
-                      width={100}
-                      height={100}
-                      style={{ objectFit: 'cover' }}
-                    ></Image>
+                    <div className='w-[80px] h-[80px] rounded-full overflow-hidden relative'>
+                      <Image
+                        src={review.reviewedProductInfo.image}
+                        alt={review.reviewedProductInfo.name}
+                        fill
+                      ></Image>
+                    </div>
                     <div className='text-sm'>
                       <p>{review.reviewedProductInfo.brand}</p>
                       <p>{review.reviewedProductInfo.name}</p>

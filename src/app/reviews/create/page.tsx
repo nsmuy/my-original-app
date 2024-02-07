@@ -63,8 +63,6 @@ const CreateReview = () => {
 
   useEffect(() => {
 
-    console.log('----------')
-
     //ログインしているユーザー情報の取得
     const fetchLoginUserInfo = async () => {
       if(user) {
