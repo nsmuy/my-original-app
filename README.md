@@ -6,8 +6,11 @@
 ファンデーション選択において重要な要素であるツヤ感・カバー力・崩れにくさ・保湿力の4つの特性を中心に、ユーザーからの評価を収集します。
 
 ## URL
-デモ用のアカウントで登録なしでお試しいただけます！
 https://my-original-app.vercel.app/
+
+### デモアカウント
+- email: demo@demo.com
+- password: demodemo
 
 # 作成背景
 前職での経験から、以下の2つの課題に対処するためのアプリを開発しました。
@@ -51,3 +54,13 @@ https://my-original-app.vercel.app/
 - TypeScript 5.3.3
 - node 16.0.0
 - Windows 11
+
+# 初期起動
+1. **Gitからリポジトリをダウンロード**  
+`git clone https://github.com/nsmuy/my-original-app.git`
+
+2. **必要なパッケージをインストールする**
+`npm install`
+
+3. **ローカルサーバー立ち上げ**
+`npm run dev`
