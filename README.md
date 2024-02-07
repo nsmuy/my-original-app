@@ -56,11 +56,11 @@ https://my-original-app.vercel.app/
 - Windows 11
 
 # 初期起動
-1. **Gitからリポジトリをダウンロード**  
+1. Gitからリポジトリをダウンロード  
 `git clone https://github.com/nsmuy/my-original-app.git`
 
-2. **必要なパッケージをインストールする**
+2. 必要なパッケージをインストールする  
 `npm install`
 
-3. **ローカルサーバー立ち上げ**
+3. ローカルサーバー立ち上げ  
 `npm run dev`
