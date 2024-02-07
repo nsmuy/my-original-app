@@ -9,12 +9,15 @@ import { useAuthContext } from "@/auth/AuthContext";
 import { ageOptions, genderOptions, skinTypeOptions } from "@/constants/userData";
 import UserProfileOptionButton from "./UserProfileOptionButton";
 import { fetchDownloadURL, updateAndPreviewFile } from "@/functions/uploadAndPreviewIcon";
+import { UserProfileStateType } from "@/types/UserProfile";
 
 type RegisterUserProfileProps = {
-  setIsFirstVisit: React.Dispatch<React.SetStateAction<boolean>>;
+  userProfileState: UserProfileStateType;
+  setUserProfileState: React.Dispatch<React.SetStateAction<UserProfileStateType>>;
+  setIsFormVisible: React.Dispatch<React.SetStateAction<boolean>>
 };
 
-const RegisterUserProfile = ({ setIsFirstVisit }: RegisterUserProfileProps) => {
+const RegisterUserProfile = ({ userProfileState, setUserProfileState, setIsFormVisible }: RegisterUserProfileProps) => {
   const { user } = useAuthContext();
   const [uploadIcon, setUploadIcon] = useState();
   const [inputUserProfile, setInputUserProfile] = useState<UserProfileType>({
@@ -40,18 +43,40 @@ const RegisterUserProfile = ({ setIsFirstVisit }: RegisterUserProfileProps) => {
       };
 
       await setDoc(doc(db, "userProfiles", user.uid), registrationUserProfile);
+      await setDoc(doc(db, "userProfileState", user.uid), { userId: user.uid, isFirstVisit: false, isRegistered: true });
+
       setInputUserProfile({ id: "", nickname: "", age: "", gender: "", skinType: "", icon: "" });
-      setIsFirstVisit(false);
+      setUserProfileState({ userId: "", isFirstVisit: false, isRegistered: true});
+      setIsFormVisible(false);
     }
   };
 
+  // 登録をスキップする関数
+  const skipRegistration = async () => {
+    if(!user) return;
+
+    await setDoc(doc(db, "userProfiles", user.uid), { id: user.uid, nickname: "", age: "", gender: "", skinType: "", icon: "" });
+    await setDoc(doc(db, "userProfileState", user.uid), { userId: user.uid, isFirstVisit: false, isRegistered: false});
+    setUserProfileState({ userId: "", isFirstVisit: false, isRegistered: false});
+    setIsFormVisible(false);
+  }
+
   return (
     <div className="relative bg-white rounded-lg shadow dark:bg-gray-700 p-6">
-      <h3 className="text-amber-500 font-bold text-center border-b border-amber-200 pb-4">
-        こんにちは！
-        <br />
-        まずはプロフィールを入力してください
-      </h3>
+
+      {userProfileState?.isFirstVisit ? (
+        <h3 className="text-amber-500 font-bold text-center border-b border-amber-200 pb-4">
+          はじめまして！
+          <br />
+          まずはプロフィールを登録してください。
+        </h3>
+      ): (
+        <h3 className="text-amber-500 font-bold text-center border-b border-amber-200 pb-4">
+          プロフィールの登録がお済でないようです。
+          <br />
+          登録してからお楽しみください！
+        </h3>
+      )}
 
       <form onSubmit={handleUserProfile} className="mt-4">
         <div className="flex flex-col gap-6">
@@ -122,9 +147,18 @@ const RegisterUserProfile = ({ setIsFirstVisit }: RegisterUserProfileProps) => {
             ))}
           </div>
 
-          <button type="submit" className="btn_bg-gradation text-white rounded-full w-[160px] h-[44px] text-xl font-bold letter-spacing-1 flex items-center justify-center self-center mt-6">
-            登録
-          </button>
+          <div className='flex justify-center gap-4'>
+            <button
+              type="button"
+              className="bg-amber-500 text-white rounded-full w-[200px] h-[44px] text-xl letter-spacing-1 flex items-center justify-center self-center mt-6"
+              onClick={skipRegistration}
+            >
+              あとで登録する
+            </button>
+            <button type="submit" className="btn_bg-gradation text-white rounded-full w-[200px] h-[44px] text-xl letter-spacing-1 flex items-center justify-center self-center mt-6">
+              登録
+            </button>
+          </div>
         </div>
       </form>
     </div>

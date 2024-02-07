@@ -6,7 +6,7 @@ import Image from "next/image";
 import defaultIcon from "../../assets/userIcon_default.png";
 
 type CurrentUserProfileProps = {
-  currentUserProfile: UserProfileType | null;
+  currentUserProfile: UserProfileType | undefined;
 }
 
 const CurrentUserProfileView = ( {currentUserProfile} : CurrentUserProfileProps ) => {
@@ -23,7 +23,7 @@ const CurrentUserProfileView = ( {currentUserProfile} : CurrentUserProfileProps 
       <div className='flex justify-start items-start gap-4 mt-4'>
         <div className='w-24 aspect-square shadow-md rounded-full overflow-hidden'>
           <Image
-            src={currentUserProfile ? currentUserProfile.icon : defaultIcon}
+            src={currentUserProfile?.icon || defaultIcon}
             alt={`${currentUserProfile ? currentUserProfile.nickname : '未設定'}のアイコン`}
             width={100}
             height={100}
@@ -33,7 +33,7 @@ const CurrentUserProfileView = ( {currentUserProfile} : CurrentUserProfileProps 
         <dl>
           <div className='flex'>
             <dt className='mr-2'>ニックネーム：</dt>
-            <dd>{currentUserProfile ? currentUserProfile.nickname : '未設定'}</dd>
+            <dd>{currentUserProfile?.nickname || '未設定'}</dd>
           </div>
           <div className='flex'>
             <dt className='mr-2'>年齢：</dt>

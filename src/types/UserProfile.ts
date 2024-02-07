@@ -7,6 +7,12 @@ export type UserProfileType = {
   icon: string,
 }
 
+export type UserProfileStateType = {
+  userId: string,
+  isFirstVisit: boolean,
+  isRegistered: boolean,
+} 
+
 export type UserFilterType = {
   age: {
     teen: boolean,
