@@ -2,7 +2,7 @@ import { ageOptions, genderOptions, skinTypeOptions } from '@/constants/userData
 
 export const getProfileOptionsLabel = ( option, value ) => {
 
-  if(value === undefined) {
+  if(!value) {
     return '未設定'
   }
 

@@ -2,15 +2,16 @@
 
 import React, { useState, useEffect } from 'react'
 import { app, db } from '../firebase';
-import { UserProfileType } from '@/types/UserProfile';
+import { UserProfileType, UserProfileStateType } from '@/types/UserProfile';
 import { getAuth } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import RegisterUserProfile from '@/components/mypage/RegisterUserProfile';
 import useLoginGuard from '@/auth/useLoginGuard';
-import { collection, onSnapshot, query, where } from 'firebase/firestore';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 import CurrentUserProfileView from '@/components/mypage/CurrentUserProfileView';
 import UserReviewsList from '@/components/mypage/UserReviewsList';
 import Link from 'next/link';
+import { fetchUserProfile } from '@/functions/fetchUserProfile';
 
 const MyPage = () => {
 
@@ -19,52 +20,86 @@ const MyPage = () => {
   const router = useRouter();
   const auth = getAuth(app);
 
-  //初回訪問を判定する
-  const [isFirstVisit, setIsFirstVisit] = useState(false);
-  useEffect(() => {
-    const userId = auth.currentUser?.uid;
+  //ユーザーの訪問状態・プロフィールの登録状態を判定する
+  const [userProfileState, setUserProfileState] = useState<UserProfileStateType>({
+    userId: '',
+    isFirstVisit: true,
+    isRegistered: false,
+  });
 
-    if (userId) {
-      const hasVisited = localStorage.getItem(`hasVisited_${userId}`);
-      if (!hasVisited) {
-        setIsFirstVisit(true);
-        localStorage.setItem(`hasVisited_${userId}`, 'true');
-      }
-    } else {
-      router.push('/signup');
-    }
-  }, [auth.currentUser, router]);
-
+  const [isFormVisible, setIsFormVisible] = useState<boolean>(false);
   //firebaseからログインしているユーザープロフィールを取得
-  const [currentUserProfile, setCurrentUserProfile] = useState<UserProfileType | null>(null);
+  const [currentUserProfile, setCurrentUserProfile] = useState<UserProfileType | undefined>(undefined);
+
+  //ユーザープロフィールの状態を取得する関数
+  const fetchUserProfileState = async () => {
+
+    if(!auth.currentUser) return;
+
+    const userProfileStateRef = doc(db, 'userProfileState', auth.currentUser.uid);
+    const snapshot = await getDoc(userProfileStateRef);
+
+    if (snapshot.exists()) {
+      return snapshot.data() as UserProfileStateType;
+    } else {
+      setDoc(doc(db, 'userProfileState', auth.currentUser.uid), {
+        ...userProfileState,
+        userId: auth.currentUser.uid,
+      });
+      return { userId: auth.currentUser.uid, isFirstVisit: true, isRegistered: false};
+    }
+  }
 
   useEffect(() => {
     // ログインしていない場合は処理を終了する
-    if (!auth.currentUser) {
+    if(!auth.currentUser) {
       router.push('/login');
       return;
-    };
+    } else {
+      // ログインしているユーザーのプロフィールを取得
+      const userId = auth.currentUser.uid;
+      const loadUserProfile = async () => {
+        const UserProfile = await fetchUserProfile(userId);
+        if (UserProfile) {
+          setCurrentUserProfile(UserProfile);
+        }
+      }
+  
+      // ログインしているユーザープロフィールの状態を取得
+      const loadUserProfileState = async () => {
+        const newUserVisitState = await fetchUserProfileState();
+        if (newUserVisitState) {
+          setUserProfileState(newUserVisitState);
 
-    // ユーザープロフィールを取得
-    const userProfilesRef = collection(db, 'userProfiles');
-    const q = query(userProfilesRef, where('id', '==', auth.currentUser?.uid));
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      const userProfileData = snapshot.docs[0]?.data() as UserProfileType;
-      setCurrentUserProfile(userProfileData);
-    });
+          if(!newUserVisitState.isRegistered) {
+            setIsFormVisible(true);
+          }
+        }
+      }
+  
+      loadUserProfile();
+      loadUserProfileState();
+    }
 
-    return () => unsubscribe();
   }, [auth.currentUser, router]);
+
+  useEffect(() => {
+    console.log(isFormVisible)
+  }, [isFormVisible])
 
   return (
     <div className='flex flex-col justify-start mt-8'>
       <div className='w-full inner'>
 
-        {/* 初回登録の場合はユーザープロフィールを登録 */}
-        {isFirstVisit ? 
-          <RegisterUserProfile setIsFirstVisit={setIsFirstVisit} />
-        : (
-          <div>
+        {userProfileState && 
+          (isFormVisible ? (
+            <RegisterUserProfile
+              userProfileState={userProfileState}
+              setUserProfileState={setUserProfileState}
+              setIsFormVisible={setIsFormVisible}
+            />
+          ) : (
+            <div>
             <div className='flex gap-5 my-8'>
               <Link href={"/comparison"} className='bg-white rounded-md shadow-sm p-8 flex-1 text-center'>
                 <p>気になるファンデーションを比較する</p>
@@ -75,12 +110,14 @@ const MyPage = () => {
               </Link>
             </div>
 
-            <CurrentUserProfileView currentUserProfile={currentUserProfile} />
+            <CurrentUserProfileView
+              currentUserProfile={currentUserProfile}
+            />
             <UserReviewsList />
 
           </div>
-        )}
-
+          ))
+        }
       </div>
     </div>
   )
