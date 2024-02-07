@@ -7,7 +7,7 @@ import { app, db } from "../../firebase";
 import { getAuth } from "firebase/auth";
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { useRouter } from "next/navigation";
-import { ageOptions, skinTypeOptions } from "@/constants/userData";
+import { ageOptions, skinTypeOptions, genderOptions } from "@/constants/userData";
 import UserProfileOptionButton from "@/components/mypage/UserProfileOptionButton";
 import { fetchDownloadURL, updateAndPreviewFile } from "@/functions/uploadAndPreviewIcon";
 import defaultIcon from "@/assets/userIcon_default.png";
@@ -114,6 +114,15 @@ const EditProfile = () => {
               {ageOptions.map((option) => (
                 <div key={`age_${option.value}`} className="inline-block mr-4">
                   <UserProfileOptionButton option={option} name="age" inputUserProfile={editedProfile} setInputUserProfile={setEditedProfile} />
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-4">
+              <p className="mb-2 font-bold">性別</p>
+              {genderOptions.map((option) => (
+                <div key={`gender_${option.value}`} className="inline-block mr-4">
+                  <UserProfileOptionButton option={option} name="gender" inputUserProfile={editedProfile} setInputUserProfile={setEditedProfile} />
                 </div>
               ))}
             </div>
