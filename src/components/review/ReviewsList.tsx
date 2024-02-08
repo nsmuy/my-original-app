@@ -116,22 +116,10 @@ const ReviewsList = ({ productsToShow }: ReviewsListProps ) => {
   
                 {/* レビュー情報 */}
                 <div className='mt-4 text-sm'>
-                  <div>
-                    <span>ツヤ感：</span>
-                    <span>{review.luminosity}</span>
-                  </div>
-                  <div>
-                    <span>カバー力：</span>
-                    <span>{review.coverage}</span>
-                  </div>
-                  <div>
-                    <span>崩れにくさ：</span>
-                    <span>{review.longevity}</span>
-                  </div>
-                  <div>
-                    <span>保湿力：</span>
-                    <span>{review.moisturizing}</span>
-                  </div>
+                  <ReviewListItem label={'ツヤ感'} value={review.luminosity}/>
+                  <ReviewListItem label={'カバー力'} value={review.coverage}/>
+                  <ReviewListItem label={'崩れにくさ'} value={review.longevity}/>
+                  <ReviewListItem label={'保湿力'} value={review.moisturizing}/>
                   <div className='mt-2'>
                     <p>{review.comments}</p>
                   </div>
@@ -150,3 +138,12 @@ const ReviewsList = ({ productsToShow }: ReviewsListProps ) => {
 }
 
 export default ReviewsList
+
+const ReviewListItem= ({label, value}: {label: string, value: number}) => {
+  return (
+    <div>
+      <span>{label}：</span>
+      <span>{value}</span>
+    </div>
+  )
+}
