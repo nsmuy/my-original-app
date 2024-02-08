@@ -9,8 +9,8 @@ import InputField from "@/components/auth/InputField";
 const Login = () => {
   const router = useRouter();
   const auth = getAuth(app);
-  const [inputEmail, setInputEmail] = useState<string>("");
-  const [inputPassword, setInputPassword] = useState<string>("");
+  const [inputEmail, setInputEmail] = useState<string>("demouser1234@example.com");
+  const [inputPassword, setInputPassword] = useState<string>("ugc9sFbyrqwA");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
