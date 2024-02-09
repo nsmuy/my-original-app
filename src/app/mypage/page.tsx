@@ -56,6 +56,7 @@ const MyPage = () => {
       router.push('/login');
       return;
     } else {
+
       // ログインしているユーザーのプロフィールを取得
       const userId = auth.currentUser.uid;
       const loadUserProfile = async () => {
@@ -64,7 +65,7 @@ const MyPage = () => {
           setCurrentUserProfile(UserProfile);
         }
       }
-  
+
       // ログインしているユーザープロフィールの状態を取得
       const loadUserProfileState = async () => {
         const newUserVisitState = await fetchUserProfileState();
@@ -76,16 +77,30 @@ const MyPage = () => {
           }
         }
       }
-  
+
       loadUserProfile();
       loadUserProfileState();
     }
 
   }, [auth.currentUser, router]);
 
+  //登録されたら、再びユーザーのプロフィールを取得
   useEffect(() => {
-    console.log(isFormVisible)
-  }, [isFormVisible])
+    if (!auth.currentUser) {
+      router.push('/login');
+    } else {
+      // ログインしているユーザーのプロフィールを取得
+      const userId = auth.currentUser.uid;
+      const loadUserProfile = async () => {
+        const UserProfile = await fetchUserProfile(userId);
+        if (UserProfile) {
+          setCurrentUserProfile(UserProfile);
+        }
+      }
+
+      loadUserProfile();
+    }
+  }, [userProfileState.isRegistered])
 
   return (
     <div className='flex flex-col justify-start mt-8'>

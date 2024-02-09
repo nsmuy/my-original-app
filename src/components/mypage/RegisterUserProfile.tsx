@@ -4,7 +4,7 @@ import defaultIcon from "@/assets/userIcon_default.png";
 import Image from "next/image";
 import { UserProfileType } from "@/types/UserProfile";
 import { db } from "@/app/firebase";
-import { setDoc, doc } from "firebase/firestore";
+import { setDoc, doc, updateDoc } from "firebase/firestore";
 import { useAuthContext } from "@/auth/AuthContext";
 import { ageOptions, genderOptions, skinTypeOptions } from "@/constants/userData";
 import UserProfileOptionButton from "./UserProfileOptionButton";
