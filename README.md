@@ -8,9 +8,9 @@
 ## URL
 https://my-original-app.vercel.app/
 
-### デモアカウント
-- email: demo@demo.com
-- password: demodemo
+登録なしでご利用いただけます。
+ログインフォームにデモユーザーのアカウントが表示されておりますので
+そのまま「Login」ボタンを押してご利用ください！　
 
 # 作成背景
 前職での経験から、以下の2つの課題に対処するためのアプリを開発しました。
