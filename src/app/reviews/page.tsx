@@ -21,7 +21,6 @@ const AllReviews = () => {
           id: doc.id,
         }
       })
-
       setProductsForReviews(products);
     }
 

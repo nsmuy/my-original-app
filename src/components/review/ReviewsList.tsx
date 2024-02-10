@@ -3,9 +3,8 @@
 import React, { useEffect, useState } from 'react'
 import { ReviewType, ReviewWithProductAndUserType } from '@/types/Reviews';
 import { ProductType } from '@/types/Product';
-import { UserProfileType } from '@/types/UserProfile';
 import { db } from '@/app/firebase';
-import { getDocs, collection, query, orderBy, where } from 'firebase/firestore';
+import { getDocs, getDoc, collection, query, orderBy, doc } from 'firebase/firestore';
 import { usePathname } from 'next/navigation';
 import { getProfileOptionsLabel } from '@/functions/getProfileOptionsLabel';
 import Image from "next/image";
@@ -17,39 +16,33 @@ type ReviewsListProps = {
 const ReviewsList = ({ productsToShow }: ReviewsListProps ) => {
 
   const pathname = usePathname();
-  const [detailedReviews, setDetailedReviews] = useState<ReviewWithProductAndUserType[] | null>(null);
+  const [detailedReviews, setDetailedReviews] = useState<ReviewWithProductAndUserType[] | undefined>(undefined);
+
+  //全てのレビュー情報取得する関数
+  const fetchAllReviews = async () => {
+    const reviewsSnapshot = await getDocs(query(collection(db, "reviews"), orderBy("sendAt", "desc")));
+    return reviewsSnapshot.docs.map(doc => doc.data()) as ReviewType[];
+  }
 
   useEffect(() => {
-    
-    //全てのレビュー情報取得
-    const fetchReviews = async () => {
-      const reviewsSnapshot = await getDocs(query(collection(db, "reviews"), orderBy("sendAt", "desc")));
-      return reviewsSnapshot.docs.map(doc => doc.data()) as ReviewType[];
-    }
 
-    //レビューしたユーザー情報だけを取得
-    const fetchUsers = async (reviews: ReviewType[]) => {
-      const userIds = reviews.map(review => review.userId);
-      const usersSnapshot = await getDocs(query(collection(db, "userProfiles"), where("id", "in", userIds)));
-      return usersSnapshot.docs.map(doc => doc.data()) as UserProfileType[];
-    }
+    const createDetailedReviews = async () => {
+      const reviews = await fetchAllReviews();
 
-    //表示させる用のオフジェクトを作成
-    const getDetailedReviews = async () => {
-      const reviews = await fetchReviews();
+      if (reviews.length === 0) return;
 
-      if(reviews.length === 0) {
-        setDetailedReviews([]);
-        return;
-      }
+      const detailedReviews = await Promise.all (reviews.map( async (review) => {
 
-      const users = await fetchUsers(reviews);
+        //レビューに紐づく商品情報を取得
+        const reviewedProductDataSnapshot = await getDoc(doc(db, "products", review.productId));
+        const reviewedProductData = reviewedProductDataSnapshot.data();
 
-      const newDetailedReviews = reviews.map(review => {
-        const productInfo = productsToShow.find(product => product.id === review.productId);
-        const userInfo = users.find(user => user.id === review.userId);
+        //レビューに紐づくユーザー情報を取得
+        const reviewUserDataSnapshot = await getDoc(doc(db, "userProfiles", review.userId));
+        const reviewUserData = reviewUserDataSnapshot.data();
 
-        if(productInfo && userInfo) {
+
+        if(reviewedProductData && reviewUserData) {
           return {
             reviewId: review.reviewId,
             luminosity: review.luminosity,
@@ -58,34 +51,38 @@ const ReviewsList = ({ productsToShow }: ReviewsListProps ) => {
             moisturizing: review.moisturizing,
             comments: review.comments,
             sendAt: review.sendAt,
-            reviewedProductInfo: productInfo,
-            reviewerInfo: userInfo,
-          };
+            reviewedProductInfo: reviewedProductData,
+            reviewerInfo: reviewUserData,
+          } as ReviewWithProductAndUserType;
+        } else {
+          return undefined;
         }
-        return undefined;
-      }).filter(review => review !== undefined) as ReviewWithProductAndUserType[];
+      }));
 
-      setDetailedReviews(newDetailedReviews);
+      setDetailedReviews(detailedReviews.filter(review => review !== undefined) as ReviewWithProductAndUserType[]);
     }
 
-    getDetailedReviews();
+    createDetailedReviews();
   }, [productsToShow])
 
   return (
     <div className='mt-6'>
       <ul className='flex flex-col gap-4'>
-        {detailedReviews !== null && 
+        {detailedReviews && 
           detailedReviews.length !== 0 ? detailedReviews.map(review => (
             <li
               key={review.reviewId}
               className='bg-white rounded-md p-4 shadow-sm'
             >
               <div className='flex items-center gap-4 pb-4 border-b'>
-                <div className='w-[60px] h-[60px] rounded-full overflow-hidden relative'>
+                <div className='w-[40px] h-[40px] rounded-full overflow-hidden relative'>
                   <Image
                     src={review.reviewerInfo.icon}
                     alt={review.reviewerInfo.nickname}
-                    fill
+                    width={40}
+                    height={40}
+                    className='w-full h-full'
+                    style={{ objectFit: 'cover' }}
                   ></Image>
                 </div>
                 <div className='text-sm'>
@@ -100,11 +97,14 @@ const ReviewsList = ({ productsToShow }: ReviewsListProps ) => {
                 {pathname === '/reviews' && (
                   // 商品情報
                   <div className='flex items-center gap-4'>
-                    <div className='w-[80px] h-[80px] rounded-full overflow-hidden relative'>
+                    <div className='rounded-full overflow-hidden relative'>
                       <Image
                         src={review.reviewedProductInfo.image}
                         alt={review.reviewedProductInfo.name}
-                        fill
+                        width={80}
+                        height={80}
+                        className='w-full h-full'
+                        style={{ objectFit: 'cover' }}
                       ></Image>
                     </div>
                     <div className='text-sm'>
