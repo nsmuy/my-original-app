@@ -104,8 +104,8 @@ const EditProfile = () => {
                 accept="image/*" //画像ファイルだけ受け付ける
                 onChange={(e) => updateAndPreviewFile(e, setUploadIcon)}
               />
-              <div id="preview" className="w-40 h-40 border border-amber-500 rounded-full overflow-hidden">
-                <Image src={editedProfile?.icon || defaultIcon} alt="初期画像" width={100} height={100} style={{ objectFit: "cover" }} priority></Image>
+              <div id="preview" className="w-40 h-40 border border-amber-500 rounded-full overflow-hidden mt-4">
+                <Image src={editedProfile?.icon || defaultIcon} alt="初期画像" width={1} height={1} layout="responsive" style={{ objectFit: "cover" }} priority></Image>
               </div>
             </div>
 
