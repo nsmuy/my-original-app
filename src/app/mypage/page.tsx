@@ -115,21 +115,18 @@ const MyPage = () => {
             />
           ) : (
             <div>
-            <div className='flex gap-5 my-8'>
-              <Link href={"/comparison"} className='bg-white rounded-md shadow-sm p-8 flex-1 text-center'>
-                <p>気になるファンデーションを比較する</p>
-              </Link>
+              <div className='flex gap-5 my-8'>
+                <Link href={"/comparison/"} className='bg-white rounded-xl border-2 border-amber-500 shadow-sm p-8 flex-1 text-amber-500 text-center transition-all hover:bg-amber-500 hover:text-white'>
+                  <p className='font-bold'>ファンデーションを比較する</p>
+                </Link>
 
-              <Link href={"/reviews"} className='bg-white rounded-md shadow-sm p-8 flex-1 text-center'>
-                <p>口コミを見る・書く</p>
-              </Link>
-            </div>
+                <Link href={"/reviews/"} className='bg-white rounded-xl border-2 border-amber-500 shadow-sm p-8 flex-1 text-amber-500  text-center transition-all hover:bg-amber-500 hover:text-white'>
+                  <p className='font-bold'>口コミを見る</p>
+                </Link>
+              </div>
 
-            <CurrentUserProfileView
-              currentUserProfile={currentUserProfile}
-            />
-            <UserReviewsList />
-
+              <CurrentUserProfileView currentUserProfile={currentUserProfile}/>
+              <UserReviewsList />
           </div>
           ))
         }
