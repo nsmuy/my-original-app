@@ -7,38 +7,13 @@ import { db } from '@/app/firebase';
 import { ReviewType } from '@/types/Reviews';
 import ComparisonResultTable from '@/components/comparison/ComparisonResultTable';
 import { calcAverageRatings } from '@/functions/calcAverageRatings';
-import { UserFilterType } from '@/types/UserProfile';
 import ComparisonUserFilters from '@/components/comparison/ComparisonUserFilters';
-import { Console } from 'console';
 
 const ComparisonResult = () => {
-  const initialUserFilters = {
-    age: {
-      teen: false,
-      twenties: false,
-      thirties: false,
-      forties: false,
-      fifties: false,
-      sixtiesAndAbove: false,
-    },
-    gender: {
-      male: false,
-      female: false,
-      other: false,
-    },
-    skinType: {
-      normal: false,
-      dry: false,
-      combination: false,
-      oily: false,
-      sensitive: false,
-      atopic: false,
-    },
-  };
 
-  const [userFilters, setUserFilters] = useState<UserFilterType>(initialUserFilters);
   const [comparisonProducts, setComparisonProducts] = useState<ProductType[]>([]);
-  const [tableDataList, setTableDataList] = useState<ProductWithReviewsAndRatingsType[] | null>(null);
+  const [tableDataList, setTableDataList] = useState<ProductWithReviewsAndRatingsType[] | undefined>(undefined);
+  const [originalTableDataList, setOriginalTableDataList] = useState<ProductWithReviewsAndRatingsType[]>([]);
 
   //比較した商品の全レビュー情報を取得する関数
   const fetchAllReviewsOfComparisonProducts = useCallback(async () => {
@@ -50,7 +25,7 @@ const ComparisonResult = () => {
       return reviewsSnapshot.docs.map(doc => doc.data()) as ReviewType[];
     }));
 
-    console.log(allReviewsForTableDataList);
+    console.log("fetchAllReviewsOfComparisonProducts", allReviewsForTableDataList.flat());
     return allReviewsForTableDataList.flat();
   }, [comparisonProducts]);
 
@@ -67,26 +42,27 @@ const ComparisonResult = () => {
     });
 
     setTableDataList(reviewsAndRatingsForEachProducts);
+    setOriginalTableDataList(reviewsAndRatingsForEachProducts);
   }, [comparisonProducts]);
-
-  //初回読み込み時にlocalStorageから比較した商品を取得
-  useEffect(() => {
-    const newComparisonProducts = JSON.parse(localStorage.getItem('comparisonProducts')!) as ProductType[];
-    if(newComparisonProducts) {
-      setComparisonProducts(newComparisonProducts);
-    }
-  }, []);
 
   //商品ごとのレビューと評価点数を格納を格納したデータを取得
   useEffect(() => {
     const getTableDataList = async () => {
-      console.log(comparisonProducts);
       const allReviewsOfComparisonProducts = await fetchAllReviewsOfComparisonProducts();
       updateReviewsForTableDataList(allReviewsOfComparisonProducts);
     }
 
     getTableDataList();
   }, [fetchAllReviewsOfComparisonProducts, updateReviewsForTableDataList, comparisonProducts]);
+
+  //初回読み込み時にlocalStorageから比較した商品を取得
+  useEffect(() => {
+    const newComparisonProducts = JSON.parse(localStorage.getItem('comparisonProducts')!) as ProductType[];
+
+    if(newComparisonProducts) {
+      setComparisonProducts(newComparisonProducts);
+    }
+  }, []);
 
   return (
     <div className='mt-8'>
@@ -96,10 +72,8 @@ const ComparisonResult = () => {
         {tableDataList && (
           <div>
             <ComparisonUserFilters
-              userFilters={userFilters}
-              setUserFilters={setUserFilters}
-              tableDataList={tableDataList}
               setTableDataList={setTableDataList}
+              originalTableDataList={originalTableDataList}
             />
               <ComparisonResultTable comparisonData={tableDataList}/>
           </div>
