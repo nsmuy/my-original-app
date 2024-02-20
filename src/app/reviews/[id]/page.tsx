@@ -17,29 +17,9 @@ const ProductReviews = () => {
   //   return <div>ローディング中...</div>;
   // }
 
-  const [productForReviews, setProductForReviews] = useState<ProductType[] | null>(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      //パラメータの値をidに持つ商品情報を取得
-      const productSnapshot = await getDoc(doc(db, 'products', params.id as string));
-      const products = {
-        ...productSnapshot.data(),
-        id: params.id,
-      }  as ProductType;
-
-      setProductForReviews([products]);
-    }
-    fetchData();
-  }, [params.id]);
-
   return (
-    <div className='mt-8'>
-      <div className='inner'>
-        {productForReviews && <h2 className='font-bold border-b border-amber-200'>{productForReviews[0].name}の口コミ一覧</h2>}
-
-        {productForReviews && <ReviewsList productsToShow={productForReviews}/>}
-      </div>
+    <div className='m t-8'>
+      <ReviewsList productId={params.id as string}/>
     </div>
   )
 }
