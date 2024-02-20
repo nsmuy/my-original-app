@@ -41,7 +41,6 @@ const ReviewsList = ({ productsToShow }: ReviewsListProps ) => {
         const reviewUserDataSnapshot = await getDoc(doc(db, "userProfiles", review.userId));
         const reviewUserData = reviewUserDataSnapshot.data();
 
-
         if(reviewedProductData && reviewUserData) {
           return {
             reviewId: review.reviewId,

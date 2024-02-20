@@ -39,7 +39,6 @@ const ProductReviews = () => {
         {productForReviews && <h2 className='font-bold border-b border-amber-200'>{productForReviews[0].name}の口コミ一覧</h2>}
 
         {productForReviews && <ReviewsList productsToShow={productForReviews}/>}
-
       </div>
     </div>
   )

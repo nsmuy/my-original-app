@@ -9,6 +9,7 @@ import ComparisonResultTable from '@/components/comparison/ComparisonResultTable
 import { calcAverageRatings } from '@/functions/calcAverageRatings';
 import { UserFilterType } from '@/types/UserProfile';
 import ComparisonUserFilters from '@/components/comparison/ComparisonUserFilters';
+import { Console } from 'console';
 
 const ComparisonResult = () => {
   const initialUserFilters = {
@@ -36,15 +37,21 @@ const ComparisonResult = () => {
   };
 
   const [userFilters, setUserFilters] = useState<UserFilterType>(initialUserFilters);
-  const comparisonProducts = JSON.parse(localStorage.getItem('comparisonProducts')!) as ProductType[];
-
+  const [comparisonProducts, setComparisonProducts] = useState<ProductType[]>([]);
   const [tableDataList, setTableDataList] = useState<ProductWithReviewsAndRatingsType[] | null>(null);
 
   //比較した商品の全レビュー情報を取得する関数
   const fetchAllReviewsOfComparisonProducts = useCallback(async () => {
-    const q = query(collection(db, 'reviews'), where('productId', 'in', comparisonProducts.map(product => product.id)));
-    const reviewsSnapshot = await getDocs(q);
-    return reviewsSnapshot.docs.map(doc => doc.data() as ReviewType);
+    if (comparisonProducts.length === 0) return [];
+
+    const allReviewsForTableDataList = await Promise.all (comparisonProducts.map(async product => {
+      const q = query(collection(db, 'reviews'), where('productId', '==', product.id));
+      const reviewsSnapshot = await getDocs(q);
+      return reviewsSnapshot.docs.map(doc => doc.data()) as ReviewType[];
+    }));
+
+    console.log(allReviewsForTableDataList);
+    return allReviewsForTableDataList.flat();
   }, [comparisonProducts]);
 
   //商品ごとにレビューと評価点数をを格納する関数
@@ -60,17 +67,26 @@ const ComparisonResult = () => {
     });
 
     setTableDataList(reviewsAndRatingsForEachProducts);
-  },[comparisonProducts]);
+  }, [comparisonProducts]);
 
-  //初回読み込み時に、商品ごとのレビューと評価点数を格納を格納したデータを取得
+  //初回読み込み時にlocalStorageから比較した商品を取得
   useEffect(() => {
-      const getTableDataList = async () => {
-        const allReviewsOfComparisonProducts = await fetchAllReviewsOfComparisonProducts();
-        updateReviewsForTableDataList(allReviewsOfComparisonProducts);
-      }
+    const newComparisonProducts = JSON.parse(localStorage.getItem('comparisonProducts')!) as ProductType[];
+    if(newComparisonProducts) {
+      setComparisonProducts(newComparisonProducts);
+    }
+  }, []);
 
-      getTableDataList();
-  }, [fetchAllReviewsOfComparisonProducts, updateReviewsForTableDataList]);
+  //商品ごとのレビューと評価点数を格納を格納したデータを取得
+  useEffect(() => {
+    const getTableDataList = async () => {
+      console.log(comparisonProducts);
+      const allReviewsOfComparisonProducts = await fetchAllReviewsOfComparisonProducts();
+      updateReviewsForTableDataList(allReviewsOfComparisonProducts);
+    }
+
+    getTableDataList();
+  }, [fetchAllReviewsOfComparisonProducts, updateReviewsForTableDataList, comparisonProducts]);
 
   return (
     <div className='mt-8'>

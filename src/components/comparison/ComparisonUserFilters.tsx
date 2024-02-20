@@ -85,7 +85,7 @@ const ComparisonUserFilters = ({
 
   return (
     <div>
-      <h2>ユーザーの絞り込み</h2>
+      <h2 className="font-bold mt-4">ユーザーの絞り込み</h2>
       <form onSubmit={handleSubmitFilterTable}>
         <div>
           <h3 className="font-bold mt-4">年齢層</h3>
@@ -159,7 +159,7 @@ const ComparisonUserFilters = ({
           ))}
         </div>
 
-        <button type="submit">絞り込む</button>
+        <button type="submit" className="inline-block mt-4 text-white font-bold bg-amber-500 px-4 py-2 rounded-md hover:bg-white hover:text-amber-500 transition-all">絞り込む</button>
       </form>
     </div>
   );

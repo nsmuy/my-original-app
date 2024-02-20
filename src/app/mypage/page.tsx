@@ -100,7 +100,7 @@ const MyPage = () => {
 
       loadUserProfile();
     }
-  }, [userProfileState.isRegistered])
+  }, [userProfileState.isRegistered]);
 
   return (
     <div className='flex flex-col justify-start mt-8'>

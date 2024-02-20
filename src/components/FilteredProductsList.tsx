@@ -101,9 +101,8 @@ const FilteredProductsList = ({
                   <Image
                     src={product.image}
                     alt={product.name}
-                    width={100}
-                    height={100}
-                    layout='responsive'
+                    width={140}
+                    height={140}
                     style={{ objectFit: 'cover' }}
                     priority
                   >
